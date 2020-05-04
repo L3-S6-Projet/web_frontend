@@ -1,0 +1,198 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#LoginBody{
+  position: absolute;
+  height: 1024px;
+  left: 0px;
+  right: 745px;
+  top: 0px;
+
+  background: #FAFAFA;
+}
+
+#title{
+  position: absolute;
+  width: 215px;
+  left: 64px;
+  top: 6.25%;
+  bottom: 88.18%;
+
+  /* H3 / Roboto Regular */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 48px;
+  line-height: 56px;
+
+  /* identical to box height */
+
+  /* Dark Primary */
+  color: #303F9F;
+  mix-blend-mode: normal;
+}
+
+
+#serverAMU{
+  /* Headline 5 */
+
+  position: absolute;
+  width: 140px;
+  left: 64px;
+  top: 11.82%;
+  bottom: 85.35%;
+
+  /* H5 / Roboto Regular */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 28px;
+
+  /* identical to box height */
+
+  /* Secondary Text */
+  color: #757575;
+  mix-blend-mode: normal;
+}
+
+#label {
+  /* Label */
+
+  position: absolute;
+  height: 16px;
+  left: 5px;
+  right: 6px;
+  top: calc(50% - 16px/2 - 0.4px);
+
+  /* Button / Roboto Medium */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+
+  /* identical to box height, or 114% */
+  text-align: center;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+
+  color: #FFFFFF;
+}
+#rectangle1{
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  top: 0%;
+  bottom: 0%;
+
+  /* Input Background */
+  background: #E8E8E8;
+}
+
+#rectangle2 {
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  top: 15%;
+  bottom: 0%;
+
+  /* Input Background */
+  background: #E8E8E8;
+}
+#connexion {
+
+  position: absolute;
+  left: 15%;
+  right: 90%;
+  top: 40%;
+  bottom: 40%;
+
+  /* Primary */
+  background: #3F51B5;
+  border-radius: 4px;
+}
+
+#mdp {
+  /* Body 3 */
+
+  position: absolute;
+  width: 142px;
+  left: 194px;
+  top: 58.01%;
+  bottom: 40.04%;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+
+  /* identical to box height, or 143% */
+  letter-spacing: 0.25px;
+  text-decoration-line: underline;
+
+  /* Black — Medium Emphasis */
+  color: rgba(0, 0, 0, 0.6);
+  mix-blend-mode: normal;
+}
+
+#PiedDePage {
+
+  position: absolute;
+  width: 374px;
+  left: 64px;
+  top: 89.84%;
+  bottom: 6.25%;
+
+  /* Body 2 / Roboto Regular */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+
+  /* or 143% */
+  letter-spacing: 0.25px;
+
+  /* Black — Medium Emphasis */
+  color: rgba(0, 0, 0, 0.6);
+  mix-blend-mode: normal;
+}
+
