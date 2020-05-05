@@ -1,212 +1,186 @@
+#LoginPage{
+position: absolute;
+height: 100%;
+left: 0;
+right: 0;
+top: 0;
+background: url('https://images.unsplash.com/photo-1498612753354-772a30629934?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+}
 
 #LoginBody{
   position: absolute;
-  height: 1024px;
-  left: 0px;
-  right: 745px;
-  top: 0px;
+  height: 100%;
+  left:0;
+  right: 50%;
+  top: 0;
 
   background: #FAFAFA;
 }
 
 #title{
   position: absolute;
-  width: 215px;
-  left: 64px;
+  width: 20%;
+  left: 8%;
   top: 6.25%;
   bottom: 88.18%;
 
-  /* H3 / Roboto Regular */
-  font-family: Roboto;
+  font-family: Roboto, serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 48px;
+  font-size: 260%;
   line-height: 56px;
 
-  /* identical to box height */
 
-  /* Dark Primary */
   color: #303F9F;
   mix-blend-mode: normal;
 }
 
-
 #serverAMU{
-  /* Headline 5 */
-
   position: absolute;
-  width: 140px;
-  left: 64px;
-  top: 11.82%;
+  width: 20%;
+  left: 8%;
+  top: 13%;
   bottom: 85.35%;
 
-  /* H5 / Roboto Regular */
-  font-family: Roboto;
+  font-family: Roboto, serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 24px;
+  font-size: 120%;
   line-height: 28px;
 
-  /* identical to box height */
-
-  /* Secondary Text */
   color: #757575;
   mix-blend-mode: normal;
 }
 
 .text-name input::placeholder{
-  /* Label */
-
   position: absolute;
   height: 16px;
   left: 16px;
   right: 52px;
-  top: 8.8px;
+  top: 9px;
 
-  /* Caption / Roboto Regular */
-  font-family: Roboto;
+  font-family: Roboto, serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 100%;
 
-  /* identical to box height, or 133% */
-  letter-spacing: 0.4px;
+  letter-spacing: 0.1em;
 
-  /* Primary */
   color: #3F51B5;
   opacity: 100%;
 
 }
 .text-password input::placeholder{
-  /* Label */
-
   position: absolute;
   height: 24px;
   left: 16px;
   right: 52px;
-  top: 18.4px;
+  top: 18px;
 
-  /* Subtitle 1 / Roboto Regular */
-  font-family: Roboto;
+  font-family: Roboto, serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 100%;
 
-  /* identical to box height, or 150% */
-  letter-spacing: 0.15px;
+  letter-spacing: 0.1em;
 
-  /* Black — Medium Emphasis */
   color: rgba(0, 0, 0, 0.6);
   mix-blend-mode: normal;
 }
 
-
 #rectangle1{
-
   position: absolute;
-  left: 64px;
-  right: 809px;
+  left: 8.5%;
+  right: 40%;
   top: 40.62%;
   bottom: 51.95%;
 
-  /* Input Background */
   background: #E8E8E8;
-  border-top: 0px;
-  border-left: 0px;
-  border-right: 0px;
-  border-color:#3F51B5 ;
-
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-color:#3F51B5;
 }
 
 #rectangle2 {
   position: absolute;
-  left: 64px;
-  right: 809px;
+  left: 8.5%;
+  right: 50%;
   top: 48.83%;
   bottom: 43.75%;
 
-  /* Input Background */
   background: #E8E8E8;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-color:#3F51B5;
 }
+
 #connexion {
   position: absolute;
-  width: 114px;
-  left: 64px;
+  width: 18%;
+  left: 8.5%;
   top: 57.03%;
   bottom: 39.45%;
 
-  /* Primary */
   background: #3F51B5;
-  border-radius: 4px;
+  border-radius: 0.8%;
 }
 
 #connexionLabel {
-  /* Label */
   position: absolute;
-  height: 16px;
-  left: 5px;
-  right: 6px;
-  top: calc(50% - 16px/2 - 0.4px);
+  left: 10%;
+  right:10%;
+  top: 15%;
 
-  /* Button / Roboto Medium */
-  font-family: Roboto;
+  font-family: Roboto, serif;
   font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: normal;
+  font-size: 100%;
   line-height: 16px;
 
-  /* identical to box height, or 114% */
   text-align: center;
-  letter-spacing: 0.75px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 
   color: #FFFFFF;
 }
 
 #forgottenPassword {
-  /* Body 3 */
   position: absolute;
-  width: 142px;
-  left: 194px;
-  top: 58.01%;
+  width: 20%;
+  left: 28%;
+  top: 57.03%;
   bottom: 40.04%;
 
-  font-family: Roboto;
+  font-family: Roboto, serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 80%;
   line-height: 20px;
 
-  /* identical to box height, or 143% */
-  letter-spacing: 0.25px;
+  letter-spacing: 0.03em;
   text-decoration-line: underline;
 
-  /* Black — Medium Emphasis */
   color: rgba(0, 0, 0, 0.6);
   mix-blend-mode: normal;
 }
 
 #footer {
   position: absolute;
-  width: 374px;
-  left: 64px;
+  width: 50%;
+  left: 8.5%;
   top: 89.84%;
   bottom: 6.25%;
 
-  /* Body 2 / Roboto Regular */
-  font-family: Roboto;
+  font-family: Roboto, serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 80%;
   line-height: 20px;
 
-  /* or 143% */
-  letter-spacing: 0.25px;
+  letter-spacing: 0.03em;
 
-  /* Black — Medium Emphasis */
   color: rgba(0, 0, 0, 0.6);
   mix-blend-mode: normal;
 }
-

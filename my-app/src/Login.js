@@ -3,7 +3,9 @@ import React from "react";
 class LoginForm extends React.Component {
     render() {
 
-        return <div id ='LoginBody'>
+        return <div id = 'LoginPage'>
+
+        <div id ='LoginBody'>
             <div id='title'>Scolendar</div>
             <div id='serverAMU'>Serveur AMU</div>
             <div id="loginForm">
@@ -18,6 +20,7 @@ class LoginForm extends React.Component {
                 <br/> © Scolendar 2020 - Tous droits réservés</div>
 
 
+        </div>
         </div>
     }
 }
