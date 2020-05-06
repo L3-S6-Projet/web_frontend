@@ -52,100 +52,6 @@ background: url('https://images.unsplash.com/photo-1498612753354-772a30629934?ix
   mix-blend-mode: normal;
 }
 
-.text-name input::placeholder{
-  position: absolute;
-  height: 16px;
-  left: 16px;
-  right: 52px;
-  top: 9px;
-
-  font-family: Roboto, serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 100%;
-
-  letter-spacing: 0.1em;
-
-  color: #3F51B5;
-  opacity: 100%;
-
-}
-.text-password input::placeholder{
-  position: absolute;
-  height: 24px;
-  left: 16px;
-  right: 52px;
-  top: 18px;
-
-  font-family: Roboto, serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 100%;
-
-  letter-spacing: 0.1em;
-
-  color: rgba(0, 0, 0, 0.6);
-  mix-blend-mode: normal;
-}
-
-#rectangle1{
-  position: absolute;
-  left: 8.5%;
-  right: 40%;
-  top: 40.62%;
-  bottom: 51.95%;
-
-  background: #E8E8E8;
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-  border-color:#3F51B5;
-}
-
-#rectangle2 {
-  position: absolute;
-  left: 8.5%;
-  right: 50%;
-  top: 48.83%;
-  bottom: 43.75%;
-
-  background: #E8E8E8;
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-  border-color:#3F51B5;
-}
-
-#connexion {
-  position: absolute;
-  width: 18%;
-  left: 8.5%;
-  top: 57.03%;
-  bottom: 39.45%;
-
-  background: #3F51B5;
-  border-radius: 0.8%;
-}
-
-#connexionLabel {
-  position: absolute;
-  left: 10%;
-  right:10%;
-  top: 15%;
-
-  font-family: Roboto, serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 100%;
-  line-height: 16px;
-
-  text-align: center;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-
-  color: #FFFFFF;
-}
-
 #forgottenPassword {
   position: absolute;
   width: 20%;
@@ -178,7 +84,6 @@ background: url('https://images.unsplash.com/photo-1498612753354-772a30629934?ix
   font-weight: normal;
   font-size: 80%;
   line-height: 20px;
-
   letter-spacing: 0.03em;
 
   color: rgba(0, 0, 0, 0.6);
