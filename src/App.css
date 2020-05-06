@@ -1,0 +1,91 @@
+#LoginPage{
+position: absolute;
+height: 100%;
+left: 0;
+right: 0;
+top: 0;
+background: url('https://images.unsplash.com/photo-1498612753354-772a30629934?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+}
+
+#LoginBody{
+  position: absolute;
+  height: 100%;
+  left:0;
+  right: 50%;
+  top: 0;
+
+  background: #FAFAFA;
+}
+
+#title{
+  position: absolute;
+  width: 20%;
+  left: 8%;
+  top: 6.25%;
+  bottom: 88.18%;
+
+  font-family: Roboto, serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 260%;
+  line-height: 56px;
+
+
+  color: #303F9F;
+  mix-blend-mode: normal;
+}
+
+#serverAMU{
+  position: absolute;
+  width: 20%;
+  left: 8%;
+  top: 13%;
+  bottom: 85.35%;
+
+  font-family: Roboto, serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 120%;
+  line-height: 28px;
+
+  color: #757575;
+  mix-blend-mode: normal;
+}
+
+#forgottenPassword {
+  position: absolute;
+  width: 20%;
+  left: 28%;
+  top: 57.03%;
+  bottom: 40.04%;
+
+  font-family: Roboto, serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 80%;
+  line-height: 20px;
+
+  letter-spacing: 0.03em;
+  text-decoration-line: underline;
+
+  color: rgba(0, 0, 0, 0.6);
+  mix-blend-mode: normal;
+}
+
+#footer {
+  position: absolute;
+  width: 50%;
+  left: 8.5%;
+  top: 89.84%;
+  bottom: 6.25%;
+
+  font-family: Roboto, serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 80%;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+
+  color: rgba(0, 0, 0, 0.6);
+  mix-blend-mode: normal;
+}
