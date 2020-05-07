@@ -3,12 +3,15 @@ import Button from '@material-ui/core/Button';
 import styled from "@material-ui/core/styles/styled";
 import TextField from '@material-ui/core/TextField';
 import "./Login.css"
+import Scolendar from '../scolendar';
 
 import {
     withRouter
 } from 'react-router-dom'
 
 import { setLoggedIn } from '../auth.js';
+
+console.log(Scolendar);
 
 class LoginForm extends React.Component {
 
