@@ -10,24 +10,54 @@ import {
 import { LoginForm } from './Login.js';
 import Home from './Home.js';
 import NotFound from './NotFound.js';
+import Logout from './Logout.js';
+import { GuardProvider, GuardedRoute } from 'react-router-guards';
+
+import { isLoggedIn } from '../auth.js';
+
+const requireLogin = (to, from, next) => {
+    const isProtected = to.meta.auth;
+    const isOnlyLoggedOut = to.meta.onlyLoggedOut;
+
+    if (isProtected) {
+        if (isLoggedIn()) {
+            next();
+        }
+        next.redirect('/login');
+    } else if (isOnlyLoggedOut) {
+        if (!isLoggedIn()) {
+            next();
+        }
+        next.redirect('/');
+    } else {
+        next();
+    }
+};
+
 
 export default class Router extends Component {
     render() {
         return (
             <BrowserRouter>
-                <Switch>
-                    <Route path="/login">
-                        <LoginForm />
-                    </Route>
+                <GuardProvider guards={[requireLogin]}>
+                    <Switch>
+                        <GuardedRoute exact path="/login" meta={{ onlyLoggedOut: true }}>
+                            <LoginForm />
+                        </GuardedRoute>
 
-                    <Route exact path="/">
-                        <Home />
-                    </Route>
+                        <GuardedRoute exact path="/logout" meta={{ auth: true }}>
+                            <Logout />
+                        </GuardedRoute>
 
-                    <Route path="*">
-                        <NotFound />
-                    </Route>
-                </Switch>
+                        <GuardedRoute exact path="/" meta={{ auth: true }}>
+                            <Home />
+                        </GuardedRoute>
+
+                        <GuardedRoute path="*" meta={{ auth: true }}>
+                            <NotFound />
+                        </GuardedRoute>
+                    </Switch>
+                </GuardProvider>
             </BrowserRouter>
         );
     }
