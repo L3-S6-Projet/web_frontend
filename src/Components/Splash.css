@@ -1,0 +1,47 @@
+#SplashScreen{
+    position: relative;
+    background: #303F9F;
+    height: 100%;
+    width: 100%;
+}
+
+#Ellipse{
+    position: absolute;
+    left: calc(50% - 128px);
+    top: 26.66%;
+    height: 256px;
+    width: 256px;
+    background: #FAFAFA;
+    border-radius: 50%;
+}
+
+#Logo{
+    position: absolute;
+    height: 50%;
+    width: 50%;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
+
+.Point{
+    position :absolute;
+    background: #FF9800;
+    border-radius: 50%;
+    height: 48px;
+    width: 48px;
+    top :59.179%;
+}
+
+#Point1{
+    left: 35.625%;
+}
+
+#Point2{
+    left: 48.402%;
+}
+
+#Point3{
+    left: 61.18%;
+}
