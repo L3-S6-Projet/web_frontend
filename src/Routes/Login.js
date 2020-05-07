@@ -12,9 +12,7 @@ import {
 
 import { setLoggedIn } from '../auth.js';
 
-var Scolendar = require('../scolendar/src/index.js');
-
-var api = new Scolendar.AuthApi()
+import Scolendar from '../scolendar';
 
 class LoginForm extends React.Component {
 
@@ -22,18 +20,52 @@ class LoginForm extends React.Component {
         super(props);
         this.state = {
             loading: false,
+            username: "",
+            password: "",
         };
     }
 
     onSubmit() {
         this.setState({
             loading: true,
+            ...this.state,
         });
 
-        setTimeout(() => {
-            setLoggedIn({ token: 'fake' });
-            this.props.history.push('/');
-        }, 1500);
+        const api = new Scolendar.AuthApi();
+        const loginRequest = new Scolendar.LoginRequest();
+
+        loginRequest.username = this.state.username;
+        loginRequest.password = this.state.password;
+
+        api.login(loginRequest, (error, _data, response) => {
+            this.setState({
+                loading: false,
+                ...this.state,
+            });
+
+            const data = JSON.parse(response.text);
+
+            if (data.status === 'success') {
+                setLoggedIn(data);
+                this.props.history.push('/');
+            } else {
+                const code = data.code;
+                alert('error: ' + code);
+            }
+
+        });
+    }
+
+    onUsernameChange(event) {
+        this.setState({
+            username: event.target.value,
+        })
+    }
+
+    onPasswordChange(event) {
+        this.setState({
+            password: event.target.value,
+        })
     }
 
     render() {
@@ -72,7 +104,8 @@ class LoginForm extends React.Component {
                                 autoComplete="current-password"
                                 margin="normal"
                                 disabled={this.state.loading}
-                                size="small" fullWidth={true} />
+                                size="small" fullWidth={true}
+                                onChange={this.onUsernameChange.bind(this)} />
                         </div>
                         <br />
                         <div id="input-Password">
@@ -83,7 +116,8 @@ class LoginForm extends React.Component {
                                 autoComplete="current-password"
                                 disabled={this.state.loading}
                                 margin="normal"
-                                size="small" fullWidth={true} />
+                                size="small" fullWidth={true}
+                                onChange={this.onPasswordChange.bind(this)} />
                         </div>
                         <MyButton disabled={this.state.loading} id="MyButton" variant="contained" onClick={this.onSubmit.bind(this)}>
                             Connexion

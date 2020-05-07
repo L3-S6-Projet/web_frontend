@@ -11,6 +11,8 @@ import { LoginForm } from './Login.js';
 import Home from './Home.js';
 import NotFound from './NotFound.js';
 import Logout from './Logout.js';
+import Teachers from './Teachers.js';
+import Teacher from './Teacher.js';
 import { GuardProvider, GuardedRoute } from 'react-router-guards';
 
 import { isLoggedIn } from '../auth.js';
@@ -49,13 +51,25 @@ export default class Router extends Component {
                             <Logout />
                         </GuardedRoute>
 
-                        <GuardedRoute exact path="/" meta={{ auth: true }}>
-                            <Home />
-                        </GuardedRoute>
+                        <div>
+                            SIDEBAR
 
-                        <GuardedRoute path="*" meta={{ auth: true }}>
-                            <NotFound />
-                        </GuardedRoute>
+                            <GuardedRoute exact path="/teachers/:id" meta={{ auth: true }}>
+                                <Teacher />
+                            </GuardedRoute>
+
+                            <GuardedRoute exact path="/teachers" meta={{ auth: true }}>
+                                <Teachers />
+                            </GuardedRoute>
+
+                            <GuardedRoute exact path="/" meta={{ auth: true }}>
+                                <Home />
+                            </GuardedRoute>
+
+                            <GuardedRoute path="*" meta={{ auth: true }}>
+                                <NotFound />
+                            </GuardedRoute>
+                        </div>
                     </Switch>
                 </GuardProvider>
             </BrowserRouter>

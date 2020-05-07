@@ -9,9 +9,10 @@ export default class Home extends Component {
     }
     render() {
         const user = getUser();
+
         return (
             <div>
-                <p>I'm home</p>
+                <p>Welcome {user.user.first_name} {user.user.last_name}</p>
                 <pre>{JSON.stringify(user, null, 2)}</pre>
                 <Link to="/logout">Logout</Link>
             </div>
