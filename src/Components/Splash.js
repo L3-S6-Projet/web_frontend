@@ -10,8 +10,8 @@ class Splash extends React.Component {
                 <img id="Logo" src={logo} alt="Scolandar logo"/>
             </div>
                 <motion.div animate={{y:[-50,0,-50]}}   transition={{duration:2,loop: Infinity,ease: "linear"}} className="Point" id="Point1"/>
-                <motion.div animate={{y:[-50,0,-50]}}   transition={{duration:2,loop: Infinity,ease: "linear"}}className="Point" id="Point2"/>
-                <motion.div animate={{y:[-50,0,-50]}}   transition={{duration:2,loop: Infinity,ease: "linear"}} className="Point" id="Point3"/>
+                <motion.div animate={{y:[-50,0,-50]}}   transition={{duration:2,loop: Infinity,ease: "linear", delay : 0.25}}className="Point" id="Point2"/>
+                <motion.div animate={{y:[-50,0,-50]}}   transition={{duration:2,loop: Infinity,ease: "linear", delay : 0.5}} className="Point" id="Point3"/>
         </div>;
     }
 }

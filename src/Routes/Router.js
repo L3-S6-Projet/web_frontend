@@ -14,6 +14,7 @@ import Logout from './Logout.js';
 import Teachers from './Teachers.js';
 import Teacher from './Teacher.js';
 import { GuardProvider, GuardedRoute } from 'react-router-guards';
+import {Splash} from "../Components/Splash"
 
 import { isLoggedIn } from '../auth.js';
 
@@ -43,6 +44,9 @@ export default class Router extends Component {
             <BrowserRouter>
                 <GuardProvider guards={[requireLogin]}>
                     <Switch>
+                        <GuardedRoute exact path="/loading">
+                            <Splash />
+                        </GuardedRoute>
                         <GuardedRoute exact path="/login" meta={{ onlyLoggedOut: true }}>
                             <LoginForm />
                         </GuardedRoute>
