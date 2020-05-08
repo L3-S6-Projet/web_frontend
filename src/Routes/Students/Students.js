@@ -7,12 +7,13 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
+import Splash from "../Splash/Splash"
 import "./Students.css"
 
 export default class Students extends Component {
     constructor(props) {
         super(props);
-        this.state={students :[]}
+        this.state={students :[],loaded: false}
     }
 
     componentDidMount() {
@@ -39,12 +40,16 @@ export default class Students extends Component {
                 console.log(data.students);
                 this.setState({
                     students :data.students})
+                this.setState({loaded :true})
             }
         };
         apiInstance.studentsGet(opts, callback);
+
     }
 
     render() {
+        if(!this.state.loaded)
+            return <Splash/>
         const rows=this.state.students;
         return (
             <div id="students">

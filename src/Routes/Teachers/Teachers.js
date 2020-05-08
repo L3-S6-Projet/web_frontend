@@ -9,11 +9,12 @@ import "./Teachers.css"
 
 import Scolendar from '../../scolendar/src';
 import { getUser } from '../../auth.js';
+import Splash from "../Splash/Splash";
 
 export default class Teachers extends Component {
     constructor(props) {
         super(props);
-        this.state = { teachers: [] };
+        this.state = { teachers: [] , loaded : false};
     }
 
     componentDidMount() {
@@ -40,15 +41,16 @@ export default class Teachers extends Component {
                 this.setState({
                     teachers: data.teachers,
                 })
+                this.setState({loaded : true})
             }
         };
-
         apiInstance.teachersGet(opts, callback);
     }
 
     render() {
+        if(!this.state.loaded)
+            return <Splash/>
         const rows = this.state.teachers;
-
         return (
             <div id="teachers">
                 <div id="title-and-textField">
