@@ -1,67 +1,55 @@
-#LoginPage{
-    position: relative;
-    width: 100%;
-    min-height: 100% !important;
-    left: 0;
-    right: 0;
-    top: 0;
+#login-page {
+    height: 100vh;
+    width: 100vw;
     background: url('https://images.unsplash.com/photo-1498612753354-772a30629934?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
-    border: 1px solid;
 }
 
-#LoginBody{
-    position: absolute;
+#login-column {
+    width: 50%;
     height: 100%;
-    left:0;
-    right: 51.736%;
-    top: 0;
-    background: #FAFAFA;
+    display: flex;
+    flex-direction: column;
 }
 
-#title{
-    position: absolute;
-    width: 20%;
-    left: 8%;
-    top: 6.25%;
-    bottom: 88.18%;
-    font-family: Roboto, serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 260%;
+/* Hide the background image when the screen is too small */
+@media only screen and (max-width: 1024px) {
+    #login-column {
+        width: 60%;
+    }
+}
+
+@media only screen and (max-width: 812px) {
+    #login-column {
+        width: 100%;
+    }
+}
+
+.spacer {
+    flex: 1;
+}
+
+#login-column {
+    background: #FAFAFA;
+    padding: 64px;
+}
+
+#title {
+    font-size: 48px;
     line-height: 56px;
     color: #303F9F;
     mix-blend-mode: normal;
 }
 
-#serverAMU{
-    position: absolute;
-    width: 20%;
-    left: 8%;
-    top: 13%;
-    bottom: 85.35%;
-
-    font-family: Roboto, serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 120%;
+#tagline {
+    font-size: 24px;
     line-height: 28px;
 
     color: #757575;
     mix-blend-mode: normal;
 }
 
-#forgottenPassword {
-    position: absolute;
-
-    left: 27.913%;
-    right: 51.654%;
-    top: 58.01%;
-    bottom: 40.04%;
-
-    font-family: Roboto, serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 80%;
+#forgotten-password {
+    font-size: 14px;
     line-height: 20px;
 
     letter-spacing: 0.03em;
@@ -72,53 +60,24 @@
 }
 
 #footer {
-    position: absolute;
-    width: 50%;
-    left: 8.5%;
-    top: 89.84%;
-    bottom: 6.25%;
-
-    font-family: Roboto, serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 80%;
+    font-size: 14px;
     line-height: 20px;
     letter-spacing: 0.03em;
-
     color: rgba(0, 0, 0, 0.6);
-    mix-blend-mode: normal;
 }
 
-#MyButton{
-    position: absolute;
-    width: 114px;
-    height: fit-content;
-
-    left: 9.208%;
-    top: 57.03%;
-    bottom: 39.45%;
+#footer a {
+    color: inherit;
 }
 
-#input-Username{
-    position: absolute;
-    left: 9.208%;
-    right: 9.208%;
-    /*width: 567px;*/
-
-    top: 40.625%;
-    /*height: 14.746%;*/
-    bottom:51.95% ;
-
+#login-button{
+    background: #3F51B5;
+    color: white;
+    margin-right: 16px;
 }
 
-#input-Password{
-    position: absolute;
-    left: 9.208%;
-    right: 9.208%;
-
-    /*width: 567px;*/
-
-    top: 48.828%;
-    /*height: 14.746%;*/
-    bottom: 43.75%;
+#controls {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
 }
