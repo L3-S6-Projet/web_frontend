@@ -2,9 +2,13 @@ import React, { Component } from "react";
 
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import SearchIcon from '@material-ui/icons/Search';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import "./Teachers.css"
 
-import Scolendar from '../scolendar';
-import { getUser } from '../auth.js';
+import Scolendar from '../../scolendar/src';
+import { getUser } from '../../auth.js';
 
 export default class Teachers extends Component {
     constructor(props) {
@@ -46,7 +50,19 @@ export default class Teachers extends Component {
         const rows = this.state.teachers;
 
         return (
-            <div style={{ maxWidth: 800 }}>
+            <div id="teachers">
+                <div id="title-and-textField">
+                    <div id="title-teachers">Tous les enseignants</div>
+                    <div className="spacer"></div>
+                    <TextField label="Chercher par nom ..."
+                               type="text"
+                               variant='outlined'
+                               float="right"
+                               InputProps={{
+                                   endAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
+                               }}
+                    />
+                </div>
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>

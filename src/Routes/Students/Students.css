@@ -1,0 +1,26 @@
+#students{
+    display: flex;
+    flex-direction: column;
+    padding: 64px;
+}
+
+#title-students{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+    /* identical to box height */
+
+    letter-spacing: 0.25px;
+
+    /* Black — High Emphasis */
+
+    color: rgba(0, 0, 0, 0.87);
+    mix-blend-mode: normal;;
+}
+
+#title-and-textField{
+    display: flex;
+    flex-direction: row;
+}
+
