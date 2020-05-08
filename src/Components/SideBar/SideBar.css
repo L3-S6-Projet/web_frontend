@@ -1,0 +1,121 @@
+#sidebar-container {
+    display: flex;
+}
+
+#sidebar {
+    width: 272px;
+    background: #3F51B5;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar-header {
+    padding: 64px 0;
+    text-align: center;
+}
+
+#sidebar-name {
+    font-size: 24px;
+    line-height: 28px;
+    color: white;
+    margin-bottom: 8px;
+}
+
+#sidebar-role {
+    margin-top: 0;
+    font-size: 14px;
+    line-height: 24px;
+    color: #BDBDBD;
+}
+
+#sidebar-credits {
+    text-align: center;
+    padding-bottom: 32px;
+    color: #BDBDBD;
+}
+
+#sidebar-route-container {
+    overflow: auto;
+    flex: 1;
+    height: 100vh;
+}
+
+#sidebar-nav .link {
+    color: white;
+    opacity: 60%;
+    display: block;
+    padding: 12px 32px;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 20px;
+    transition: opacity 250ms;
+    display: flex;
+    align-items: center;
+}
+
+#sidebar-nav .link > .icon {
+    margin-right: 8px;
+}
+
+#sidebar-nav .link:first-child {
+    padding-top: 0;
+}
+
+#sidebar-nav .link:last-child {
+    padding-bottom: 0;
+}
+
+#sidebar-nav .link.active, #sidebar-nav .link:hover {
+    opacity: 100%;
+}
+
+#sidebar-nav-indicator {
+    position: absolute;
+    height: 31px;
+    width: 6px;
+    background: #303F9F;
+    margin-top: calc(-39.5px - 48px * 7);
+    opacity: 0; /* hide if nothing is selected (EG: 404) */
+    transition: margin-top 250ms ease-out; /* select the top item by default */
+}
+
+#sidebar-nav .link:nth-child(1).active ~ #sidebar-nav-indicator {
+    margin-top: calc(-39.5px - 48px * 7);
+    opacity: 1;
+}
+
+#sidebar-nav .link:nth-child(2).active ~ #sidebar-nav-indicator {
+    margin-top: calc(-39.5px - 48px * 6);
+    opacity: 1;
+}
+
+
+#sidebar-nav .link:nth-child(3).active ~ #sidebar-nav-indicator {
+    margin-top: calc(-39.5px - 48px * 5);
+    opacity: 1;
+}
+
+
+#sidebar-nav .link:nth-child(4).active ~ #sidebar-nav-indicator {
+    margin-top: calc(-39.5px - 48px * 4);
+    opacity: 1;
+}
+
+
+#sidebar-nav .link:nth-child(5).active ~ #sidebar-nav-indicator {
+    margin-top: calc(-39.5px - 48px * 3);
+    opacity: 1;
+}
+
+
+#sidebar-nav .link:nth-child(6).active ~ #sidebar-nav-indicator {
+    margin-top: calc(-39.5px - 48px * 2);
+    opacity: 1;
+}
+
+
+#sidebar-nav .link:nth-child(7).active ~ #sidebar-nav-indicator {
+    margin-top: calc(-39.5px - 48px * 1);
+    opacity: 1;
+}
