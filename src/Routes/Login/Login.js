@@ -10,11 +10,11 @@ import {
     withRouter
 } from 'react-router-dom'
 
-import { setLoggedIn } from '../auth.js';
+import { setLoggedIn } from '../../auth.js';
 
-import Scolendar from '../scolendar';
+import Scolendar from '../../scolendar/src';
 
-class LoginForm extends React.Component {
+class Login extends React.Component {
 
     constructor(props) {
         super(props);
@@ -135,6 +135,4 @@ class LoginForm extends React.Component {
     }
 }
 
-let LoginFormWithRouter = withRouter(LoginForm);
-
-export { LoginFormWithRouter as LoginForm };
+export default withRouter(Login);

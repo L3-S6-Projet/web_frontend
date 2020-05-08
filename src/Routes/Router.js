@@ -7,15 +7,15 @@ import {
     Link
 } from "react-router-dom";
 
-import { LoginForm } from './Login.js';
+import Login from './Login/Login.js';
 import Home from './Home.js';
 import NotFound from './NotFound.js';
 import Logout from './Logout.js';
 import Teachers from './Teachers.js';
 import Teacher from './Teacher.js';
-import { GuardProvider, GuardedRoute } from 'react-router-guards';
-import {Splash} from "../Components/Splash"
+import Splash from "./Splash/Splash.js"
 
+import { GuardProvider, GuardedRoute } from 'react-router-guards';
 import { isLoggedIn } from '../auth.js';
 
 const requireLogin = (to, from, next) => {
@@ -48,7 +48,7 @@ export default class Router extends Component {
                             <Splash />
                         </GuardedRoute>
                         <GuardedRoute exact path="/login" meta={{ onlyLoggedOut: true }}>
-                            <LoginForm />
+                            <Login />
                         </GuardedRoute>
 
                         <GuardedRoute exact path="/logout" meta={{ auth: true }}>

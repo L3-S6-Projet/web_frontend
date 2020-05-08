@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { LoginForm, Splash } from './Components/Splash.js';
 import './App.css';
 import Router from './Routes/Router.js';
 
