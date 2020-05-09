@@ -8,10 +8,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Dialog from '@material-ui/core/Dialog';
 import Select from '@material-ui/core/Select';
+import TableFooter from '@material-ui/core/TableFooter';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import MenuItem from '@material-ui/core/MenuItem';
 import Fab from '@material-ui/core/Fab';
 import InputLabel from '@material-ui/core/InputLabel';
+import TablePagination from '@material-ui/core/TablePagination';
 import FormControl from '@material-ui/core/FormControl';
 import AddIcon from '@material-ui/icons/Add';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -42,7 +44,9 @@ export default class Teachers extends Component {
             lastName: null,
             email : null,
             phone : null,
-            grade : null
+            grade : null,
+            page : 0,
+            total: null
         };
 
         this.checkAll = this.checkAll.bind(this);
@@ -56,6 +60,12 @@ export default class Teachers extends Component {
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
         this.addTeacher = this.addTeacher.bind(this);
+        this.setPage = this.setPage.bind(this);
+    }
+
+    setPage(page){
+        this.setState({page : page});
+        this.loadData();
     }
 
     onNameChange(event){
@@ -96,15 +106,19 @@ export default class Teachers extends Component {
 
         var apiInstance = new Scolendar.TeacherApi();
 
-        var opts = {};
+        var opts = {
+            'page': +this.state.page+1
+        };
 
         var callback = (error, data, response) => {
             if (error) {
                 console.error(error);
             } else {
                 console.log('API called successfully. Returned data: ' + data);
+                window.data =data ;
                 this.setState({
                     teachers: data.teachers,
+                    total : data.total
                 })
                 this.setState({loaded: true})
             }
@@ -234,6 +248,7 @@ export default class Teachers extends Component {
             "phone_number": this.state.phone,
             "rank": this.state.grade
         }, callback);
+        this.loadData();
     }
 
     render() {
@@ -313,6 +328,15 @@ export default class Teachers extends Component {
                                 </TableRow>
                             ))}
                         </TableBody>
+                        <TableFooter>
+                            <TablePagination
+                            count ={this.state.total}
+                            page = {this.state.page}
+                            onChangePage={(event,page)=>{this.setPage(page)}}
+                            rowsPerPage = {10}
+                            rowsPerPageOptions={[]}
+                            />
+                        </TableFooter>
                     </Table>
                 </TableContainer>
                 <Fab id="add-button" aria-label="add" onClick={() => this.setAddOpen(true)}>
