@@ -37,3 +37,20 @@
     background: rgba(48, 63, 159, 0.4);
 }
 
+#add-button{
+    background: #FF9800;
+    color: #FAFAFA;
+    position: fixed;
+    right: 32px ;
+    bottom: 32px;
+}
+
+#add-dialog-form{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.add-field{
+    margin-bottom: 8px
+}

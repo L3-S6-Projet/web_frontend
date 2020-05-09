@@ -6,6 +6,19 @@ import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Dialog from '@material-ui/core/Dialog';
+import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import MenuItem from '@material-ui/core/MenuItem';
+import Fab from '@material-ui/core/Fab';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import AddIcon from '@material-ui/icons/Add';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import "./Teachers.css"
@@ -18,7 +31,14 @@ import Checkbox from '@material-ui/core/Checkbox';
 export default class Teachers extends Component {
     constructor(props) {
         super(props);
-        this.state = {teachers: [], loaded: false, checked: [], allChecked: false};
+        this.state = {
+            teachers: [],
+            loaded: false,
+            checked: [],
+            allChecked: false,
+            deleteOpen: false,
+            addOpen: false
+        };
 
         this.checkAll = this.checkAll.bind(this);
         this.isChecked = this.isChecked.bind(this);
@@ -28,6 +48,16 @@ export default class Teachers extends Component {
         this.checkAll = this.checkAll.bind(this);
         this.testIfAllChecked = this.testIfAllChecked.bind(this);
         this.deleteChecked = this.deleteChecked.bind(this);
+        this.setDeleteOpen = this.setDeleteOpen.bind(this);
+        this.setAddOpen = this.setAddOpen.bind(this);
+    }
+
+    setAddOpen(addOpen) {
+        this.setState({addOpen: addOpen})
+    }
+
+    setDeleteOpen(deleteOpen) {
+        this.setState({deleteOpen: deleteOpen})
     }
 
     componentDidMount() {
@@ -124,8 +154,7 @@ export default class Teachers extends Component {
         return true;
     }
 
-    //TODO : API request not correct
-    deleteChecked(){
+    deleteChecked() {
         var defaultClient = Scolendar.ApiClient.instance;
 
         var token = defaultClient.authentications['token'];
@@ -134,16 +163,22 @@ export default class Teachers extends Component {
 
         var apiInstance = new Scolendar.TeacherApi();
 
-        var iDRequest = new Scolendar.IDRequest().push(this.state.checked); // IDRequest |
 
-        var callback = function(error, data, response) {
+        var callback = function (error, data, response) {
             if (error) {
                 console.error(error);
             } else {
                 console.log('API called successfully. Returned data: ' + data);
             }
         };
-        apiInstance.teachersDelete(iDRequest, callback);
+        apiInstance.teachersDelete(this.state.checked, callback);
+        this.setState({checked: []})
+        this.loadData();
+    }
+
+    addTeacher(event){
+        event.preventDefault();
+        console.log(event);
     }
 
     render() {
@@ -158,7 +193,7 @@ export default class Teachers extends Component {
                     <div className="spacer"/>
                     <TextField label="Chercher par nom ..."
                                type="text"
-                               variant='outlined'
+                               variant='filled'
                                float="right"
                                InputProps={{
                                    endAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
@@ -166,13 +201,13 @@ export default class Teachers extends Component {
                     />
                 </div>
             );
-        }
-        else{
+        } else {
             head = (
                 <div id="selected-header">
-                    <div id="count-teachers">{this.state.checked.length} sélectionnés </div>
+                    <div id="count-teachers">{this.state.checked.length} sélectionnés</div>
                     <div className="spacer"/>
-                    <IconButton size="small" color="inherit" onClick={this.deleteChecked}><DeleteIcon/></IconButton>
+                    <IconButton size="small" color="inherit"
+                                onClick={() => this.setDeleteOpen(true)}><DeleteIcon/></IconButton>
                 </div>
             )
         }
@@ -224,6 +259,84 @@ export default class Teachers extends Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Fab id="add-button" aria-label="add" onClick={() => this.setAddOpen(true)}>
+                    <AddIcon/>
+                </Fab>
+                <Dialog
+                    open={this.state.deleteOpen}
+                    onClose={() => this.setDeleteOpen(false)}
+                >
+                    <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Voulez vous vraiment supprimer ces {this.state.checked.length} enseignants ? Cette action
+                            n’est pas réversible.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.setDeleteOpen(false)} color="primary">
+                            ANNULER
+                        </Button>
+                        <Button onClick={() => {
+                            this.deleteChecked();
+                            this.setDeleteOpen(false)
+                        }} color="primary" autoFocus>
+                            CONFIRMER
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog
+                    open={this.state.addOpen}
+                    onClose={() => this.setAddOpen(false)}
+                    id="add-dialog"
+                >
+                    <DialogTitle id="add-dialog-title">{"Nouvel enseignant"}</DialogTitle>
+                    <form onSubmit={this.addTeacher.bind(this)}>
+                        <DialogContent id="add-dialog-form">
+                            <TextField required label="Prénom"
+                                       type="text"
+                                       variant='filled'
+                                       className="add-field"
+                            />
+                            <TextField required label="Nom"
+                                       type="text"
+                                       variant='filled'
+                                       className="add-field"
+                            />
+                            <TextField label="Email"
+                                       type="email"
+                                       variant='filled'
+                                       className="add-field"
+                            />
+                            <TextField label="Numéro de téléphone"
+                                       type="tel"
+                                       variant='filled'
+                                       className="add-field"
+                            />
+                            <FormControl variant="filled"  required className="add-field">
+                                <InputLabel>Grade</InputLabel>
+                                <Select native required>
+                                    <option value="" aria-label="None" />
+                                    <option value={"MACO"}>MACO</option>
+                                    <option value={"PROF"}>PROF</option>
+                                    <option value={"PRAG"}>PRAG</option>
+                                    <option value={"ATER"}>ATER</option>
+                                    <option value={"PAST"}>PAST</option>
+                                    <option value={"MONI"}>MONI</option>
+                                </Select>
+                            </FormControl>
+
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => this.setAddOpen(false)} color="primary">
+                                ANNULER
+                            </Button>
+                            <Button type="submit" id="creation-button" color="primary" autoFocus>
+                                CRÉER
+                            </Button>
+                        </DialogActions>
+                    </form>
+                </Dialog>
             </div>
         );
     }
