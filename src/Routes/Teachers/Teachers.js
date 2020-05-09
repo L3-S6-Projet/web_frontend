@@ -37,7 +37,12 @@ export default class Teachers extends Component {
             checked: [],
             allChecked: false,
             deleteOpen: false,
-            addOpen: false
+            addOpen: false,
+            firstName :null,
+            lastName: null,
+            email : null,
+            phone : null,
+            grade : null
         };
 
         this.checkAll = this.checkAll.bind(this);
@@ -50,6 +55,23 @@ export default class Teachers extends Component {
         this.deleteChecked = this.deleteChecked.bind(this);
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
+        this.addTeacher = this.addTeacher.bind(this);
+    }
+
+    onNameChange(event){
+        this.setState({firstName : event.target.value})
+    }
+    onlastNameChange(event){
+        this.setState({lastName : event.target.value})
+    }
+    onEmailChange(event){
+        this.setState({email : event.target.value})
+    }
+    onPhoneChange(event){
+        this.setState({phone : event.target.value})
+    }
+    onGradeChange(event){
+        this.setState({grade : event.target.value})
     }
 
     setAddOpen(addOpen) {
@@ -178,7 +200,40 @@ export default class Teachers extends Component {
 
     addTeacher(event){
         event.preventDefault();
-        console.log(event);
+        this.setState({addOpen: false})
+
+
+        var defaultClient = Scolendar.ApiClient.instance;
+
+        var token = defaultClient.authentications['token'];
+        token.apiKey = getUser().token;
+        token.apiKeyPrefix = 'Bearer';
+
+        var apiInstance = new Scolendar.TeacherApi();
+
+        var teacherCreationRequest = new Scolendar.TeacherCreationRequest(); // TeacherCreationRequest |
+
+        teacherCreationRequest.firstName = this.state.firstName;
+        teacherCreationRequest.lastName= this.state.lastName;
+        teacherCreationRequest.phoneNumber = this.state.phone;
+        teacherCreationRequest.email= this.state.email;
+        teacherCreationRequest.rank = this.state.grade;
+        console.log(teacherCreationRequest)
+
+        var callback = function(error, data, response) {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log('API called successfully. Returned data: ' + data);
+            }
+        };
+        apiInstance.teachersPost({
+            "first_name": this.state.firstName,
+            "last_name": this.state.lastName,
+            "email": this.state.email,
+            "phone_number": this.state.phone,
+            "rank": this.state.grade
+        }, callback);
     }
 
     render() {
@@ -198,6 +253,7 @@ export default class Teachers extends Component {
                                InputProps={{
                                    endAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
                                }}
+                               className="field"
                     />
                 </div>
             );
@@ -296,26 +352,30 @@ export default class Teachers extends Component {
                             <TextField required label="Prénom"
                                        type="text"
                                        variant='filled'
-                                       className="add-field"
+                                       className="add field"
+                                       onChange={this.onNameChange.bind(this)}
                             />
                             <TextField required label="Nom"
                                        type="text"
                                        variant='filled'
-                                       className="add-field"
+                                       className="add field"
+                                       onChange={this.onlastNameChange.bind(this)}
                             />
                             <TextField label="Email"
                                        type="email"
                                        variant='filled'
-                                       className="add-field"
+                                       className="add field"
+                                       onChange={this.onEmailChange.bind(this)}
                             />
                             <TextField label="Numéro de téléphone"
                                        type="tel"
                                        variant='filled'
-                                       className="add-field"
+                                       className="add field"
+                                       onChange={this.onPhoneChange.bind(this)}
                             />
-                            <FormControl variant="filled"  required className="add-field">
+                            <FormControl variant="filled"  required className="add field">
                                 <InputLabel>Grade</InputLabel>
-                                <Select native required>
+                                <Select native required onChange={this.onGradeChange.bind(this)}>
                                     <option value="" aria-label="None" />
                                     <option value={"MACO"}>MACO</option>
                                     <option value={"PROF"}>PROF</option>

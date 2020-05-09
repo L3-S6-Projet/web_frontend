@@ -1,10 +1,10 @@
-#teachers{
+#teachers {
     display: flex;
     flex-direction: column;
     padding: 64px;
 }
 
-#title-teachers{
+#title-teachers {
     font-style: normal;
     font-weight: normal;
     font-size: 24px;
@@ -19,12 +19,12 @@
     mix-blend-mode: normal;;
 }
 
-#notseleted-header{
+#notseleted-header {
     display: flex;
     flex-direction: row;
 }
 
-#selected-header{
+#selected-header {
     display: flex;
     flex-direction: row;
     background: #303F9F;
@@ -33,24 +33,28 @@
     padding: 13px;
 }
 
-.row-selected{
+.row-selected {
     background: rgba(48, 63, 159, 0.4);
 }
 
-#add-button{
+#add-button {
     background: #FF9800;
     color: #FAFAFA;
     position: fixed;
-    right: 32px ;
+    right: 32px;
     bottom: 32px;
 }
 
-#add-dialog-form{
+#add-dialog-form {
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 24px;
 }
 
-.add-field{
-    margin-bottom: 8px
+.add.field {
+    margin-bottom: 36px !important;
+}
+
+.field {
+    width: 364px;
 }
