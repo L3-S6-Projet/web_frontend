@@ -19,8 +19,21 @@
     mix-blend-mode: normal;;
 }
 
-#title-and-textField{
+#notseleted-header{
     display: flex;
     flex-direction: row;
+}
+
+#selected-header{
+    display: flex;
+    flex-direction: row;
+    background: #303F9F;
+    font-size: 16px;
+    color: #FAFAFA;
+    padding: 13px;
+}
+
+.row-selected{
+    background: rgba(48, 63, 159, 0.4);
 }
 

@@ -4,7 +4,10 @@ import {TableContainer, Table, TableHead, TableRow, TableCell, TableBody} from '
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
+import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+import clsx from 'clsx';
 import "./Teachers.css"
 
 import Scolendar from '../../scolendar/src';
@@ -24,6 +27,7 @@ export default class Teachers extends Component {
         this.unCheckAll = this.unCheckAll.bind(this);
         this.checkAll = this.checkAll.bind(this);
         this.testIfAllChecked = this.testIfAllChecked.bind(this);
+        this.deleteChecked = this.deleteChecked.bind(this);
     }
 
     componentDidMount() {
@@ -65,24 +69,15 @@ export default class Teachers extends Component {
     }
 
     checkAll() {
-        let checked = [...this.state.checked];
-        this.state.teachers.forEach((teacher) => {
-            if (!this.isChecked(teacher.id))
-                checked.push(teacher.id)
-        })
-        this.setState({checked: checked})
-        this.setState({allChecked: true})
+        let toAdd = this.state.teachers.map(t => t.id).filter(id => !this.isChecked(id));
+        let checked = [...this.state.checked, ...toAdd];
+        this.setState({checked, allChecked: true});
     }
 
-    //TODO : Fix this function
     unCheckAll() {
-        let checked = [...this.state.checked];
-        for (const teacher of this.state.teachers) {
-            if (this.isChecked(teacher.id))
-                checked.splice(this.state.checked.indexOf(teacher.id), 1)
-        }
-        this.setState({checked: checked})
-        this.setState({allChecked: false})
+        let toRemove = this.state.teachers.map(t => t.id).filter(this.isChecked);
+        let checked = this.state.checked.filter(id => !toRemove.includes(id));
+        this.setState({checked, allChecked: false})
     }
 
     isChecked(id) {
@@ -104,7 +99,9 @@ export default class Teachers extends Component {
         let checked = [...this.state.checked];
         checked.push(id);
         this.setState({checked: checked})
-        setTimeout(()=>{this.setState({allChecked: this.testIfAllChecked()})},1);
+        setTimeout(() => {
+            this.setState({allChecked: this.testIfAllChecked()})
+        }, 1);
 
     }
 
@@ -118,7 +115,7 @@ export default class Teachers extends Component {
 
     testIfAllChecked() {
         for (const teacher of this.state.teachers) {
-            if (!this.isChecked(teacher.id)){
+            if (!this.isChecked(teacher.id)) {
                 console.log(this.state.checked)
                 console.log(teacher.id)
                 return false;
@@ -127,15 +124,38 @@ export default class Teachers extends Component {
         return true;
     }
 
+    //TODO : API request not correct
+    deleteChecked(){
+        var defaultClient = Scolendar.ApiClient.instance;
+
+        var token = defaultClient.authentications['token'];
+        token.apiKey = getUser().token;
+        token.apiKeyPrefix = 'Bearer';
+
+        var apiInstance = new Scolendar.TeacherApi();
+
+        var iDRequest = new Scolendar.IDRequest().push(this.state.checked); // IDRequest |
+
+        var callback = function(error, data, response) {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log('API called successfully. Returned data: ' + data);
+            }
+        };
+        apiInstance.teachersDelete(iDRequest, callback);
+    }
+
     render() {
         if (!this.state.loaded)
             return <Splash/>
         const rows = this.state.teachers;
-        return (
-            <div id="teachers">
-                <div id="title-and-textField">
+        let head;
+        if (this.state.checked.length === 0) {
+            head = (
+                <div id="notseleted-header">
                     <div id="title-teachers">Tous les enseignants</div>
-                    <div className="spacer"></div>
+                    <div className="spacer"/>
                     <TextField label="Chercher par nom ..."
                                type="text"
                                variant='outlined'
@@ -144,6 +164,22 @@ export default class Teachers extends Component {
                                    endAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
                                }}
                     />
+                </div>
+            );
+        }
+        else{
+            head = (
+                <div id="selected-header">
+                    <div id="count-teachers">{this.state.checked.length} sélectionnés </div>
+                    <div className="spacer"/>
+                    <IconButton size="small" color="inherit" onClick={this.deleteChecked}><DeleteIcon/></IconButton>
+                </div>
+            )
+        }
+        return (
+            <div id="teachers">
+                <div id="table-head">
+                    {head}
                 </div>
                 <TableContainer component={Paper}>
                     <Table>
@@ -165,7 +201,12 @@ export default class Teachers extends Component {
                         </TableHead>
                         <TableBody>
                             {rows.map((row) => (
-                                <TableRow key={row.id}>
+                                <TableRow key={row.id}
+                                          className={clsx(
+                                              {
+                                                  "row-selected": this.isChecked(row.id)
+                                              })
+                                          }>
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             onChange={event => this.callCheck(row.id)}
