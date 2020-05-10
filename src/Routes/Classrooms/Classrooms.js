@@ -7,12 +7,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import DeleteIcon from '@material-ui/icons/Delete';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Dialog from '@material-ui/core/Dialog';
-import Select from '@material-ui/core/Select';
 import TableFooter from '@material-ui/core/TableFooter';
 import Fab from '@material-ui/core/Fab';
-import InputLabel from '@material-ui/core/InputLabel';
 import TablePagination from '@material-ui/core/TablePagination';
-import FormControl from '@material-ui/core/FormControl';
 import AddIcon from '@material-ui/icons/Add';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
@@ -20,33 +17,29 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
+import Checkbox from '@material-ui/core/Checkbox';
 import clsx from 'clsx';
-import "./Teachers.css"
+import "./Classrooms.css"
 
 import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
-import Checkbox from '@material-ui/core/Checkbox';
 
-export default class Teachers extends Component {
+export default class Classrooms extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            teachers: [],
+        this.state= {
+            classrooms: [],
             loaded: false,
             checked: [],
             allChecked: false,
             deleteOpen: false,
             addOpen: false,
-            firstName :null,
-            lastName: null,
-            email : null,
-            phone : null,
-            grade : null,
+            name :null,
+            capacity: 0,
             page : 0,
             total: null
-        };
-
+        }
         this.checkAll = this.checkAll.bind(this);
         this.isChecked = this.isChecked.bind(this);
         this.check = this.check.bind(this);
@@ -57,9 +50,10 @@ export default class Teachers extends Component {
         this.deleteChecked = this.deleteChecked.bind(this);
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
-        this.addTeacher = this.addTeacher.bind(this);
+        this.addClassroom = this.addClassroom.bind(this);
         this.setPage = this.setPage.bind(this);
     }
+
 
     setPage(page){
         this.setState({page : page});
@@ -67,20 +61,12 @@ export default class Teachers extends Component {
     }
 
     onNameChange(event){
-        this.setState({firstName : event.target.value})
+        this.setState({name : event.target.value})
     }
-    onlastNameChange(event){
-        this.setState({lastName : event.target.value})
+    onCapacityChange(event){
+        this.setState({capacity : event.target.value})
     }
-    onEmailChange(event){
-        this.setState({email : event.target.value})
-    }
-    onPhoneChange(event){
-        this.setState({phone : event.target.value})
-    }
-    onGradeChange(event){
-        this.setState({grade : event.target.value})
-    }
+
 
     setAddOpen(addOpen) {
         this.setState({addOpen: addOpen})
@@ -94,34 +80,35 @@ export default class Teachers extends Component {
         this.loadData();
     }
 
-    // Load all teachers
+    // Load all classrooms
     loadData() {
         const defaultClient = Scolendar.ApiClient.instance;
-
         const token = defaultClient.authentications['token'];
         token.apiKey = getUser().token;
         token.apiKeyPrefix = 'Bearer';
 
-        const apiInstance = new Scolendar.TeacherApi();
+
+        const apiInstance = new Scolendar.ClassroomApi();
 
         const opts = {
-            'page': +this.state.page+1
+            'page': +this.state.page + 1
         };
 
         const callback = (error, data, response) => {
             if (error) {
                 console.error(error);
             } else {
-                console.log('API called successfully. Returned data: ' + data);
-                window.data =data ;
+
+                console.log('API called successfully. Returned data: ');
+                console.log(data.students);
                 this.setState({
-                    teachers: data.teachers,
-                    total : data.total
+                    classrooms: data.classrooms,
+                    total: data.total
                 })
                 this.setState({loaded: true})
             }
         };
-        apiInstance.teachersGet(opts, callback);
+        apiInstance.classroomsGet(opts, callback);
     }
 
     CallCheckAll() {
@@ -133,13 +120,13 @@ export default class Teachers extends Component {
     }
 
     checkAll() {
-        let toAdd = this.state.teachers.map(t => t.id).filter(id => !this.isChecked(id));
+        let toAdd = this.state.classrooms.map(t => t.id).filter(id => !this.isChecked(id));
         let checked = [...this.state.checked, ...toAdd];
         this.setState({checked, allChecked: true});
     }
 
     unCheckAll() {
-        let toRemove = this.state.teachers.map(t => t.id).filter(this.isChecked);
+        let toRemove = this.state.classrooms.map(t => t.id).filter(this.isChecked);
         let checked = this.state.checked.filter(id => !toRemove.includes(id));
         this.setState({checked, allChecked: false})
     }
@@ -178,10 +165,10 @@ export default class Teachers extends Component {
     }
 
     testIfAllChecked() {
-        for (const teacher of this.state.teachers) {
-            if (!this.isChecked(teacher.id)) {
+        for (const classroom of this.state.classrooms) {
+            if (!this.isChecked(classroom.id)) {
                 console.log(this.state.checked)
-                console.log(teacher.id)
+                console.log(classroom.id)
                 return false;
             }
         }
@@ -195,8 +182,7 @@ export default class Teachers extends Component {
         token.apiKey = getUser().token;
         token.apiKeyPrefix = 'Bearer';
 
-        const apiInstance = new Scolendar.TeacherApi();
-
+        const apiInstance = new Scolendar.ClassroomApi();
 
         const callback = function (error, data, response) {
             if (error) {
@@ -205,12 +191,12 @@ export default class Teachers extends Component {
                 console.log('API called successfully. Returned data: ' + data);
             }
         };
-        apiInstance.teachersDelete(this.state.checked, callback);
+        apiInstance.classroomsDelete(this.state.checked, callback);
         this.setState({checked: []})
         this.loadData();
     }
 
-    addTeacher(event){
+    addClassroom(event){
         event.preventDefault();
         this.setState({addOpen: false})
 
@@ -221,16 +207,13 @@ export default class Teachers extends Component {
         token.apiKey = getUser().token;
         token.apiKeyPrefix = 'Bearer';
 
-        const apiInstance = new Scolendar.TeacherApi();
+        const apiInstance = new Scolendar.ClassroomApi();
 
-        const teacherCreationRequest = new Scolendar.TeacherCreationRequest(); // TeacherCreationRequest |
+        const classroomCreationRequest = new Scolendar.ClassroomCreationRequest(); // ClassroomCreationRequest |
 
-        teacherCreationRequest.firstName = this.state.firstName;
-        teacherCreationRequest.lastName= this.state.lastName;
-        teacherCreationRequest.phoneNumber = this.state.phone;
-        teacherCreationRequest.email= this.state.email;
-        teacherCreationRequest.rank = this.state.grade;
-        console.log(teacherCreationRequest)
+        classroomCreationRequest.name = this.state.name;
+        classroomCreationRequest.capacity= this.state.capacity;
+        console.log(classroomCreationRequest)
 
         const callback = function(error, data, response) {
             if (error) {
@@ -239,12 +222,10 @@ export default class Teachers extends Component {
                 console.log('API called successfully. Returned data: ' + data);
             }
         };
-        apiInstance.teachersPost({
-            "first_name": this.state.firstName,
-            "last_name": this.state.lastName,
-            "email": this.state.email,
-            "phone_number": this.state.phone,
-            "rank": this.state.grade
+
+        apiInstance.classroomsPost({
+            "name": this.state.name,
+            "capacity": this.state.capacity,
         }, callback);
         this.loadData();
     }
@@ -252,12 +233,12 @@ export default class Teachers extends Component {
     render() {
         if (!this.state.loaded)
             return <Splash/>
-        const rows = this.state.teachers;
+        const rows = this.state.classrooms;
         let head;
         if (this.state.checked.length === 0) {
             head = (
                 <div id="notseleted-header">
-                    <div id="title-teachers">Tous les enseignants</div>
+                    <div id="title-classrooms">Toutes les salles</div>
                     <div className="spacer"/>
                     <TextField label="Chercher par nom ..."
                                type="text"
@@ -273,7 +254,7 @@ export default class Teachers extends Component {
         } else {
             head = (
                 <div id="selected-header">
-                    <div id="count-teachers">{this.state.checked.length} sélectionnés</div>
+                    <div id="count-classrooms">{this.state.checked.length} sélectionnés</div>
                     <div className="spacer"/>
                     <IconButton size="small" color="inherit"
                                 onClick={() => this.setDeleteOpen(true)}><DeleteIcon/></IconButton>
@@ -281,7 +262,7 @@ export default class Teachers extends Component {
             )
         }
         return (
-            <div id="teachers">
+            <div id="classrooms">
                 <div id="table-head">
                     {head}
                 </div>
@@ -297,10 +278,8 @@ export default class Teachers extends Component {
                                         }
                                     />
                                 </TableCell>
-                                <TableCell>Prénom</TableCell>
                                 <TableCell>Nom</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell>Numéro de téléphone</TableCell>
+                                <TableCell>Capacité</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -318,21 +297,19 @@ export default class Teachers extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.firstName}
+                                        {row.name}
                                     </TableCell>
-                                    <TableCell>{row.lastName}</TableCell>
-                                    <TableCell>{row.email}</TableCell>
-                                    <TableCell>{row.phoneNumber}</TableCell>
+                                    <TableCell>{row.capacity}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                         <TableFooter>
                             <TablePagination
-                            count ={this.state.total}
-                            page = {this.state.page}
-                            onChangePage={(event,page)=>{this.setPage(page)}}
-                            rowsPerPage = {10}
-                            rowsPerPageOptions={[]}
+                                count ={this.state.total}
+                                page = {this.state.page}
+                                onChangePage={(event,page)=>{this.setPage(page)}}
+                                rowsPerPage = {10}
+                                rowsPerPageOptions={[]}
                             />
                         </TableFooter>
                     </Table>
@@ -347,7 +324,7 @@ export default class Teachers extends Component {
                     <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Voulez vous vraiment supprimer ces {this.state.checked.length} enseignants ? Cette action
+                            Voulez vous vraiment supprimer ces {this.state.checked.length} salles ? Cette action
                             n’est pas réversible.
                         </DialogContentText>
                     </DialogContent>
@@ -368,45 +345,21 @@ export default class Teachers extends Component {
                     onClose={() => this.setAddOpen(false)}
                     id="add-dialog"
                 >
-                    <DialogTitle id="add-dialog-title">{"Nouvel enseignant"}</DialogTitle>
-                    <form onSubmit={this.addTeacher.bind(this)}>
+                    <DialogTitle id="add-dialog-title">{"Nouvelle salle"}</DialogTitle>
+                    <form onSubmit={this.addClassroom.bind(this)}>
                         <DialogContent id="add-dialog-form">
-                            <TextField required label="Prénom"
+                            <TextField required label="Nom"
                                        type="text"
                                        variant='filled'
                                        className="add field"
                                        onChange={this.onNameChange.bind(this)}
                             />
-                            <TextField required label="Nom"
+                            <TextField required label="Capacité"
                                        type="text"
                                        variant='filled'
                                        className="add field"
-                                       onChange={this.onlastNameChange.bind(this)}
+                                       onChange={this.onCapacityChange.bind(this)}
                             />
-                            <TextField label="Email"
-                                       type="email"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onEmailChange.bind(this)}
-                            />
-                            <TextField label="Numéro de téléphone"
-                                       type="tel"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onPhoneChange.bind(this)}
-                            />
-                            <FormControl variant="filled"  required className="add field">
-                                <InputLabel>Grade</InputLabel>
-                                <Select native required onChange={this.onGradeChange.bind(this)}>
-                                    <option value="" aria-label="None" />
-                                    <option value={"MACO"}>MACO</option>
-                                    <option value={"PROF"}>PROF</option>
-                                    <option value={"PRAG"}>PRAG</option>
-                                    <option value={"ATER"}>ATER</option>
-                                    <option value={"PAST"}>PAST</option>
-                                    <option value={"MONI"}>MONI</option>
-                                </Select>
-                            </FormControl>
 
                         </DialogContent>
                         <DialogActions>

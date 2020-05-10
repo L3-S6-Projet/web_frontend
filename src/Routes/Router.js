@@ -1,11 +1,6 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
-import {
-    BrowserRouter,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import {BrowserRouter, Switch} from "react-router-dom";
 
 import Login from './Login/Login.js';
 import Calendar from './Calendar.js';
@@ -14,7 +9,7 @@ import Logout from './Logout.js';
 import Teachers from './Teachers/Teachers.js';
 import Teacher from './Teacher.js';
 import Students from './Students/Students.js';
-import Classrooms from './Classrooms.js';
+import Classrooms from './Classrooms/Classrooms.js';
 import Classes from './Classes.js';
 import Subjects from './Subjects.js';
 import Settings from './Settings.js';
@@ -22,8 +17,8 @@ import Splash from "./Splash/Splash.js"
 
 import SidebarContainer from '../Components/SideBar/SideBar.js';
 
-import { GuardProvider, GuardedRoute } from 'react-router-guards';
-import { isLoggedIn } from '../auth.js';
+import {GuardedRoute, GuardProvider} from 'react-router-guards';
+import {isLoggedIn} from '../auth.js';
 
 const requireLogin = (to, from, next) => {
     const isProtected = to.meta.auth;
