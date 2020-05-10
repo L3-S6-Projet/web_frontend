@@ -11,7 +11,7 @@ import Teacher from './Teacher.js';
 import Students from './Students/Students.js';
 import Classrooms from './Classrooms/Classrooms.js';
 import Classes from './Classes.js';
-import Subjects from './Subjects.js';
+import Subjects from './Subjects/Subjects.js';
 import Settings from './Settings.js';
 import Splash from "./Splash/Splash.js"
 
