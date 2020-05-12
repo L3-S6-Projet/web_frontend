@@ -36,7 +36,7 @@ export default class Subjects extends Component {
             deleteOpen: false,
             addOpen: false,
             className :null,
-            name: 0,
+            name: null,
             prof : null,
             page : 0,
             total: null
@@ -211,10 +211,9 @@ export default class Subjects extends Component {
 
         var subjectCreationRequest = new Scolendar.Subject(); // Subject |
 
-        //TODO : faire des states et récup info
         subjectCreationRequest.name = this.state.name;
-        subjectCreationRequest.classId = this.state.classId; //TODO : récupere l'id à partir du nom de classe
-        subjectCreationRequest.teacherInChargeId = this.state.teacherInChargeId; //TODO : récupere l'id à partir du nom de prof
+        subjectCreationRequest.classId = this.state.classId; //TODO : récupere l'id à partir du nom de classe avec un autocomplete et /teacher dans Swagger
+        subjectCreationRequest.teacherInChargeId = this.state.teacherInChargeId; //TODO : récupere l'id à partir du nom de prof avec un autocomplete
 
         console.log(teacherCreationRequest)
 
@@ -227,8 +226,8 @@ export default class Subjects extends Component {
         };
         apiInstance.subjectsPost({
             "name": this.state.name,
-            "classId": this.state.classId,
-            "teacherInChargeId": this.state.teacherInChargeId,
+            "class_id": this.state.classId,
+            "teacher_in_charge_id": this.state.teacherInChargeId,
         }, callback);
         this.loadData();
     }
