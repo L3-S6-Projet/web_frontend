@@ -22,6 +22,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import debounce from "../../Utils/debounce-description"
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
+//import PopupState, {bindTrigger, bindPopover} from 'material-ui-popup-state';
 import "./Teachers.css"
 
 import Scolendar from '../../scolendar/src';
@@ -39,14 +42,19 @@ export default class Teachers extends Component {
             allChecked: false,
             deleteOpen: false,
             addOpen: false,
-            firstName :null,
+            successOpen: false,
+            firstName: null,
             lastName: null,
-            email : null,
-            phone : null,
-            grade : null,
-            page : 1,
+            email: null,
+            phone: null,
+            grade: null,
+            page: 1,
             total: null,
-            query : null
+            query: null,
+            popOverOpen: false,
+            popOverText: null,
+            newPassword: null,
+            newUsername: null
         };
 
         this.checkAll = this.checkAll.bind(this);
@@ -62,34 +70,70 @@ export default class Teachers extends Component {
         this.addTeacher = this.addTeacher.bind(this);
         this.setPage = this.setPage.bind(this);
         this.onQueryChange = this.onQueryChange.bind(this);
+        this.setPopOverOpen = this.setPopOverOpen.bind(this);
+        this.setPopOverText = this.setPopOverText.bind(this);
+        this.setSuccessOpen = this.setSuccessOpen.bind(this);
+        this.setNewPassword = this.setNewPassword.bind(this);
+        this.setNewUsername = this.setNewUsername.bind(this)
     }
 
-    setPage(page){
-        this.setState({page : page});
-        setTimeout(()=>this.loadData(),200);
+    setNewPassword(newPassword) {
+        this.setState({newPassword: newPassword})
     }
 
-    onQueryChange(event){
-        this.setState({query : event.target.value})
+    setNewUsername(newUsername) {
+        this.setState({newUsername: newUsername})
+    }
+
+    setSuccessOpen(successOpen) {
+        this.setState({successOpen: successOpen})
+        if (!successOpen) {
+            this.setState({
+                newPassword: null,
+                newUsername: null
+            })
+        }
+    }
+
+    setPopOverText(text) {
+        this.setState({popOverText: text})
+    }
+
+    setPopOverOpen(popOverOpen) {
+        this.setState({popOverOpen: popOverOpen})
+    }
+
+    setPage(page) {
+        this.setState({page: page});
+        setTimeout(() => this.loadData(), 200);
+    }
+
+    onQueryChange(event) {
+        this.setState({query: event.target.value})
         let immediate = false
-        if(event.target.value === "")
+        if (event.target.value === "")
             immediate = true;
-        debounce(this.loadData(),200,false)
+        debounce(this.loadData(), 200, false)
     }
-    onNameChange(event){
-        this.setState({firstName : event.target.value})
+
+    onNameChange(event) {
+        this.setState({firstName: event.target.value})
     }
-    onlastNameChange(event){
-        this.setState({lastName : event.target.value})
+
+    onlastNameChange(event) {
+        this.setState({lastName: event.target.value})
     }
-    onEmailChange(event){
-        this.setState({email : event.target.value})
+
+    onEmailChange(event) {
+        this.setState({email: event.target.value})
     }
-    onPhoneChange(event){
-        this.setState({phone : event.target.value})
+
+    onPhoneChange(event) {
+        this.setState({phone: event.target.value})
     }
-    onGradeChange(event){
-        this.setState({grade : event.target.value})
+
+    onGradeChange(event) {
+        this.setState({grade: event.target.value})
     }
 
     setAddOpen(addOpen) {
@@ -104,7 +148,7 @@ export default class Teachers extends Component {
         this.loadData();
     }
 
-    // Load all teachers
+// Load all teachers
     loadData() {
         const defaultClient = Scolendar.ApiClient.instance;
 
@@ -116,20 +160,20 @@ export default class Teachers extends Component {
 
         const opts = {
             'page': this.state.page,
-            'query' : this.state.query
+            'query': this.state.query
         };
 
-        console.log(opts)
+        //console.log(opts)
 
         const callback = (error, data, response) => {
             if (error) {
                 console.error(error);
             } else {
                 console.log('API called successfully. Returned data: ' + data);
-                window.data =data ;
+                window.data = data;
                 this.setState({
                     teachers: data.teachers,
-                    total : data.total
+                    total: data.total
                 })
                 this.setState({loaded: true})
             }
@@ -219,11 +263,10 @@ export default class Teachers extends Component {
             }
         };
         apiInstance.teachersDelete(this.state.checked, callback);
-        this.setState({checked: []})
         this.loadData();
     }
 
-    addTeacher(event){
+    addTeacher(event) {
         event.preventDefault();
         this.setState({addOpen: false})
 
@@ -239,17 +282,24 @@ export default class Teachers extends Component {
         const teacherCreationRequest = new Scolendar.TeacherCreationRequest(); // TeacherCreationRequest |
 
         teacherCreationRequest.firstName = this.state.firstName;
-        teacherCreationRequest.lastName= this.state.lastName;
+        teacherCreationRequest.lastName = this.state.lastName;
         teacherCreationRequest.phoneNumber = this.state.phone;
-        teacherCreationRequest.email= this.state.email;
+        teacherCreationRequest.email = this.state.email;
         teacherCreationRequest.rank = this.state.grade;
-        console.log(teacherCreationRequest)
+        //console.log(teacherCreationRequest)
 
-        const callback = function(error, data, response) {
+
+        const callback = (error, data, response) => {
             if (error) {
                 console.error(error);
             } else {
-                console.log('API called successfully. Returned data: ' + data);
+                console.log('Teacher added successfully. Returned data: ');
+                console.log(data)
+                this.setState({
+                    newPassword: data.password,
+                    newUsername: data.username,
+                    successOpen: true
+                })
             }
         };
         apiInstance.teachersPost({
@@ -259,7 +309,6 @@ export default class Teachers extends Component {
             "phone_number": this.state.phone,
             "rank": this.state.grade
         }, callback);
-        this.loadData();
     }
 
     render() {
@@ -342,18 +391,18 @@ export default class Teachers extends Component {
                         </TableBody>
                         <TableFooter>
                             <TablePagination
-                            count ={this.state.total}
-                            page = {this.state.page}
-                            onChangePage={(event,page)=>{this.setPage(page)}}
-                            rowsPerPage = {10}
-                            rowsPerPageOptions={[]}
+                                count={this.state.total}
+                                page={this.state.page}
+                                onChangePage={(event, page) => {
+                                    this.setPage(page)
+                                }}
+                                rowsPerPage={10}
+                                rowsPerPageOptions={[]}
                             />
                         </TableFooter>
                     </Table>
                 </TableContainer>
-                <Fab id="add-button" aria-label="add" onClick={() => this.setAddOpen(true)}>
-                    <AddIcon/>
-                </Fab>
+
                 <Dialog
                     open={this.state.deleteOpen}
                     onClose={() => this.setDeleteOpen(false)}
@@ -409,10 +458,10 @@ export default class Teachers extends Component {
                                        className="add field"
                                        onChange={this.onPhoneChange.bind(this)}
                             />
-                            <FormControl variant="filled"  required className="add field">
+                            <FormControl variant="filled" required className="add field">
                                 <InputLabel>Grade</InputLabel>
                                 <Select native required onChange={this.onGradeChange.bind(this)}>
-                                    <option value="" aria-label="None" />
+                                    <option value="" aria-label="None"/>
                                     <option value={"MACO"}>MACO</option>
                                     <option value={"PROF"}>PROF</option>
                                     <option value={"PRAG"}>PRAG</option>
@@ -433,6 +482,28 @@ export default class Teachers extends Component {
                         </DialogActions>
                     </form>
                 </Dialog>
+                <Dialog
+                    open={this.state.successOpen}
+                    onClose={() => this.setSuccessOpen(false)}
+                >
+                    <DialogTitle id="alert-dialog-title">{"Succès"}</DialogTitle>
+                    <DialogContent>
+                            Veuillez transmettre les informations suivantes : <br/>
+                            Nom d’utilisateur : {this.state.newUsername} <br/>
+                            Mot de passe : {this.state.newPassword}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.setSuccessOpen(false)} color="primary">
+                            OK
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Fab id="add-button" aria-label="add" onClick={() => this.setAddOpen(true)}>
+                    <AddIcon/>
+                </Fab>
+                <Popover open={this.state.popOverOpen}>
+                    {this.state.popOverText}
+                </Popover>
             </div>
         );
     }
