@@ -12,7 +12,7 @@ import Students from './Students/Students.js';
 import Classrooms from './Classrooms/Classrooms.js';
 import Classes from './Classes.js';
 import Subjects from './Subjects/Subjects.js';
-import Settings from './Settings.js';
+import Settings from './Settings/Settings.js';
 import Splash from "./Splash/Splash.js"
 
 import SidebarContainer from '../Components/SideBar/SideBar.js';
