@@ -21,6 +21,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
+import debounce from "../../Utils/debounce-description"
 import "./Teachers.css"
 
 import Scolendar from '../../scolendar/src';
@@ -43,8 +44,9 @@ export default class Teachers extends Component {
             email : null,
             phone : null,
             grade : null,
-            page : 0,
-            total: null
+            page : 1,
+            total: null,
+            query : null
         };
 
         this.checkAll = this.checkAll.bind(this);
@@ -59,13 +61,21 @@ export default class Teachers extends Component {
         this.setAddOpen = this.setAddOpen.bind(this);
         this.addTeacher = this.addTeacher.bind(this);
         this.setPage = this.setPage.bind(this);
+        this.onQueryChange = this.onQueryChange.bind(this);
     }
 
     setPage(page){
         this.setState({page : page});
-        this.loadData();
+        setTimeout(()=>this.loadData(),200);
     }
 
+    onQueryChange(event){
+        this.setState({query : event.target.value})
+        let immediate = false
+        if(event.target.value === "")
+            immediate = true;
+        debounce(this.loadData(),200,false)
+    }
     onNameChange(event){
         this.setState({firstName : event.target.value})
     }
@@ -105,8 +115,11 @@ export default class Teachers extends Component {
         const apiInstance = new Scolendar.TeacherApi();
 
         const opts = {
-            'page': +this.state.page+1
+            'page': this.state.page,
+            'query' : this.state.query
         };
+
+        console.log(opts)
 
         const callback = (error, data, response) => {
             if (error) {
@@ -263,8 +276,9 @@ export default class Teachers extends Component {
                                type="text"
                                variant='filled'
                                float="right"
+                               onChange={this.onQueryChange.bind(this)}
                                InputProps={{
-                                   endAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
+                                   endAdornment: <InputAdornment position="end"><SearchIcon/></InputAdornment>,
                                }}
                                className="field"
                     />
