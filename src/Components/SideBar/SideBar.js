@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Link, NavLink, withRouter} from "react-router-dom";
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import HomeIcon from '@material-ui/icons/Home';
 import Person from '@material-ui/icons/Person';
 import LocationOn from '@material-ui/icons/LocationOn';
 import List from '@material-ui/icons/List';
@@ -75,8 +76,8 @@ class Sidebar extends Component {
         }
         else sidebar = (
             <nav id="sidebar-nav">
-                <NavLink exact className="link" activeClassName="active" to="/"><CalendarToday className="icon" />Home</NavLink>
-                <NavLink className="link" activeClassName="active" to="/teachers"><AccountCircle className="icon" />Emploi du temps</NavLink>
+                <NavLink exact className="link" activeClassName="active" to="/"><HomeIcon className="icon" />Home</NavLink>
+                <NavLink className="link" activeClassName="active" to="/teachers"><CalendarToday className="icon" />Emploi du temps</NavLink>
                 <NavLink className="link" activeClassName="active" to="/subjects"><LibraryBooks className="icon" />Unités d&apos;enseignement</NavLink>
                 <NavLink className="link" activeClassName="active" to="/settings"><Settings className="icon" />Paramètres</NavLink>
                 <Link className="link" to="/logout"><ExitToApp className="icon" />Déconnexion</Link>
