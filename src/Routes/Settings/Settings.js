@@ -6,6 +6,8 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Button from "@material-ui/core/Button";
 
+import "./Settings.css"
+
 export default class Settings extends Component {
     constructor(props) {
         super(props);
@@ -57,6 +59,11 @@ export default class Settings extends Component {
     render() {
         return (
             <div id='settings-page'>
+                <div id='settings-column'>
+                    <div className="spacer"></div>
+                    TODO : Mettre ça pour les Étudiants et les Prof et non pas les Admins
+
+                    <div id='title'>Changer mon mot de passe :</div>
                     <form onSubmit={this.onSubmit.bind(this)}>
                         <TextField variant="filled"
                                    label="Votre ancien mot de passe"
@@ -94,15 +101,16 @@ export default class Settings extends Component {
                                    margin="normal"
                                    size="small"
                                    fullWidth={true}
+                                   autoFocus
                                    onChange={this.onNewPasswordChange.bind(this)}
-                                   value={this.state.password || ''}
+                                   value={this.state.newPassword || ''}
                                    InputProps={{
                                        endAdornment: <InputAdornment position="end">
                                            <IconButton
                                                aria-label="toggle password visibility"
                                                onClick={this.handleClickShowNewPassword.bind(this)}
                                                onMouseDown={
-                                                   this.handleMouseDownPassword.bind(this)
+                                                   this.handleClickShowNewPassword.bind(this)
                                                }
                                                edge="end"
                                            >
@@ -110,19 +118,25 @@ export default class Settings extends Component {
                                            </IconButton>
                                        </InputAdornment>,
                                    }}
-                        />
 
-                        <div id="controls">
-                            <Button
-                                type="submit"
-                                disabled={this.state.loading}
-                                id="login-button"
-                                variant="contained">
-                                Sauver
-                            </Button>
+                        />
+                        <div className="container">
+                            <div id="controls">
+                                <Button
+                                    type="submit"
+                                    disabled={this.state.loading}
+                                    id='settings-button'
+                                    variant="contained">
+                                    Valider
+                                </Button>
+                            </div>
                         </div>
-                   </form>
+                    </form>
+                    <div className="spacer"></div>
+                </div>
             </div>
         );
     }
 }
+
+
