@@ -23,6 +23,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
 
 export default class Students extends Component {
     constructor(props) {
@@ -387,12 +390,14 @@ export default class Students extends Component {
                                        className="add field"
                                        onChange={this.onLastNameChange.bind(this)}
                             />
-                            <TextField required label="Classe"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onClassChange.bind(this)}
-                            />
+                            <FormControl variant="filled"  required className="add field">
+                                <InputLabel>Classe</InputLabel>
+                                <Select native required onChange={this.onClassChange.bind(this)}>
+                                    <option value="" aria-label="None" />
+                                    <option value={"ID_Info_L3"}>L3 Informatique</option>
+                                    <option value={"ID_Info_M1"}>M1 Informatique</option>
+                                </Select>
+                            </FormControl>
                         </DialogContent>
 
                         <DialogActions>
