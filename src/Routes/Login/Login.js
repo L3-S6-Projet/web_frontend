@@ -2,12 +2,14 @@ import React from "react";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import "./Login.css"
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-import {
-    withRouter
-} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 
-import { setLoggedIn } from '../../auth.js';
+import {setLoggedIn} from '../../auth.js';
 
 import Scolendar from '../../scolendar/src';
 
@@ -24,6 +26,7 @@ class Login extends React.Component {
             usernameError: null,
             password: null,
             passwordError: null,
+            showPassword: false,
         };
     }
 
@@ -66,8 +69,9 @@ class Login extends React.Component {
         });
     }
 
+
     handleError(errorMessage) {
-        this.setState({ errorMessage, password: '' });
+        this.setState({errorMessage, password: ''});
     }
 
     handleSuccess(data) {
@@ -76,6 +80,17 @@ class Login extends React.Component {
         // eslint-disable-next-line
         this.props.history.push('/');
     }
+
+    handleClickShowPassword() {
+        this.setState({
+            showPassword: this.showPassword = !this.showPassword
+        });
+    };
+
+    handleMouseDownPassword(event) {
+        event.preventDefault();
+    };
+
 
     onUsernameChange(event) {
         this.setState({
@@ -109,7 +124,7 @@ class Login extends React.Component {
             valid = false;
         }
 
-        this.setState({ showEmptyErrors, usernameError, passwordError });
+        this.setState({showEmptyErrors, usernameError, passwordError});
         return valid;
     }
 
@@ -120,6 +135,7 @@ class Login extends React.Component {
     passwordFilled() {
         return this.state.password !== null;
     }
+
 
     render() {
         let errorMessage = null;
@@ -142,30 +158,45 @@ class Login extends React.Component {
                         {errorMessage}
 
                         <TextField variant="filled"
-                            label="Nom d'utilisateur *"
-                            disabled={this.state.loading}
-                            size="small"
-                            fullWidth={true}
-                            error={this.state.errorMessage !== null || this.state.usernameError !== null}
-                            helperText={this.state.usernameError}
-                            onBlur={e => this.validate(this.state.showEmptyErrors)}
-                            autoFocus
-                            onChange={this.onUsernameChange.bind(this)}
-                            value={this.state.username || ''} />
+                                   label="Nom d'utilisateur *"
+                                   disabled={this.state.loading}
+                                   size="small"
+                                   fullWidth={true}
+                                   error={this.state.errorMessage !== null || this.state.usernameError !== null}
+                                   helperText={this.state.usernameError}
+                                   onBlur={e => this.validate(this.state.showEmptyErrors)}
+                                   autoFocus
+                                   onChange={this.onUsernameChange.bind(this)}
+                                   value={this.state.username || ''}/>
 
                         <TextField variant="filled"
-                            label="Mot de Passe *"
-                            type="password"
-                            autoComplete="current-password"
-                            disabled={this.state.loading}
-                            margin="normal"
-                            size="small"
-                            fullWidth={true}
-                            error={this.state.errorMessage !== null || this.state.passwordError !== null}
-                            helperText={this.state.passwordError}
-                            onBlur={e => this.validate(this.state.showEmptyErrors)}
-                            onChange={this.onPasswordChange.bind(this)}
-                            value={this.state.password || ''} />
+                                   label="Mot de Passe *"
+                                   type={this.state.showPassword ? 'text' : 'password'}
+                                   autoComplete="current-password"
+                                   disabled={this.state.loading}
+                                   margin="normal"
+                                   size="small"
+                                   fullWidth={true}
+                                   error={this.state.errorMessage !== null || this.state.passwordError !== null}
+                                   helperText={this.state.passwordError}
+                                   onBlur={e => this.validate(this.state.showEmptyErrors)}
+                                   onChange={this.onPasswordChange.bind(this)}
+                                   value={this.state.password || ''}
+                                   InputProps={{
+                                       endAdornment: <InputAdornment position="end">
+                                           <IconButton
+                                               aria-label="toggle password visibility"
+                                               onClick={this.handleClickShowPassword.bind(this)}
+                                               onMouseDown={
+                                                   this.handleMouseDownPassword.bind(this)
+                                               }
+                                               edge="end"
+                                           >
+                                               {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                           </IconButton>
+                                       </InputAdornment>,
+                                   }}
+                        />
 
                         <div id="controls">
                             <Button
@@ -183,10 +214,10 @@ class Login extends React.Component {
                     <div className="spacer"></div>
 
                     <div id='footer'>En se connectant, vous acceptez les <a href="#">termes et conditions</a>.
-                        <br /> © Scolendar 2020 - Tous droits réservés
+                        <br/> © Scolendar 2020 - Tous droits réservés
                     </div>
                 </div>
-            </div >
+            </div>
         );
     }
 }
