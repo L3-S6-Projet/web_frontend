@@ -50,8 +50,8 @@ export default class Classrooms extends Component {
         this.deleteChecked = this.deleteChecked.bind(this);
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
-        this.addClassroom = this.addClassroom.bind(this);
         this.setPage = this.setPage.bind(this);
+        this.addClassroom = this.addClassroom.bind(this);
     }
 
 
@@ -66,7 +66,6 @@ export default class Classrooms extends Component {
     onCapacityChange(event){
         this.setState({capacity : event.target.value})
     }
-
 
     setAddOpen(addOpen) {
         this.setState({addOpen: addOpen})
@@ -346,7 +345,7 @@ export default class Classrooms extends Component {
                     id="add-dialog"
                 >
                     <DialogTitle id="add-dialog-title">{"Nouvelle salle"}</DialogTitle>
-                    <form onSubmit={this.addClassroom.bind(this)}>
+                    <form onSubmit={this.addClassroom}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Nom"
                                        type="text"

@@ -51,8 +51,8 @@ export default class Subjects extends Component {
         this.deleteChecked = this.deleteChecked.bind(this);
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
-        this.addSubject = this.addSubject.bind(this);
         this.setPage = this.setPage.bind(this);
+        this.addSubject = this.addSubject.bind(this);
     }
 
 
@@ -238,7 +238,6 @@ export default class Subjects extends Component {
         const rows = this.state.subjects;
         let head;
         if (this.state.checked.length === 0) {
-            //TODO
             head = (
                 <div id="notseleted-header">
                     <div id="title-subjects">Toutes les unités d&apos;enseignement</div>
@@ -349,7 +348,7 @@ export default class Subjects extends Component {
                     id="add-dialog"
                 >
                     <DialogTitle id="add-dialog-title">{"Nouvelle unité d'enseignement"}</DialogTitle>
-                    <form onSubmit={this.addSubject.bind(this)}>
+                    <form onSubmit={this.addSubject}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Nom"
                                        type="text"

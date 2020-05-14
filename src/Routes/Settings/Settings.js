@@ -30,6 +30,9 @@ export default class Settings extends Component {
             passwordChangeOpen : false,
             deleteDataOpen : false
         };
+
+        this.changePassword = this.changePassword.bind(this);
+        this.deleteData = this.deleteData.bind(this);
     }
 
     handleClickShowOldPassword() {
@@ -78,7 +81,7 @@ export default class Settings extends Component {
                     <div className="spacer"></div>
 
                     <div id='title'>Changer mon mot de passe :</div>
-                    <form onSubmit={this.changePassword.bind(this)}>
+                    <form onSubmit={this.changePassword}>
                         <TextField variant="filled"
                                    label="Votre ancien mot de passe"
                                    type={this.state.showOldPassword ? 'text' : 'password'}
@@ -205,7 +208,7 @@ export default class Settings extends Component {
                     id="add-dialog"
                 >
                     <DialogTitle id="add-dialog-title">{"Changement de mot de passe"}</DialogTitle>
-                    <form onSubmit={this.changePassword.bind(this)}>
+                    <form onSubmit={this.changePassword}>
                         <TextField variant="filled"
                                    label="Votre ancien mot de passe"
                                    type={this.state.showOldPassword ? 'text' : 'password'}

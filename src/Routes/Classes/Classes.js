@@ -26,6 +26,7 @@ import Splash from "../Splash/Splash";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
+import "./Classrooms.css"
 
 export default class Classes extends Component {
     constructor(props) {
@@ -53,6 +54,7 @@ export default class Classes extends Component {
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
         this.setPage = this.setPage.bind(this);
+        this.addClass = this.addClass.bind(this);
     }
 
 
@@ -81,7 +83,7 @@ export default class Classes extends Component {
         this.loadData();
     }
 
-    // Load all classrooms
+    // Load all classes
     loadData() {
         const defaultClient = Scolendar.ApiClient.instance;
         const token = defaultClient.authentications['token'];
@@ -165,10 +167,10 @@ export default class Classes extends Component {
     }
 
     testIfAllChecked() {
-        for (const classroom of this.state.classes) {
-            if (!this.isChecked(classroom.id)) {
+        for (const oneClass of this.state.classes) {
+            if (!this.isChecked(oneClass.id)) {
                 console.log(this.state.checked)
-                console.log(classroom.id)
+                console.log(oneClass.id)
                 return false;
             }
         }
@@ -196,7 +198,7 @@ export default class Classes extends Component {
         this.loadData();
     }
 
-    addClassroom(event){
+    addClass(event){
         event.preventDefault();
         this.setState({addOpen: false})
 
@@ -239,7 +241,7 @@ export default class Classes extends Component {
         if (this.state.checked.length === 0) {
             head = (
                 <div id="notseleted-header">
-                    <div id="title-classrooms">Toutes les classes</div>
+                    <div id="title-classes">Toutes les classes</div>
                     <div className="spacer"/>
                     <TextField label="Chercher par nom ..."
                                type="text"
@@ -263,7 +265,7 @@ export default class Classes extends Component {
             )
         }
         return (
-            <div id="classrooms">
+            <div id="classes">
                 <div id="table-head">
                     {head}
                 </div>
@@ -280,7 +282,7 @@ export default class Classes extends Component {
                                     />
                                 </TableCell>
                                 <TableCell>Nom</TableCell>
-                                <TableCell>Level</TableCell>
+                                <TableCell>Niveau</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -347,7 +349,7 @@ export default class Classes extends Component {
                     id="add-dialog"
                 >
                     <DialogTitle id="add-dialog-title">{"Nouvelle classe"}</DialogTitle>
-                    <form onSubmit={this.addClassroom.bind(this)}>
+                    <form onSubmit={this.addClass}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Nom"
                                        type="text"

@@ -55,9 +55,9 @@ export default class Students extends Component {
         this.deleteChecked = this.deleteChecked.bind(this);
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
-        this.addStudent = this.addStudent.bind(this);
         this.setPage = this.setPage.bind(this);
         this.setStudentCreated = this.setStudentCreated.bind(this);
+        this.addStudent = this.addStudent.bind(this);
 
     }
 
@@ -376,7 +376,7 @@ export default class Students extends Component {
                     id="add-dialog"
                 >
                     <DialogTitle id="add-dialog-title">{"Nouvel Etudiant"}</DialogTitle>
-                    <form onSubmit={this.addStudent.bind(this)}>
+                    <form onSubmit={this.addStudent}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Prénom"
                                        type="text"
