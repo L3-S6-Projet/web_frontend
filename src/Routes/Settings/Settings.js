@@ -14,6 +14,8 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import DialogContentText from "@material-ui/core/DialogContentText";
+import {getUser} from "../../auth";
+import Scolendar from '../../scolendar/src';
 
 
 export default class Settings extends Component {
@@ -26,7 +28,7 @@ export default class Settings extends Component {
             showOldPassword: false,
             showNewPassword: false,
             passwordChangeOpen : false,
-            deleteDateOpen : false
+            deleteDataOpen : false
         };
     }
 
@@ -50,12 +52,14 @@ export default class Settings extends Component {
         this.setState({
             oldPassword: event.target.value,
         })
+        console.log('OlPass'+ this.state.oldPassword)
     }
 
     onNewPasswordChange(event) {
         this.setState({
             newPassword: event.target.value,
         })
+        console.log('NewPass' + this.state.newPassword)
     }
 
     setPasswordChangeOpen(boolean){
@@ -85,7 +89,7 @@ export default class Settings extends Component {
                                    fullWidth={true}
                                    autoFocus
                                    onChange={this.onOldPasswordChange.bind(this)}
-                                   value={this.state.oldPassword || ''}
+                                   value={this.state.oldPassword}
                                    InputProps={{
                                        endAdornment: <InputAdornment position="end">
                                            <IconButton
@@ -113,7 +117,7 @@ export default class Settings extends Component {
                                    fullWidth={true}
                                    autoFocus
                                    onChange={this.onNewPasswordChange.bind(this)}
-                                   value={this.state.newPassword || ''}
+                                   value={this.state.newPassword}
                                    InputProps={{
                                        endAdornment: <InputAdornment position="end">
                                            <IconButton
@@ -148,9 +152,34 @@ export default class Settings extends Component {
         )
     }
 
-    //TODO : Utiliser l'API pour changement de mdp + vérif de l'ancien mdp
+    //TODO : Ne marche pas (pas de problème en utilisant Swagger mais le code ne marche pas, peut-être mauvais appel ?)
     changePassword(){
-        alert('Le mot de passe a été changé');
+        const defaultClient = Scolendar.ApiClient.instance;
+
+        const token = defaultClient.authentications['token'];
+        token.apiKey = getUser().token;
+        token.apiKeyPrefix = 'Bearer';
+
+        const apiInstance = new Scolendar.ProfileApi();
+
+        const profileUpdateRequest = new Scolendar.ProfileUpdateRequest(); // ProfileUpdateRequest |
+
+        profileUpdateRequest.oldPassword = this.state.oldPassword;
+        profileUpdateRequest.password= this.state.newPassword;
+        console.log(profileUpdateRequest)
+
+        const callback = function(error, data, response) {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log('API called successfully. Returned data: ' + data);
+            }
+        };
+
+        apiInstance.profilePut( {
+            "old_password": this.state.oldPassword,
+            "password": this.state.newPassword,
+        }, callback);
     }
 
     //TODO : Reset entièrement les données du serveur via API
@@ -214,7 +243,7 @@ export default class Settings extends Component {
                                    fullWidth={true}
                                    autoFocus
                                    onChange={this.onNewPasswordChange.bind(this)}
-                                   value={this.state.newPassword || ''}
+                                   value={this.state.newPassword}
                                    InputProps={{
                                        endAdornment: <InputAdornment position="end">
                                            <IconButton
@@ -241,17 +270,16 @@ export default class Settings extends Component {
                         </DialogActions>
                     </form>
                 </Dialog>
-
-
                 <Dialog
                     open={this.state.deleteDataOpen}
                     onClose={() => this.setDeleteDataOpen(false)}
-                >
+                    id="add-dialog"
+                 >
                     <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            <p>Voulez vous vraiment supprimer toutes les données ?</p>
-                            <p> Cette action n’est pas réversible.</p>
+                            Voulez vous vraiment supprimer toutes les données ?
+                            Cette action n’est pas réversible.
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -266,6 +294,9 @@ export default class Settings extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
+
+
+
             </div>
         );
     }

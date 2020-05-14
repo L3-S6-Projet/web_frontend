@@ -10,7 +10,7 @@ import Teachers from './Teachers/Teachers.js';
 import Teacher from './Teacher.js';
 import Students from './Students/Students.js';
 import Classrooms from './Classrooms/Classrooms.js';
-import Classes from './Classes.js';
+import Classes from './Classes/Classes.js';
 import Subjects from './Subjects/Subjects.js';
 import Settings from './Settings/Settings.js';
 import Splash from "./Splash/Splash.js"
