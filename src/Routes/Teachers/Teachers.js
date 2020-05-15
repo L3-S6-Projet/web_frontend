@@ -271,6 +271,7 @@ export class Teachers extends Component {
             }
         };
         apiInstance.teachersDelete(this.state.checked, callback);
+        this.setState({checked : []})
         this.loadData();
     }
 
