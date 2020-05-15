@@ -31,8 +31,9 @@ import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
 import Checkbox from '@material-ui/core/Checkbox';
+import {withRouter} from "react-router-dom";
 
-export default class Teachers extends Component {
+export class Teachers extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -67,8 +68,8 @@ export default class Teachers extends Component {
         this.deleteChecked = this.deleteChecked.bind(this);
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
-        this.addTeacher = this.addTeacher.bind(this);
         this.setPage = this.setPage.bind(this);
+        this.addTeacher = this.addTeacher.bind(this);
         this.onQueryChange = this.onQueryChange.bind(this);
         this.setPopOverOpen = this.setPopOverOpen.bind(this);
         this.setPopOverText = this.setPopOverText.bind(this);
@@ -148,7 +149,14 @@ export default class Teachers extends Component {
         this.loadData();
     }
 
-// Load all teachers
+
+
+    routeToDetails(id) {
+        // eslint-disable-next-line
+        this.props.history.push('/teachers/' + id);
+    }
+
+    // Load all teachers
     loadData() {
         const defaultClient = Scolendar.ApiClient.instance;
 
@@ -381,11 +389,11 @@ export default class Teachers extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.firstName}
+                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.firstName}</a>
                                     </TableCell>
-                                    <TableCell>{row.lastName}</TableCell>
-                                    <TableCell>{row.email}</TableCell>
-                                    <TableCell>{row.phoneNumber}</TableCell>
+                                    <TableCell component="th" scope="row">{row.lastName}</TableCell>
+                                    <TableCell component="th" scope="row">{row.email}</TableCell>
+                                    <TableCell component="th" scope="row">{row.phoneNumber}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -432,7 +440,7 @@ export default class Teachers extends Component {
                     id="add-dialog"
                 >
                     <DialogTitle id="add-dialog-title">{"Nouvel enseignant"}</DialogTitle>
-                    <form onSubmit={this.addTeacher.bind(this)}>
+                    <form onSubmit={this.addTeacher}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Prénom"
                                        type="text"
@@ -508,3 +516,7 @@ export default class Teachers extends Component {
         );
     }
 }
+
+
+export default withRouter(Teachers);
+

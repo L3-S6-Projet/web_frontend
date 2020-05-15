@@ -1,0 +1,49 @@
+#settings-page {
+    height: 100vh;
+    width: 100vh;
+}
+
+#settings-column {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 50%;
+}
+
+/* Hide the background image when the screen is too small */
+@media only screen and (max-width: 1024px) {
+    #settings-column {
+        width: 60%;
+    }
+}
+
+@media only screen and (max-width: 812px) {
+    #settings-column {
+        width: 100%;
+    }
+}
+
+.spacer {
+    flex: 1;
+}
+
+#settings-column {
+    background: #FAFAFA;
+}
+
+#title {
+    font-size: 30px;
+    line-height: 50px;
+    color: #000000;
+    mix-blend-mode: normal;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+#settings-button{
+    background: #3F51B5;
+    color: white;
+}

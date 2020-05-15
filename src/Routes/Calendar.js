@@ -1,7 +1,6 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, {Component} from "react";
 
-import { getUser } from '../auth.js';
+import {getUser} from '../auth.js';
 
 export default class Calendar extends Component {
     constructor(props) {
@@ -14,7 +13,6 @@ export default class Calendar extends Component {
         return (
             <div>
                 <p>TODO: calendar</p>
-                <Link to="/notfound">notfound</Link>
             </div>
         );
     }

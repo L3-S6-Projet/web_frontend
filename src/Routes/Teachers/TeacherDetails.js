@@ -1,7 +1,5 @@
-import React, { Component } from "react";
-import { useParams, withRouter } from "react-router-dom";
-
-import { getUser } from '../auth.js';
+import React, {Component} from "react";
+import {withRouter} from "react-router-dom";
 
 class Teacher extends Component {
     constructor(props) {
@@ -13,7 +11,7 @@ class Teacher extends Component {
 
         return (
             <div>
-                <pre>{id}</pre>
+                <pre>TODO : TEACHER {id}</pre>
             </div>
         );
     }

@@ -25,7 +25,9 @@ import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
 
-export default class Classrooms extends Component {
+import {withRouter} from "react-router-dom";
+
+class Classrooms extends Component {
     constructor(props) {
         super(props);
         this.state= {
@@ -50,10 +52,14 @@ export default class Classrooms extends Component {
         this.deleteChecked = this.deleteChecked.bind(this);
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
-        this.addClassroom = this.addClassroom.bind(this);
         this.setPage = this.setPage.bind(this);
+        this.addClassroom = this.addClassroom.bind(this);
     }
 
+    routeToDetails(id) {
+        // eslint-disable-next-line
+        this.props.history.push('/classrooms/' + id);
+    }
 
     setPage(page){
         this.setState({page : page});
@@ -66,7 +72,6 @@ export default class Classrooms extends Component {
     onCapacityChange(event){
         this.setState({capacity : event.target.value})
     }
-
 
     setAddOpen(addOpen) {
         this.setState({addOpen: addOpen})
@@ -297,9 +302,9 @@ export default class Classrooms extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.name}
+                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.name}</a>
                                     </TableCell>
-                                    <TableCell>{row.capacity}</TableCell>
+                                    <TableCell component="th" scope="row">{row.capacity}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -346,7 +351,7 @@ export default class Classrooms extends Component {
                     id="add-dialog"
                 >
                     <DialogTitle id="add-dialog-title">{"Nouvelle salle"}</DialogTitle>
-                    <form onSubmit={this.addClassroom.bind(this)}>
+                    <form onSubmit={this.addClassroom}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Nom"
                                        type="text"
@@ -376,3 +381,6 @@ export default class Classrooms extends Component {
         );
     }
 }
+
+
+export default withRouter(Classrooms);

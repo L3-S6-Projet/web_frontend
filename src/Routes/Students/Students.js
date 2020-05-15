@@ -23,8 +23,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
+import {withRouter} from "react-router-dom";
 
-export default class Students extends Component {
+class Students extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,10 +56,16 @@ export default class Students extends Component {
         this.deleteChecked = this.deleteChecked.bind(this);
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
-        this.addStudent = this.addStudent.bind(this);
         this.setPage = this.setPage.bind(this);
         this.setStudentCreated = this.setStudentCreated.bind(this);
+        this.addStudent = this.addStudent.bind(this);
 
+    }
+
+
+    routeToDetails(id) {
+        // eslint-disable-next-line
+        this.props.history.push('/students/' + id);
     }
 
     setPage(page) {
@@ -318,7 +328,7 @@ export default class Students extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.firstName}
+                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.firstName}</a>
                                     </TableCell>
                                     <TableCell component="th" scope="row">
                                         {row.lastName}
@@ -373,7 +383,7 @@ export default class Students extends Component {
                     id="add-dialog"
                 >
                     <DialogTitle id="add-dialog-title">{"Nouvel Etudiant"}</DialogTitle>
-                    <form onSubmit={this.addStudent.bind(this)}>
+                    <form onSubmit={this.addStudent}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Prénom"
                                        type="text"
@@ -387,12 +397,14 @@ export default class Students extends Component {
                                        className="add field"
                                        onChange={this.onLastNameChange.bind(this)}
                             />
-                            <TextField required label="Classe"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onClassChange.bind(this)}
-                            />
+                            <FormControl variant="filled"  required className="add field">
+                                <InputLabel>Classe</InputLabel>
+                                <Select native required onChange={this.onClassChange.bind(this)}>
+                                    <option value="" aria-label="None" />
+                                    <option value={"ID_Info_L3"}>L3 Informatique</option>
+                                    <option value={"ID_Info_M1"}>M1 Informatique</option>
+                                </Select>
+                            </FormControl>
                         </DialogContent>
 
                         <DialogActions>
@@ -430,3 +442,5 @@ export default class Students extends Component {
     }
 
 }
+
+export default withRouter(Students);

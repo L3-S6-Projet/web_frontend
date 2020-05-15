@@ -19,26 +19,28 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import Checkbox from '@material-ui/core/Checkbox';
 import clsx from 'clsx';
-import "./Subjects.css"
 
 import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
+import "./Classes.css"
 import {withRouter} from "react-router-dom";
 
-class Subjects extends Component {
+class Classes extends Component {
     constructor(props) {
         super(props);
         this.state= {
-            subjects: [],
+            classes: [],
             loaded: false,
             checked: [],
             allChecked: false,
             deleteOpen: false,
             addOpen: false,
-            className :null,
-            name: null,
-            prof : null,
+            name :null,
+            level: null,
             page : 0,
             total: null
         }
@@ -53,31 +55,29 @@ class Subjects extends Component {
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
         this.setPage = this.setPage.bind(this);
-        this.addSubject = this.addSubject.bind(this);
+        this.addClass = this.addClass.bind(this);
     }
 
 
 
     routeToDetails(id) {
         // eslint-disable-next-line
-        this.props.history.push('/subjects/' + id);
+        this.props.history.push('/classes/' + id);
     }
-
 
     setPage(page){
         this.setState({page : page});
         this.loadData();
     }
 
-    onClasseChange(event){
-        this.setState({className : event.target.value})
-    }
     onNameChange(event){
         this.setState({name : event.target.value})
     }
-    onProfChange(event){
-        this.setState({prof : event.target.value})
+    onLevelChange(event){
+        this.setState({level : event.target.value})
     }
+
+
     setAddOpen(addOpen) {
         this.setState({addOpen: addOpen})
     }
@@ -90,14 +90,15 @@ class Subjects extends Component {
         this.loadData();
     }
 
-    // Load all subjects
+    // Load all classes
     loadData() {
         const defaultClient = Scolendar.ApiClient.instance;
         const token = defaultClient.authentications['token'];
         token.apiKey = getUser().token;
         token.apiKeyPrefix = 'Bearer';
 
-        const apiInstance = new Scolendar.SubjectsApi();
+
+        const apiInstance = new Scolendar.ClassesApi();
 
         const opts = {
             'page': +this.state.page + 1
@@ -109,15 +110,14 @@ class Subjects extends Component {
             } else {
 
                 console.log('API called successfully. Returned data: ');
-                console.log(data.students);
                 this.setState({
-                    subjects: data.subjects,
+                    classes: data.classes,
                     total: data.total
                 })
                 this.setState({loaded: true})
             }
         };
-        apiInstance.subjectsGet(opts, callback);
+        apiInstance.classesGet(opts, callback);
     }
 
     CallCheckAll() {
@@ -129,13 +129,13 @@ class Subjects extends Component {
     }
 
     checkAll() {
-        let toAdd = this.state.subjects.map(t => t.id).filter(id => !this.isChecked(id));
+        let toAdd = this.state.classes.map(t => t.id).filter(id => !this.isChecked(id));
         let checked = [...this.state.checked, ...toAdd];
         this.setState({checked, allChecked: true});
     }
 
     unCheckAll() {
-        let toRemove = this.state.subjects.map(t => t.id).filter(this.isChecked);
+        let toRemove = this.state.classes.map(t => t.id).filter(this.isChecked);
         let checked = this.state.checked.filter(id => !toRemove.includes(id));
         this.setState({checked, allChecked: false})
     }
@@ -174,10 +174,10 @@ class Subjects extends Component {
     }
 
     testIfAllChecked() {
-        for (const subject of this.state.subjects) {
-            if (!this.isChecked(subject.id)) {
+        for (const oneClass of this.state.classes) {
+            if (!this.isChecked(oneClass.id)) {
                 console.log(this.state.checked)
-                console.log(subject.id)
+                console.log(oneClass.id)
                 return false;
             }
         }
@@ -191,7 +191,7 @@ class Subjects extends Component {
         token.apiKey = getUser().token;
         token.apiKeyPrefix = 'Bearer';
 
-        const apiInstance = new Scolendar.SubjectsApi();
+        const apiInstance = new Scolendar.ClassesApi();
 
         const callback = function (error, data, response) {
             if (error) {
@@ -200,14 +200,15 @@ class Subjects extends Component {
                 console.log('API called successfully. Returned data: ' + data);
             }
         };
-        apiInstance.subjectsDelete(this.state.checked, callback);
+        apiInstance.classesDelete(this.state.checked, callback);
         this.setState({checked: []})
         this.loadData();
     }
 
-    addSubject(event) {
+    addClass(event){
         event.preventDefault();
         this.setState({addOpen: false})
+
 
         const defaultClient = Scolendar.ApiClient.instance;
 
@@ -215,40 +216,39 @@ class Subjects extends Component {
         token.apiKey = getUser().token;
         token.apiKeyPrefix = 'Bearer';
 
-        const apiInstance = new Scolendar.SubjectsApi();
+        const apiInstance = new Scolendar.ClassesApi();
 
-        var subjectCreationRequest = new Scolendar.Subject(); // Subject |
+        const classCreationRequest = new Scolendar.ModelClass(); // ModelClass |
 
-        subjectCreationRequest.name = this.state.name;
-        subjectCreationRequest.classId = this.state.classId; //TODO : récupere l'id à partir du nom de classe avec un autocomplete et /teacher dans Swagger
-        subjectCreationRequest.teacherInChargeId = this.state.teacherInChargeId; //TODO : récupere l'id à partir du nom de prof avec un autocomplete
+        classCreationRequest.name = this.state.name;
+        classCreationRequest.level= this.state.level;
+        console.log(classCreationRequest)
 
-        console.log(teacherCreationRequest)
-
-        const callback = function (error, data, response) {
+        const callback = function(error, data, response) {
             if (error) {
                 console.error(error);
             } else {
                 console.log('API called successfully. Returned data: ' + data);
             }
         };
-        apiInstance.subjectsPost({
+
+        apiInstance.classesPost({
             "name": this.state.name,
-            "class_id": this.state.classId,
-            "teacher_in_charge_id": this.state.teacherInChargeId,
+            "level": this.state.level,
         }, callback);
         this.loadData();
+
     }
 
     render() {
         if (!this.state.loaded)
             return <Splash/>
-        const rows = this.state.subjects;
+        const rows = this.state.classes;
         let head;
         if (this.state.checked.length === 0) {
             head = (
                 <div id="notseleted-header">
-                    <div id="title-subjects">Toutes les unités d&apos;enseignement</div>
+                    <div id="title-classes">Toutes les classes</div>
                     <div className="spacer"/>
                     <TextField label="Chercher par nom ..."
                                type="text"
@@ -264,7 +264,7 @@ class Subjects extends Component {
         } else {
             head = (
                 <div id="selected-header">
-                    <div id="count-subjects">{this.state.checked.length} sélectionnés</div>
+                    <div id="count-classrooms">{this.state.checked.length} sélectionnés</div>
                     <div className="spacer"/>
                     <IconButton size="small" color="inherit"
                                 onClick={() => this.setDeleteOpen(true)}><DeleteIcon/></IconButton>
@@ -272,7 +272,7 @@ class Subjects extends Component {
             )
         }
         return (
-            <div id="subjects">
+            <div id="classes">
                 <div id="table-head">
                     {head}
                 </div>
@@ -288,8 +288,8 @@ class Subjects extends Component {
                                         }
                                     />
                                 </TableCell>
-                                <TableCell>Classe</TableCell>
                                 <TableCell>Nom</TableCell>
+                                <TableCell>Niveau</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -307,9 +307,10 @@ class Subjects extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.className}</a>
+                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.name}</a>
+
                                     </TableCell>
-                                    <TableCell component="th" scope="row">{row.name}</TableCell>
+                                    <TableCell component="th" scope="row">{row.level}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -334,7 +335,7 @@ class Subjects extends Component {
                     <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Voulez vous vraiment supprimer ces {this.state.checked.length} unités d&apos;enseignement ? Cette action
+                            Voulez vous vraiment supprimer ces {this.state.checked.length} salles ? Cette action
                             n’est pas réversible.
                         </DialogContentText>
                     </DialogContent>
@@ -355,8 +356,8 @@ class Subjects extends Component {
                     onClose={() => this.setAddOpen(false)}
                     id="add-dialog"
                 >
-                    <DialogTitle id="add-dialog-title">{"Nouvelle unité d'enseignement"}</DialogTitle>
-                    <form onSubmit={this.addSubject}>
+                    <DialogTitle id="add-dialog-title">{"Nouvelle classe"}</DialogTitle>
+                    <form onSubmit={this.addClass}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Nom"
                                        type="text"
@@ -364,19 +365,17 @@ class Subjects extends Component {
                                        className="add field"
                                        onChange={this.onNameChange.bind(this)}
                             />
-                            <TextField required label="Classe"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onClasseChange.bind(this)}
-                            />
-                            <TextField required label="Enseignant Responsable"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onProfChange.bind(this)}
-                            />
-
+                            <FormControl variant="filled"  required className="add field">
+                                <InputLabel>Niveau</InputLabel>
+                                <Select native required onChange={this.onLevelChange.bind(this)}>
+                                    <option value="" aria-label="None" />
+                                    <option value={"L1"}>L1</option>
+                                    <option value={"L2"}>L2</option>
+                                    <option value={"L3"}>L3</option>
+                                    <option value={"M1"}>M1</option>
+                                    <option value={"M2"}>M2</option>
+                                </Select>
+                            </FormControl>
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={() => this.setAddOpen(false)} color="primary">
@@ -393,6 +392,4 @@ class Subjects extends Component {
     }
 }
 
-
-
-export default withRouter(Subjects);
+export default withRouter(Classes);

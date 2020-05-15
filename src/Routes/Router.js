@@ -6,13 +6,23 @@ import Login from './Login/Login.js';
 import Calendar from './Calendar.js';
 import NotFound from './NotFound.js';
 import Logout from './Logout.js';
+
 import Teachers from './Teachers/Teachers.js';
-import Teacher from './Teacher.js';
+import TeacherDetails from './Teachers/TeacherDetails.js';
+
 import Students from './Students/Students.js';
+import StudentDetails from './Students/StudentDetails.js';
+
 import Classrooms from './Classrooms/Classrooms.js';
-import Classes from './Classes.js';
+import ClassroomDetails from './Classrooms/ClassroomDetails.js';
+
+import Classes from './Classes/Classes.js';
+import ClasseDetails from './Classes/ClasseDetails.js';
+
 import Subjects from './Subjects/Subjects.js';
-import Settings from './Settings.js';
+import SubjectDetails from './Subjects/SubjectDetails.js';
+
+import Settings from './Settings/Settings.js';
 import Splash from "./Splash/Splash.js"
 
 import SidebarContainer from '../Components/SideBar/SideBar.js';
@@ -62,23 +72,38 @@ export default class Router extends Component {
                             </GuardedRoute>
 
                             <GuardedRoute exact path="/teachers/:id" meta={{ auth: true }}>
-                                <Teacher />
+                                <TeacherDetails />
                             </GuardedRoute>
 
                             <GuardedRoute exact path="/teachers" meta={{ auth: true }}>
                                 <Teachers />
                             </GuardedRoute>
 
+                            <GuardedRoute exact path="/students/:id" meta={{ auth: true }}>
+                                <StudentDetails />
+                            </GuardedRoute>
+
                             <GuardedRoute exact path="/students" meta={{ auth: true }}>
                                 <Students />
+                            </GuardedRoute>
+
+                            <GuardedRoute exact path="/classrooms/:id" meta={{ auth: true }}>
+                                <ClassroomDetails />
                             </GuardedRoute>
 
                             <GuardedRoute exact path="/classrooms" meta={{ auth: true }}>
                                 <Classrooms />
                             </GuardedRoute>
 
+                            <GuardedRoute exact path="/classes/:id" meta={{ auth: true }}>
+                                <ClasseDetails />
+                            </GuardedRoute>
                             <GuardedRoute exact path="/classes" meta={{ auth: true }}>
                                 <Classes />
+                            </GuardedRoute>
+
+                            <GuardedRoute exact path="/subjects/:id" meta={{ auth: true }}>
+                                <SubjectDetails />
                             </GuardedRoute>
 
                             <GuardedRoute exact path="/subjects" meta={{ auth: true }}>

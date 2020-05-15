@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from 'prop-types';
-import { NavLink, Link } from "react-router-dom";
+import {Link, NavLink, withRouter} from "react-router-dom";
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import HomeIcon from '@material-ui/icons/Home';
 import Person from '@material-ui/icons/Person';
 import LocationOn from '@material-ui/icons/LocationOn';
 import List from '@material-ui/icons/List';
@@ -10,8 +11,7 @@ import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import Settings from '@material-ui/icons/Settings';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 
-import { getUser } from '../../auth.js';
-import { withRouter } from 'react-router-dom';
+import {getUser} from '../../auth.js';
 
 import './SideBar.css';
 
@@ -58,13 +58,9 @@ class Sidebar extends Component {
         // Don't show on login, logout or loading page
         if (user === null || ['/loading', '/logout'].indexOf(this.props.location.pathname) >= 0) return null;
 
-        return (
-            <div id="sidebar">
-                <header id="sidebar-header">
-                    <p id="sidebar-name">{user.user.first_name} {user.user.last_name}</p>
-                    <p id="sidebar-role">{this.userKindAsString(user)}</p>
-                </header>
-
+        let sidebar;
+        if(this.userKindAsString(user) === 'Administrateur') {
+            sidebar = (
                 <nav id="sidebar-nav">
                     <NavLink exact className="link" activeClassName="active" to="/"><CalendarToday className="icon" />Emploi du temps</NavLink>
                     <NavLink className="link" activeClassName="active" to="/teachers"><AccountCircle className="icon" />Enseignants</NavLink>
@@ -76,6 +72,28 @@ class Sidebar extends Component {
                     <Link className="link" to="/logout"><ExitToApp className="icon" />Déconnexion</Link>
                     <div id="sidebar-nav-indicator"></div>
                 </nav>
+            );
+        }
+        else sidebar = (
+            <nav id="sidebar-nav">
+                <NavLink exact className="link" activeClassName="active" to="/"><HomeIcon className="icon" />Home</NavLink>
+                <NavLink className="link" activeClassName="active" to="/teachers"><CalendarToday className="icon" />Emploi du temps</NavLink>
+                <NavLink className="link" activeClassName="active" to="/subjects"><LibraryBooks className="icon" />Unités d&apos;enseignement</NavLink>
+                <NavLink className="link" activeClassName="active" to="/settings"><Settings className="icon" />Paramètres</NavLink>
+                <Link className="link" to="/logout"><ExitToApp className="icon" />Déconnexion</Link>
+                <div id="sidebar-nav-indicator"></div>
+            </nav>
+
+        )
+
+
+        return (
+            <div id="sidebar">
+                <header id="sidebar-header">
+                    <p id="sidebar-name">{user.user.first_name} {user.user.last_name}</p>
+                    <p id="sidebar-role">{this.userKindAsString(user)}</p>
+                </header>
+                {sidebar}
                 <div className="spacer"></div>
                 <p id="sidebar-credits">© Scolendar 2020<br />
                     Tous droits réservés</p>
