@@ -267,7 +267,7 @@ class Students extends Component {
         if (this.state.checked.length === 0) {
             head = (
                 <div id="notseleted-header">
-                    <div id="title-subjects">Toutes les étudiants</div>
+                    <div id="title-subjects">Tous les étudiants</div>
                     <div className="spacer"/>
                     <TextField label="Chercher par nom ..."
                                type="text"
