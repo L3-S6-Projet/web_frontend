@@ -24,8 +24,9 @@ import "./Subjects.css"
 import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
+import {withRouter} from "react-router-dom";
 
-export default class Subjects extends Component {
+class Subjects extends Component {
     constructor(props) {
         super(props);
         this.state= {
@@ -53,6 +54,13 @@ export default class Subjects extends Component {
         this.setAddOpen = this.setAddOpen.bind(this);
         this.setPage = this.setPage.bind(this);
         this.addSubject = this.addSubject.bind(this);
+    }
+
+
+
+    routeToDetails(id) {
+        // eslint-disable-next-line
+        this.props.history.push('/subjects/' + id);
     }
 
 
@@ -299,9 +307,9 @@ export default class Subjects extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.className}
+                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.className}</a>
                                     </TableCell>
-                                    <TableCell>{row.name}</TableCell>
+                                    <TableCell component="th" scope="row">{row.name}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -384,3 +392,7 @@ export default class Subjects extends Component {
         );
     }
 }
+
+
+
+export default withRouter(Subjects);

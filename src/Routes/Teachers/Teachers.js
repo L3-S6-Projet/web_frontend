@@ -27,8 +27,9 @@ import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
 import Checkbox from '@material-ui/core/Checkbox';
+import {withRouter} from "react-router-dom";
 
-export default class Teachers extends Component {
+class Teachers extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -92,6 +93,13 @@ export default class Teachers extends Component {
 
     componentDidMount() {
         this.loadData();
+    }
+
+
+
+    routeToDetails(id) {
+        // eslint-disable-next-line
+        this.props.history.push('/teachers/' + id);
     }
 
     // Load all teachers
@@ -318,12 +326,12 @@ export default class Teachers extends Component {
                                             checked={this.isChecked(row.id)}
                                         />
                                     </TableCell>
-                                    <TableCell>
-                                      {row.firstName}
+                                    <TableCell component="th" scope="row">
+                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.firstName}</a>
                                     </TableCell>
-                                    <TableCell>{row.lastName}</TableCell>
-                                    <TableCell>{row.email}</TableCell>
-                                    <TableCell>{row.phoneNumber}</TableCell>
+                                    <TableCell component="th" scope="row">{row.lastName}</TableCell>
+                                    <TableCell component="th" scope="row">{row.email}</TableCell>
+                                    <TableCell component="th" scope="row">{row.phoneNumber}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -424,3 +432,7 @@ export default class Teachers extends Component {
         );
     }
 }
+
+
+export default withRouter(Teachers);
+

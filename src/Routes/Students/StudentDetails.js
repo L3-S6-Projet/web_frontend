@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 
-class Teacher extends Component {
+class StudentDetails extends Component {
     constructor(props) {
         super(props);
     }
@@ -11,10 +11,10 @@ class Teacher extends Component {
 
         return (
             <div>
-                <pre>TODO : TEACHER {id}</pre>
+                <pre>TODO : STUDENT {id}</pre>
             </div>
         );
     }
 }
 
-export default withRouter(Teacher);
+export default withRouter(StudentDetails);

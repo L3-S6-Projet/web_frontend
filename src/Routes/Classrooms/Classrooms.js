@@ -25,7 +25,9 @@ import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
 
-export default class Classrooms extends Component {
+import {withRouter} from "react-router-dom";
+
+class Classrooms extends Component {
     constructor(props) {
         super(props);
         this.state= {
@@ -54,6 +56,10 @@ export default class Classrooms extends Component {
         this.addClassroom = this.addClassroom.bind(this);
     }
 
+    routeToDetails(id) {
+        // eslint-disable-next-line
+        this.props.history.push('/classrooms/' + id);
+    }
 
     setPage(page){
         this.setState({page : page});
@@ -296,9 +302,9 @@ export default class Classrooms extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.name}
+                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.name}</a>
                                     </TableCell>
-                                    <TableCell>{row.capacity}</TableCell>
+                                    <TableCell component="th" scope="row">{row.capacity}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -375,3 +381,6 @@ export default class Classrooms extends Component {
         );
     }
 }
+
+
+export default withRouter(Classrooms);

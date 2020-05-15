@@ -27,8 +27,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import "./Classes.css"
+import {withRouter} from "react-router-dom";
 
-export default class Classes extends Component {
+class Classes extends Component {
     constructor(props) {
         super(props);
         this.state= {
@@ -57,6 +58,12 @@ export default class Classes extends Component {
         this.addClass = this.addClass.bind(this);
     }
 
+
+
+    routeToDetails(id) {
+        // eslint-disable-next-line
+        this.props.history.push('/classes/' + id);
+    }
 
     setPage(page){
         this.setState({page : page});
@@ -300,9 +307,10 @@ export default class Classes extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.name}
+                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.name}</a>
+
                                     </TableCell>
-                                    <TableCell>{row.level}</TableCell>
+                                    <TableCell component="th" scope="row">{row.level}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -383,3 +391,5 @@ export default class Classes extends Component {
         );
     }
 }
+
+export default withRouter(Classes);

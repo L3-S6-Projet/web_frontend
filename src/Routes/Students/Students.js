@@ -26,8 +26,9 @@ import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
+import {withRouter} from "react-router-dom";
 
-export default class Students extends Component {
+class Students extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -59,6 +60,12 @@ export default class Students extends Component {
         this.setStudentCreated = this.setStudentCreated.bind(this);
         this.addStudent = this.addStudent.bind(this);
 
+    }
+
+
+    routeToDetails(id) {
+        // eslint-disable-next-line
+        this.props.history.push('/students/' + id);
     }
 
     setPage(page) {
@@ -321,7 +328,7 @@ export default class Students extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {row.firstName}
+                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.firstName}</a>
                                     </TableCell>
                                     <TableCell component="th" scope="row">
                                         {row.lastName}
@@ -435,3 +442,5 @@ export default class Students extends Component {
     }
 
 }
+
+export default withRouter(Students);

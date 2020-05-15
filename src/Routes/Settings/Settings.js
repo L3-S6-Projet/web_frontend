@@ -17,6 +17,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import {getUser} from "../../auth";
 import Scolendar from '../../scolendar/src';
 
+import Popover from '@material-ui/core/Popover';
+
 import Divider from '@material-ui/core/Divider';
 
 
@@ -157,8 +159,20 @@ export default class Settings extends Component {
         )
     }
 
-    //TODO : Ne marche pas (pas de problème en utilisant Swagger mais le code ne marche pas, peut-être mauvais appel ?)
-    changePassword(){
+
+    oldPasswordFilled() {
+        return this.state.password !== null;
+    }
+
+    newPasswordFilled() {
+        return this.state.password !== null;
+    }
+
+    //Todo : add a function to check invalid form for password
+
+
+    changePassword(event){
+        event.preventDefault();
         const defaultClient = Scolendar.ApiClient.instance;
 
         const token = defaultClient.authentications['token'];
@@ -185,6 +199,9 @@ export default class Settings extends Component {
             "old_password": this.state.oldPassword,
             "password": this.state.newPassword,
         }, callback);
+        this.setPasswordChangeOpen(false);
+
+
     }
 
     //TODO : Reset entièrement les données du serveur via API
@@ -192,7 +209,6 @@ export default class Settings extends Component {
         alert('Tout est supprimé');
     }
 
-    //TODO : Modifier le CSS pour les 2 renders (Admin et Prof/Etu)
     render() {
         return (
             <div >
@@ -301,8 +317,20 @@ export default class Settings extends Component {
                     </DialogActions>
                 </Dialog>
 
-
-
+                <Popover
+                    anchorReference="anchorPosition"
+                    anchorPosition={{ top: 500, left: 700 }}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                >
+                    The content of the Popover.
+                </Popover>
             </div>
         );
     }

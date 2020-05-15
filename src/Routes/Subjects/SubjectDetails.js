@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
 
-class Teacher extends Component {
+class SubjectDetails extends Component {
     constructor(props) {
         super(props);
     }
@@ -9,12 +9,13 @@ class Teacher extends Component {
         // eslint-disable-next-line
         const id = this.props.match.params.id;
 
+
         return (
             <div>
-                <pre>TODO : TEACHER {id}</pre>
+                <pre>TODO : SUBJECT {id}</pre>
             </div>
         );
     }
 }
 
-export default withRouter(Teacher);
+export default withRouter(SubjectDetails);
