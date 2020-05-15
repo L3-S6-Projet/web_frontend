@@ -17,6 +17,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import {getUser} from "../../auth";
 import Scolendar from '../../scolendar/src';
 
+import Divider from '@material-ui/core/Divider';
+
 
 export default class Settings extends Component {
     constructor(props) {
@@ -198,6 +200,7 @@ export default class Settings extends Component {
                 <Paper>
                     <MenuList>
                         <MenuItem onClick={() => this.setPasswordChangeOpen(true)}>Changer mon mot de passe</MenuItem>
+                        <Divider />
                         <MenuItem onClick={() => this.setDeleteDataOpen(true)}>Supprimer toutes les données du serveur</MenuItem>
                     </MenuList>
                 </Paper>

@@ -7,7 +7,7 @@ import Calendar from './Calendar.js';
 import NotFound from './NotFound.js';
 import Logout from './Logout.js';
 import Teachers from './Teachers/Teachers.js';
-import Teacher from './Teacher.js';
+import TeacherDetails from './Teachers/TeacherDetails.js';
 import Students from './Students/Students.js';
 import Classrooms from './Classrooms/Classrooms.js';
 import Classes from './Classes/Classes.js';
@@ -62,7 +62,7 @@ export default class Router extends Component {
                             </GuardedRoute>
 
                             <GuardedRoute exact path="/teachers/:id" meta={{ auth: true }}>
-                                <Teacher />
+                                <TeacherDetails />
                             </GuardedRoute>
 
                             <GuardedRoute exact path="/teachers" meta={{ auth: true }}>

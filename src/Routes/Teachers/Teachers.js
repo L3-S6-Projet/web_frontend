@@ -249,6 +249,7 @@ export default class Teachers extends Component {
         this.loadData();
     }
 
+
     render() {
         if (!this.state.loaded)
             return <Splash/>
@@ -317,8 +318,8 @@ export default class Teachers extends Component {
                                             checked={this.isChecked(row.id)}
                                         />
                                     </TableCell>
-                                    <TableCell component="th" scope="row">
-                                        {row.firstName}
+                                    <TableCell>
+                                      {row.firstName}
                                     </TableCell>
                                     <TableCell>{row.lastName}</TableCell>
                                     <TableCell>{row.email}</TableCell>

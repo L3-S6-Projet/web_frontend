@@ -91,7 +91,6 @@ class Login extends React.Component {
         event.preventDefault();
     };
 
-
     onUsernameChange(event) {
         this.setState({
             username: event.target.value,

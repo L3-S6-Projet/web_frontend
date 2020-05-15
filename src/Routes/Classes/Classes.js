@@ -26,7 +26,7 @@ import Splash from "../Splash/Splash";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
-import "./Classrooms.css"
+import "./Classes.css"
 
 export default class Classes extends Component {
     constructor(props) {
