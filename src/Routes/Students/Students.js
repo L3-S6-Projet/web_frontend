@@ -220,8 +220,8 @@ class Students extends Component {
     }
 
 
-    //TODO :
-    // - Récupérer ID de Classe  à partir du nom avec un autocomplete et vérifier avec le "/teacher" dans Swagger
+    //TODO : A FIXER
+    // - Réparer la création (sûrement au niveau de récupérer les données pour les mettre dans la bdd)
     // - Vérifier que la création se fait bien pour la fenêtre de confirmation/succes
     addStudent(event) {
         event.preventDefault();
@@ -427,7 +427,7 @@ class Students extends Component {
                     <DialogContentText id="alert-dialog-description">
                         <p>Veuillez transmettre les informations suivantes : </p>
                         <p>Nom d&apos;utilisateur : {this.state.firstName}.{this.state.lastName}</p>
-                        <p>Mot de passe : motDePasseDeMesDeux</p>
+                        <p>Mot de passe : mdpACreer</p>
                     </DialogContentText>
                     <DialogActions>
                         <Button onClick={() => this.setStudentCreated(false)} color="primary">
