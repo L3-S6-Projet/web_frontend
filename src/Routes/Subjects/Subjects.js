@@ -205,6 +205,9 @@ class Subjects extends Component {
         this.loadData();
     }
 
+
+    //TODO : A FIXER
+    // - Récupérer Id de classe et Id de teacherInCharge
     addSubject(event) {
         event.preventDefault();
         this.setState({addOpen: false})
@@ -220,10 +223,10 @@ class Subjects extends Component {
         var subjectCreationRequest = new Scolendar.Subject(); // Subject |
 
         subjectCreationRequest.name = this.state.name;
-        subjectCreationRequest.classId = this.state.classId; //TODO : récupere l'id à partir du nom de classe avec un autocomplete et /teacher dans Swagger
-        subjectCreationRequest.teacherInChargeId = this.state.teacherInChargeId; //TODO : récupere l'id à partir du nom de prof avec un autocomplete
+        subjectCreationRequest.classId = this.state.classId;
+        subjectCreationRequest.teacherInChargeId = this.state.teacherInChargeId;
 
-        console.log(teacherCreationRequest)
+        console.log(subjectCreationRequest)
 
         const callback = function (error, data, response) {
             if (error) {

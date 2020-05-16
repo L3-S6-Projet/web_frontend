@@ -1,0 +1,23 @@
+.header {
+    padding: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.today-button-container {
+    flex: 1;
+}
+
+.today-button-container > .today-button {
+    background: #C5CAE9;
+    color: white;
+    border-radius: 25px;
+    padding: 8px 18px;
+}
+
+.view-selector-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}

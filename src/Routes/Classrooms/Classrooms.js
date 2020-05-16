@@ -201,10 +201,10 @@ class Classrooms extends Component {
         this.loadData();
     }
 
+    //TODO : Vérifier dans la liste car l 'ajout du côté serveur mais je ne le vois pas dans la liste...
     addClassroom(event){
         event.preventDefault();
         this.setState({addOpen: false})
-
 
         const defaultClient = Scolendar.ApiClient.instance;
 

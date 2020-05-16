@@ -1,0 +1,40 @@
+.calendar-dialog {
+    position: fixed;
+    background: white;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, .2), 0px 3px 4px rgba(0, 0, 0, .12), 0px 2px 4px rgba(0, 0, 0, .14);
+    width: 294px;
+    font-size: 16px;
+    display: grid;
+    align-items: center;
+}
+
+.calendar-dialog > * {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.calendar-dialog-header {
+    align-self: start;
+    justify-self: end;
+}
+
+.calendar-dialog-front {
+    padding: 40px 0 24px 24px;
+    display: grid;
+    grid-template-columns: 32px auto;
+}
+
+.calendar-dialog-title {
+    font-size: 18px;
+}
+
+.calendar-dialog-date {
+    font-size: 14px;
+    color: #757575;
+    padding-bottom: 8px;
+}
+
+.calendar-dialog-icon {
+    opacity: 60%;
+    margin-bottom: 6px;
+}

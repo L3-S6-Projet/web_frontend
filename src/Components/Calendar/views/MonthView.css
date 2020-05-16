@@ -1,0 +1,69 @@
+.month-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.days {
+    display: flex;
+    justify-content: space-between;
+}
+
+.day {
+    text-align: center;
+    flex: 1;
+    font-size: 18px;
+    height: 56px;
+    line-height: 56px;
+}
+
+.cells {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    overflow-y: hidden;
+    max-height: 100%;
+    height: 100%;
+}
+
+.cell {
+    min-width: 0;
+    border-top: 1px solid #BDBDBD;
+    border-right: 1px solid #BDBDBD;
+    padding: 8px 8px 8px 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.cell.selected {
+    padding-top: 2px;
+}
+
+.cell:nth-child(7n) {
+    border-right: unset;
+}
+
+.cell-day-number {
+    font-size: 18px;
+    padding-bottom: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cell-day-number.selected > div {
+    color: white;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FF9800;
+    border-radius: 50%;
+}
+
+.cell-more {
+    font-size: 10px;
+    color: #757575;
+}
