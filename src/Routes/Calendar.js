@@ -17,6 +17,8 @@ export default class Calendar extends Component {
     }
 
     loadData() {
+        // TODO: only load needed data
+
         const defaultClient = Scolendar.ApiClient.instance;
 
         const token = defaultClient.authentications['token'];

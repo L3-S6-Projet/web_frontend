@@ -13,7 +13,7 @@ class Header extends Component {
         return (
             <div className="header">
                 <div className="today-button-container">
-                    <Button className="today-button">Aujourd&apos;hui</Button>
+                    <Button className="today-button" onClick={this.props.onToday}>Aujourd&apos;hui</Button>
                 </div>
 
                 <div>
@@ -34,6 +34,7 @@ class Header extends Component {
 
 Header.propTypes = {
     children: PropTypes.object,
+    onToday: PropTypes.func,
 }
 
 export default Header;

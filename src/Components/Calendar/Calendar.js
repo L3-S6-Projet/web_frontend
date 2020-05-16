@@ -16,14 +16,14 @@ class Calendar extends Component {
         this.state = {
             dialogEvent: null,
             dialogElement: null,
-            selectedDate: new SelectedDate(1, 2, 2020),
+            selectedDate: SelectedDate.today(),
         };
     }
 
     render() {
         return (
             <div className="calendar">
-                <Header>
+                <Header onToday={() => this.setState({ selectedDate: SelectedDate.today() })}>
                     <MonthViewHeader
                         selectedDate={this.state.selectedDate}
                         onPrevMonth={() => this.setState({ selectedDate: this.state.selectedDate.previousMonth() })}
