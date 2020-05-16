@@ -1,6 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {getUser} from '../auth.js';
+import { getUser } from '../auth.js';
+import CalendarWidget from '../Components/Calendar/Calendar.js';
+
+import './Calendar.css';
 
 export default class Calendar extends Component {
     constructor(props) {
@@ -11,8 +14,8 @@ export default class Calendar extends Component {
         const user = getUser();
 
         return (
-            <div>
-                <p>TODO: calendar</p>
+            <div className="calendar-widget">
+                <CalendarWidget />
             </div>
         );
     }
