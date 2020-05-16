@@ -39,8 +39,6 @@ class MonthView extends Component {
         // TODO: avoid recomputing this as much
         let cells = this.props.selectedDate.days();
 
-        let cell = cells[0];
-
         function getFormattedDate(date) {
             let year = date.getFullYear();
             let month = (1 + date.getMonth()).toString().padStart(2, '0');
@@ -48,6 +46,8 @@ class MonthView extends Component {
 
             return day + '-' + month + '-' + year;
         }
+
+        let today = new Date();
 
         return (
             <div className="month-container">
@@ -71,7 +71,7 @@ class MonthView extends Component {
                         return <Cell
                             key={index}
                             date={value}
-                            selected={value == 22}
+                            selected={value.dayNumber == today.getDate() && value.monthNumber == today.getMonth() && value.yearNumber == today.getFullYear()}
                             height={this.state.cellHeight}
                             onSelect={this.props.onSelect}
                             occupancies={dayOccupancies} />;
