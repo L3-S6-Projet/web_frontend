@@ -36,7 +36,18 @@ class MonthView extends Component {
     }
 
     render() {
-        let cells = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34];
+        // TODO: avoid recomputing this as much
+        let cells = this.props.selectedDate.days();
+
+        let cell = cells[0];
+
+        function getFormattedDate(date) {
+            let year = date.getFullYear();
+            let month = (1 + date.getMonth()).toString().padStart(2, '0');
+            let day = date.getDate().toString().padStart(2, '0');
+
+            return day + '-' + month + '-' + year;
+        }
 
         return (
             <div className="month-container">
@@ -45,7 +56,26 @@ class MonthView extends Component {
                 </div>
 
                 <div className="cells" ref={this.cellsRef}>
-                    {cells.map((value, index) => <Cell key={index} dayNumber={value} selected={value == 22} height={this.state.cellHeight} onSelect={this.props.onSelect} />)}
+                    {cells.map((value, index) => {
+                        const key = getFormattedDate(new Date(value.yearNumber, value.monthNumber, value.dayNumber));
+
+                        let dayOccupancies = null;
+
+                        if (this.props.occupancies !== null) {
+                            let day = this.props.occupancies.days.find(e => e._date == key);
+
+                            if (typeof day !== 'undefined' && day !== null)
+                                dayOccupancies = day.occupancies;
+                        }
+
+                        return <Cell
+                            key={index}
+                            date={value}
+                            selected={value == 22}
+                            height={this.state.cellHeight}
+                            onSelect={this.props.onSelect}
+                            occupancies={dayOccupancies} />;
+                    })}
                 </div>
             </div>
         );
@@ -54,6 +84,8 @@ class MonthView extends Component {
 
 MonthView.propTypes = {
     onSelect: PropTypes.func,
+    occupancies: PropTypes.object,
+    selectedDate: PropTypes.object,
 }
 
 export default MonthView;
@@ -76,27 +108,29 @@ class Cell extends Component {
         const availableHeight = height - padding - headerSize - footerSize;
         const eventsCount = Math.floor(availableHeight / eventHeight);
 
-        let events = [];
+        const events = (this.props.occupancies || [])
+            .slice(0, eventsCount)
+            .map((event, index) => <SmallEvent key={index} onSelect={this.props.onSelect} event={event} />);
 
-        for (var i = 0; i < eventsCount; i++)
-            events.push(<SmallEvent key={i} onSelect={this.props.onSelect} />);
+        const more = (this.props.occupancies || []).length - eventsCount + 1;
 
         return (
             <div className={classNames('cell', { selected: this.props.selected })} ref={this.ref}>
                 <div className={classNames('cell-day-number', { selected: this.props.selected })} ref={this.headerRef}>
-                    <div>{this.props.dayNumber}</div>
+                    <div>{this.props.date.dayNumber}</div>
                 </div>
                 {events}
                 <div className="spacer"></div>
-                <a className="cell-more" href="#" ref={this.footerRef}>5 de plus</a>
+                <a className="cell-more" href="#" ref={this.footerRef}>{more} de plus</a>
             </div>
         );
     }
 }
 
 Cell.propTypes = {
-    dayNumber: PropTypes.number,
+    date: PropTypes.object,
     selected: PropTypes.bool,
     height: PropTypes.number,
     onSelect: PropTypes.func,
+    occupancies: PropTypes.object,
 }
