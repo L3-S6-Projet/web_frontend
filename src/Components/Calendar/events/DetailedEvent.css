@@ -1,0 +1,27 @@
+.detailed-event {
+    background: #FFF;
+    border: 1px solid #BDBDBD;
+    padding: 6px 8px;
+    border-radius: 5px;
+    text-align: start;
+    margin-bottom: 4px;
+    cursor: pointer;
+    position: absolute;
+    overflow: hidden;
+}
+
+.detailed-event-title, .detailed-event-class-name {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.detailed-event-title {
+    font-size: 14px;
+}
+
+.detailed-event-class-name {
+    font-size: 12px;
+    color: #757575;
+}

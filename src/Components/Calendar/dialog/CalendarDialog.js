@@ -14,7 +14,7 @@ var lastPosition = { left: 0, top: 0 };
 class CalendarDialog extends Component {
     constructor(props) {
         super(props);
-        this.state = { windowWidth: window.innerWidth, windowHeight: window.innerHeight, };
+        this.updateWindowWidth = this.updateWindowWidth.bind(this);
     }
 
     isOpen() {
@@ -22,48 +22,36 @@ class CalendarDialog extends Component {
     }
 
     updateWindowWidth() {
-        this.setState({
-            windowWidth: window.innerWidth,
-            windowHeight: window.innerHeight,
+        if (this.isOpen())
+            this.forceUpdate();
+    }
+
+    installResizeListener() {
+        this.updateWindowWidth();
+
+        window.addEventListener('resize', this.updateWindowWidth, {
+            capture: false,
+            passive: true,
+        });
+    }
+
+    uninstallResizeListener() {
+        window.removeEventListener('resize', this.updateWindowWidth, {
+            capture: false,
+            passive: true,
         });
     }
 
     componentDidMount() {
-        this.updateWindowWidth();
-
-        window.addEventListener('resize', this.updateWindowWidth.bind(this), {
-            capture: false,
-            passive: true,
-        });
+        this.installResizeListener();
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.updateWindowWidth.bind(this), {
-            capture: false,
-            passive: true,
-        });
-    }
-
-    updatePosition() {
-        const { x, y, width } = this.props.element.getBoundingClientRect();
-
-        const dialogWidth = 294; // as set in css TODO: zoom level
-        const dialogHeight = 240; // TODO: not perfect
-        const eventHeight = 50; // TODO: not perfect
-        const paddingFromEvent = 8;
-
-        const toTheLeft = (x + width + paddingFromEvent + dialogWidth >= this.state.windowWidth);
-        const toTheBottom = (y + dialogHeight <= this.state.windowHeight);
-
-        this.setState({
-            left: (toTheLeft) ?
-                x - dialogWidth - paddingFromEvent :
-                x + width + paddingFromEvent,
-            top: (toTheBottom) ? y : y - dialogHeight + eventHeight,
-        });
+        this.uninstallResizeListener();
     }
 
     render() {
+        console.log('render');
         let content = [];
 
         const lastPosition = { x: 0, top: 0 };
@@ -78,8 +66,8 @@ class CalendarDialog extends Component {
             const eventHeight = 50; // TODO: not perfect
             const paddingFromEvent = 8;
 
-            const toTheLeft = (x + width + paddingFromEvent + dialogWidth >= this.state.windowWidth);
-            const toTheBottom = (y + dialogHeight <= this.state.windowHeight);
+            const toTheLeft = (x + width + paddingFromEvent + dialogWidth >= window.innerWidth);
+            const toTheBottom = (y + dialogHeight <= window.innerHeight);
 
             lastPosition.left = (toTheLeft) ?
                 x - dialogWidth - paddingFromEvent :

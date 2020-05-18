@@ -1,3 +1,5 @@
+import { getWeekDay } from '../../Utils/week-day.js';
+
 /**
  * Immutable class representing a calendar widget's selected date.
  */
@@ -27,6 +29,16 @@ export default class SelectedDate {
         return SelectedDate.fromDate(date);
     }
 
+    previousWeek() {
+        let date = new Date(this.yearNumber, this.monthNumber, this.dayNumber - 7);
+        return SelectedDate.fromDate(date);
+    }
+
+    nextWeek() {
+        let date = new Date(this.yearNumber, this.monthNumber, this.dayNumber + 7);
+        return SelectedDate.fromDate(date);
+    }
+
     /**
      * Returns an array of 7 * 5 days, including all of the days of
      * this month and a few of the surroundings one.
@@ -40,13 +52,12 @@ export default class SelectedDate {
 
         // First, add all days in the same week before the start of the first day.
         const previousMonthN = numberOfDaysInMonth(this.monthNumber - 1, this.yearNumber);
-        const previousMonthtoAdd = getWeekDay(this.dayNumber, this.monthNumber, this.yearNumber) - 1;
+        const previousMonthtoAdd = getWeekDay(this.dayNumber, this.monthNumber, this.yearNumber) - 2;
 
         const lastMonthDate = new Date(this.yearNumber, this.monthNumber - 1);
         const nextMonthDate = new Date(this.yearNumber, this.monthNumber + 1);
 
-        for (var i = previousMonthN - previousMonthtoAdd; i <= previousMonthN; i++)
-            // TODO: object
+        for (var i = previousMonthN - previousMonthtoAdd + 1; i <= previousMonthN; i++)
             days.push({
                 yearNumber: lastMonthDate.getFullYear(),
                 monthNumber: lastMonthDate.getMonth(),
@@ -78,20 +89,28 @@ export default class SelectedDate {
         return days.slice(0, 7 * 5);
     }
 
+    week() {
+        let date = new Date(this.yearNumber, this.monthNumber, this.dayNumber);
+
+        // Go back to monday
+        let weekDay = getWeekDay(this.dayNumber, this.monthNumber, this.yearNumber);
+        date.setDate(date.getDate() - weekDay);
+
+        const days = [];
+        for (var i = 0; i < 7; i++) {
+            days.push({
+                yearNumber: date.getFullYear(),
+                monthNumber: date.getMonth(),
+                dayNumber: date.getDate(),
+            });
+            date.setDate(date.getDate() + 1);
+        }
+
+        return days;
+    }
+
 }
 
 function numberOfDaysInMonth(monthNumber, yearNumber) {
     return new Date(yearNumber, monthNumber + 1, 0).getDate();
-}
-
-/**
- * Computes the week number, from 0 to 6 where 0 is monday.
- */
-function getWeekDay(dayNumber, monthNumber, yearNumber) {
-    const dayWhereSundayIsZero = new Date(yearNumber, monthNumber, dayNumber).getDay();
-
-    if (dayWhereSundayIsZero == 0)
-        return 6;
-
-    return dayWhereSundayIsZero - 1;
 }

@@ -5,7 +5,8 @@ import classNames from 'classnames';
 const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 
 import './MonthView.css';
-import SmallEvent from '../events/SmallEvent.js';
+import SmallEvent from '../../events/SmallEvent.js';
+import { getFormattedDate } from '../../formatted-date.js';
 
 class MonthView extends Component {
     constructor(props) {
@@ -15,6 +16,8 @@ class MonthView extends Component {
     }
 
     updateCellHeight() {
+        if (this.cellsRef.current === null) return;
+
         this.setState({
             cellHeight: this.cellsRef.current.clientHeight / 5
         });
@@ -38,14 +41,6 @@ class MonthView extends Component {
     render() {
         // TODO: avoid recomputing this as much
         let cells = this.props.selectedDate.days();
-
-        function getFormattedDate(date) {
-            let year = date.getFullYear();
-            let month = (1 + date.getMonth()).toString().padStart(2, '0');
-            let day = date.getDate().toString().padStart(2, '0');
-
-            return day + '-' + month + '-' + year;
-        }
 
         let today = new Date();
 

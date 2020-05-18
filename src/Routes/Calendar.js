@@ -43,7 +43,9 @@ export default class Calendar extends Component {
     render() {
         return (
             <div className="calendar-widget">
-                <CalendarWidget occupancies={this.state.occupancies} />
+                <CalendarWidget
+                    occupancies={this.state.occupancies}
+                    defaultView='week' />
             </div>
         );
     }

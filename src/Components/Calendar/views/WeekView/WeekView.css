@@ -1,0 +1,77 @@
+.week-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.week-view-day-numbers {
+    display: flex;
+    justify-content: space-between;
+}
+
+.week-view-day-numbers > .day {
+    text-align: center;
+    flex: 1;
+    font-size: 36px;
+    height: 56px;
+    line-height: 56px;
+}
+
+.week-view-week {
+    flex: 1;
+    display: grid;
+}
+
+.week-view-week > .back, .week-view-week > .front {
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.week-view-week > .back {
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 56px;
+    padding-bottom: 58px;
+}
+
+.week-view-week > .back > div {
+    border-top: 1px solid #BDBDBD;
+    flex: 1;
+}
+
+.week-view-week > .back > div:last-child {
+    border-bottom: 1px solid #BDBDBD;
+}
+
+.week-view-week > .front {
+    display: flex;
+}
+
+.days-spacer, .week-view-day-numbers-spacer, .week-view-week > .front > div:first-child {
+    width: 64px;
+}
+
+.week-view-week > .front > div:not(:first-child) {
+    flex: 1;
+    border-left: 1px solid #BDBDBD;
+}
+
+.week-view-week-colum {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    /*padding-bottom: 58px;*/
+    padding-bottom: 48px;
+    padding-right: 13px;
+    /*padding-top: 8px;*/
+    margin-top: -2px;
+    font-size: 14px;
+    color: #757575;
+}
+
+.week-view-front-column {
+    padding-top: 8px;
+    position: relative;
+}

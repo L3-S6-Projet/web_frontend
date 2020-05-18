@@ -21,7 +21,7 @@ class Header extends Component {
                 </div>
 
                 <div className="view-selector-container">
-                    <Select value="month">
+                    <Select value={this.props.view} onChange={(e) => this.props.onChangeView(e.target.value)}>
                         <MenuItem value="month">Month</MenuItem>
                         <MenuItem value="week">Week</MenuItem>
                         <MenuItem value="day">Day</MenuItem>
@@ -35,6 +35,8 @@ class Header extends Component {
 Header.propTypes = {
     children: PropTypes.object,
     onToday: PropTypes.func,
+    view: PropTypes.string,
+    onChangeView: PropTypes.func,
 }
 
 export default Header;
