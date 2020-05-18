@@ -17,9 +17,7 @@ class Calendar extends Component {
         this.state = {
             dialogEvent: null,
             dialogElement: null,
-            // TODO
-            // selectedDate: SelectedDate.today(),
-            selectedDate: new SelectedDate(2, 2, 2020),
+            selectedDate: SelectedDate.today(),
             view: this.props.defaultView,
         };
 
