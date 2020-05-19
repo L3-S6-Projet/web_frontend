@@ -1,15 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 
-import './WeekView.css';
+import '../WeekView/WeekView.css';
 import { getFormattedDate } from '../../formatted-date.js';
 import { buildPartition } from '../../partition.js';
 import debounce from '../../../../Utils/debounce-description.js';
 import FrontColumn from '../FrontColumn.js';
 
-const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-
-class WeekView extends Component {
+class DayView extends Component {
     constructor(props) {
         super(props);
         this.frontEvents = React.createRef();
@@ -40,58 +38,58 @@ class WeekView extends Component {
 
 
     render() {
-        let week = this.props.selectedDate.week();
         let paddingLeft = 64 + 2; // 2 for borders
 
-        const columns = week.map((value, index) => {
-            const key = getFormattedDate(new Date(value.yearNumber, value.monthNumber, value.dayNumber));
+        // TODO
+        let jsDate = new Date(this.props.selectedDate.yearNumber, this.props.selectedDate.monthNumber, this.props.selectedDate.dayNumber);
 
-            let dayOccupancies = [];
+        const value = this.props.selectedDate;
+        const key = getFormattedDate(new Date(value.yearNumber, value.monthNumber, value.dayNumber));
 
-            let dayPartition = null;
+        let dayOccupancies = [];
 
-            if (this.props.occupancies !== null) {
-                let day = this.props.occupancies.days.find(e => e._date == key);
+        let dayPartition = null;
 
-                if (typeof day !== 'undefined' && day !== null) {
-                    dayOccupancies = day.occupancies;
+        if (this.props.occupancies !== null) {
+            let day = this.props.occupancies.days.find(e => e._date == key);
 
-                    // Cache the partition
-                    if (!day.hasOwnProperty('partition'))
-                        day.partition = buildPartition(day.occupancies);
+            if (typeof day !== 'undefined' && day !== null) {
+                dayOccupancies = day.occupancies;
 
-                    dayPartition = day.partition;
-                }
+                // Cache the partition
+                if (!day.hasOwnProperty('partition'))
+                    day.partition = buildPartition(day.occupancies);
+
+                dayPartition = day.partition;
             }
+        }
 
-            if (this.frontEvents.current === null)
-                return <div key={index}></div>;
-            else
-                return <FrontColumn
-                    key={index}
-                    occupancies={dayOccupancies}
-                    partition={dayPartition}
-                    onSelect={this.props.onSelect}
-                    containerWidth={(this.frontEvents.current.clientWidth - paddingLeft) / 7}
-                    containerHeight={this.frontEvents.current.clientHeight} />;
-        });
+        let column;
+
+        if (this.frontEvents.current === null)
+            column = <div></div>;
+        else
+            column = <FrontColumn
+                occupancies={dayOccupancies}
+                partition={dayPartition}
+                onSelect={this.props.onSelect}
+                containerWidth={this.frontEvents.current.clientWidth - paddingLeft} // TODO
+                containerHeight={this.frontEvents.current.clientHeight} />;
 
         const today = new Date();
+        const selected = this.props.selectedDate.dayNumber == today.getDate() && this.props.selectedDate.monthNumber == today.getMonth() && this.props.selectedDate.yearNumber == today.getFullYear()
+        const dayClassName = 'day' + ((selected) ? ' selected' : '');
 
         return (
             <div className="week-view">
-                <div className="days">
+                <div className="days left">
                     <div className="days-spacer"></div>
-                    {DAYS.map((value, index) => <div key={index} className="day">{value}</div>)}
+                    <div className="day">{jsDate.toLocaleString('default', { weekday: 'long' })}</div>
                 </div>
 
-                <div className="week-view-day-numbers">
+                <div className="week-view-day-numbers left">
                     <div className="week-view-day-numbers-spacer"></div>
-                    {week.map((value, index) => {
-                        const selected = value.dayNumber == today.getDate() && value.monthNumber == today.getMonth() && value.yearNumber == today.getFullYear()
-                        const className = 'day' + ((selected) ? ' selected' : '');
-                        return <div key={index} className={className}><div>{value.dayNumber}</div></div>;
-                    })}
+                    <div className={dayClassName}><div>{this.props.selectedDate.dayNumber}</div></div>
                 </div>
 
                 {/* TODO: selected day number */}
@@ -125,7 +123,7 @@ class WeekView extends Component {
                             <div>18:00</div>
                             <div>19:00</div>
                         </div>
-                        {columns}
+                        {column}
                     </div>
                 </div>
             </div>
@@ -133,10 +131,10 @@ class WeekView extends Component {
     }
 }
 
-WeekView.propTypes = {
+DayView.propTypes = {
     onSelect: PropTypes.func,
     occupancies: PropTypes.object,
     selectedDate: PropTypes.object,
 }
 
-export default WeekView;
+export default DayView;

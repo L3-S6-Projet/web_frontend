@@ -7,8 +7,15 @@ import MonthView from './views/MonthView/MonthView.js';
 import MonthViewHeader from './views/MonthView/MonthViewHeader.js';
 import WeekView from './views/WeekView/WeekView.js';
 import WeekViewHeader from './views/WeekView/WeekViewHeader.js';
+import DayView from './views/DayView/DayView.js';
+import DayViewHeader from './views/DayView/DayViewHeader.js';
 import CalendarDialog from './dialog/CalendarDialog.js';
 import SelectedDate from "./SelectedDate.js";
+
+// TODO: load only needed date
+// TODO: offer to select the view from the props
+// TODO: offer to hide the top ribbon
+// TODO: monthView selected
 
 class Calendar extends Component {
     constructor(props) {
@@ -60,13 +67,23 @@ class Calendar extends Component {
                 onSelect={this.onSelect}
                 occupancies={occupancies}
                 selectedDate={this.state.selectedDate} />
-        } else {
+        } else if (this.state.view == 'week') {
             viewHeader = <WeekViewHeader
                 selectedDate={this.state.selectedDate}
                 onPrevWeek={() => this.setState({ selectedDate: this.state.selectedDate.previousWeek() })}
                 onNextWeek={() => this.setState({ selectedDate: this.state.selectedDate.nextWeek() })} />;
 
             view = <WeekView
+                onSelect={this.onSelect}
+                occupancies={occupancies}
+                selectedDate={this.state.selectedDate} />;
+        } else {
+            viewHeader = <DayViewHeader
+                selectedDate={this.state.selectedDate}
+                onPrevDay={() => this.setState({ selectedDate: this.state.selectedDate.previousDay() })}
+                onNextDay={() => this.setState({ selectedDate: this.state.selectedDate.nextDay() })} />;
+
+            view = <DayView
                 onSelect={this.onSelect}
                 occupancies={occupancies}
                 selectedDate={this.state.selectedDate} />;

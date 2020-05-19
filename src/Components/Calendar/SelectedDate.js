@@ -39,6 +39,16 @@ export default class SelectedDate {
         return SelectedDate.fromDate(date);
     }
 
+    previousDay() {
+        let date = new Date(this.yearNumber, this.monthNumber, this.dayNumber - 1);
+        return SelectedDate.fromDate(date);
+    }
+
+    nextDay() {
+        let date = new Date(this.yearNumber, this.monthNumber, this.dayNumber + 1);
+        return SelectedDate.fromDate(date);
+    }
+
     /**
      * Returns an array of 7 * 5 days, including all of the days of
      * this month and a few of the surroundings one.

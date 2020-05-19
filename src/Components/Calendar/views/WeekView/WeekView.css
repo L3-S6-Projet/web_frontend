@@ -71,7 +71,37 @@
     color: #757575;
 }
 
-.week-view-front-column {
-    padding-top: 8px;
-    position: relative;
+.week-view-day-numbers.left {
+    justify-content: flex-start;
+}
+
+.week-view-day-numbers.left > .day {
+    flex: unset;
+    width: 156px;
+}
+
+.days.left {
+    justify-content: flex-start;
+}
+
+.days.left > .day {
+    flex: unset;
+    width: 156px;
+}
+
+.week-view-day-numbers > .day.selected {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.week-view-day-numbers > .day.selected > div {
+    color: white;
+    background: #FF9800;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    width: 56px;
 }
