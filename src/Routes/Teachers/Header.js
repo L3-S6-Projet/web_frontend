@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {withRouter} from 'react-router-dom'
+import React, { Component } from "react";
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import {ArrowBack} from "@material-ui/icons";
+import { ArrowBack } from "@material-ui/icons";
 
 class Header extends Component {
     constructor(props) {
@@ -19,15 +19,15 @@ class Header extends Component {
     render() {
         let type;
 
-        if(this.props.type === "Teacher")
+        if (this.props.type === "Teacher")
             type = (
                 <div id="notseleted-header">
-                    <div id="title-teacher">Enseignant(e) " "</div>
+                    <div id="title-teacher">Enseignant(e) &quot; &quot;</div>
                 </div>
             )
         else type = (
             <div id="notseleted-header">
-                <div id="title-student">Étudiant(e) " "</div>
+                <div id="title-student">Étudiant(e) &quot; &quot;</div>
             </div>
         )
 
@@ -35,7 +35,7 @@ class Header extends Component {
         return (
             <div className="header">
                 <div className="today-button-container">
-                    <ArrowBack onClick={this.handleClick}/>
+                    <ArrowBack onClick={this.handleClick} />
                 </div>
 
                 <div>
