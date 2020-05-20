@@ -14,6 +14,7 @@
     flex: 1;
     overflow: auto;
     border-bottom: 1px solid #BDBDBD;
+    padding: 16px 0px;
 }
 
 .teacher-student-details-calendar-picker {
@@ -24,4 +25,21 @@
 .teacher-student-details > .right {
     flex: 1;
     display: flex;
+}
+
+.teacher-student-details-infos-title {
+    font-size: 18px;
+    padding: 8px 32px;
+}
+
+.teacher-student-details-infos-service {
+    padding: 0 32px;
+}
+
+.teacher-student-details-infos-service > p:first-child {
+    margin-top: 0;
+}
+
+.teacher-student-details-infos-list {
+    padding: 0 16px !important;
 }

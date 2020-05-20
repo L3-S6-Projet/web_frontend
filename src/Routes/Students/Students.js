@@ -1,11 +1,11 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {getUser} from '../../auth.js';
+import { getUser } from '../../auth.js';
 import Scolendar from '../../scolendar/src';
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Splash from "../Splash/Splash"
 import "./Students.css"
@@ -26,7 +26,7 @@ import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class Students extends Component {
     constructor(props) {
@@ -63,13 +63,14 @@ class Students extends Component {
     }
 
 
-    routeToDetails(id) {
+    routeToDetails(event, id) {
+        event.preventDefault();
         // eslint-disable-next-line
         this.props.history.push('/students/' + id);
     }
 
     setPage(page) {
-        this.setState({page: page});
+        this.setState({ page: page });
         this.loadData();
     }
 
@@ -78,27 +79,27 @@ class Students extends Component {
     }
 
     onClassChange(event) {
-        this.setState({className: event.target.value})
+        this.setState({ className: event.target.value })
     }
 
     onFirstNameChange(event) {
-        this.setState({firstName: event.target.value})
+        this.setState({ firstName: event.target.value })
     }
 
     onLastNameChange(event) {
-        this.setState({lastName: event.target.value})
+        this.setState({ lastName: event.target.value })
     }
 
     setAddOpen(addOpen) {
-        this.setState({addOpen: addOpen})
+        this.setState({ addOpen: addOpen })
     }
 
     setDeleteOpen(deleteOpen) {
-        this.setState({deleteOpen: deleteOpen})
+        this.setState({ deleteOpen: deleteOpen })
     }
 
     setStudentCreated(studentCreatedOpen) {
-        this.setState({confirmationOpen: studentCreatedOpen})
+        this.setState({ confirmationOpen: studentCreatedOpen })
     }
 
     //Load all students
@@ -127,7 +128,7 @@ class Students extends Component {
                     students: data.students,
                     total: data.total
                 })
-                this.setState({loaded: true})
+                this.setState({ loaded: true })
             }
         };
         apiInstance.studentsGet(opts, callback);
@@ -144,13 +145,13 @@ class Students extends Component {
     checkAll() {
         let toAdd = this.state.students.map(t => t.id).filter(id => !this.isChecked(id));
         let checked = [...this.state.checked, ...toAdd];
-        this.setState({checked, allChecked: true});
+        this.setState({ checked, allChecked: true });
     }
 
     unCheckAll() {
         let toRemove = this.state.students.map(t => t.id).filter(this.isChecked);
         let checked = this.state.checked.filter(id => !toRemove.includes(id));
-        this.setState({checked, allChecked: false})
+        this.setState({ checked, allChecked: false })
     }
 
     isChecked(id) {
@@ -162,8 +163,8 @@ class Students extends Component {
             return;
         let checked = [...this.state.checked];
         checked.splice(this.state.checked.indexOf(id), 1)
-        this.setState({checked: checked})
-        this.setState({allChecked: false})
+        this.setState({ checked: checked })
+        this.setState({ allChecked: false })
     }
 
     check(id) {
@@ -171,9 +172,9 @@ class Students extends Component {
             return;
         let checked = [...this.state.checked];
         checked.push(id);
-        this.setState({checked: checked})
+        this.setState({ checked: checked })
         setTimeout(() => {
-            this.setState({allChecked: this.testIfAllChecked()})
+            this.setState({ allChecked: this.testIfAllChecked() })
         }, 1);
     }
 
@@ -215,7 +216,7 @@ class Students extends Component {
         };
 
         apiInstance.studentsDelete(this.state.checked, callback);
-        this.setState({checked: []})
+        this.setState({ checked: [] })
         this.loadData();
     }
 
@@ -225,7 +226,7 @@ class Students extends Component {
     // - Vérifier que la création se fait bien pour la fenêtre de confirmation/succes
     addStudent(event) {
         event.preventDefault();
-        this.setState({addOpen: false})
+        this.setState({ addOpen: false })
 
         const defaultClient = Scolendar.ApiClient.instance;
 
@@ -261,22 +262,22 @@ class Students extends Component {
 
     render() {
         if (!this.state.loaded)
-            return <Splash/>
+            return <Splash />
         const rows = this.state.students;
         let head;
         if (this.state.checked.length === 0) {
             head = (
                 <div id="notseleted-header">
                     <div id="title-subjects">Tous les étudiants</div>
-                    <div className="spacer"/>
+                    <div className="spacer" />
                     <TextField label="Chercher par nom ..."
-                               type="text"
-                               variant='filled'
-                               float="right"
-                               InputProps={{
-                                   endAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
-                               }}
-                               className="field"
+                        type="text"
+                        variant='filled'
+                        float="right"
+                        InputProps={{
+                            endAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+                        }}
+                        className="field"
                     />
                 </div>
             );
@@ -284,9 +285,9 @@ class Students extends Component {
             head = (
                 <div id="selected-header">
                     <div id="count-subjects">{this.state.checked.length} sélectionnés</div>
-                    <div className="spacer"/>
+                    <div className="spacer" />
                     <IconButton size="small" color="inherit"
-                                onClick={() => this.setDeleteOpen(true)}><DeleteIcon/></IconButton>
+                        onClick={() => this.setDeleteOpen(true)}><DeleteIcon /></IconButton>
                 </div>
             )
         }
@@ -316,11 +317,11 @@ class Students extends Component {
                         <TableBody>
                             {rows.map((row) => (
                                 <TableRow key={row.id}
-                                          className={clsx(
-                                              {
-                                                  "row-selected": this.isChecked(row.id)
-                                              })
-                                          }>
+                                    className={clsx(
+                                        {
+                                            "row-selected": this.isChecked(row.id)
+                                        })
+                                    }>
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             onChange={event => this.callCheck(row.id)}
@@ -328,7 +329,7 @@ class Students extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.firstName}</a>
+                                        <a href="" onClick={e => this.routeToDetails(e, row.id)}>{row.firstName}</a>
                                     </TableCell>
                                     <TableCell component="th" scope="row">
                                         {row.lastName}
@@ -351,7 +352,7 @@ class Students extends Component {
                     </Table>
                 </TableContainer>
                 <Fab id="add-button" aria-label="add" onClick={() => this.setAddOpen(true)}>
-                    <AddIcon/>
+                    <AddIcon />
                 </Fab>
 
                 <Dialog
@@ -386,18 +387,18 @@ class Students extends Component {
                     <form onSubmit={this.addStudent}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Prénom"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onFirstNameChange.bind(this)}
+                                type="text"
+                                variant='filled'
+                                className="add field"
+                                onChange={this.onFirstNameChange.bind(this)}
                             />
                             <TextField required label="Nom"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onLastNameChange.bind(this)}
+                                type="text"
+                                variant='filled'
+                                className="add field"
+                                onChange={this.onLastNameChange.bind(this)}
                             />
-                            <FormControl variant="filled"  required className="add field">
+                            <FormControl variant="filled" required className="add field">
                                 <InputLabel>Classe</InputLabel>
                                 <Select native required onChange={this.onClassChange.bind(this)}>
                                     <option value="" aria-label="None" />

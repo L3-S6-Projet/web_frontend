@@ -80,7 +80,6 @@ class TeacherDetails extends Component {
         let rank = null;
 
         if (this.state.teacher !== null) {
-            const rankEnum = this.state.teacher.rank;
             const mapping = {
                 "MACO": "Maître de conférences",
                 "PROF": "Professeur",
@@ -91,6 +90,60 @@ class TeacherDetails extends Component {
             };
             rank = mapping[this.state.teacher.rank];
         }
+
+        const paragraphs = [];
+
+        if (this.state.teacher !== null) {
+            for (let service of this.state.teacher.services) {
+                let text = "Pour l'année " + service.class + ", l'enseignant ";
+
+                let total = (
+                    service.cm +
+                    service.projet +
+                    service.td +
+                    service.tp +
+                    service.administration +
+                    service.external
+                );
+
+                if (total <= 0) {
+                    text += "n'a pas proposé de cours."
+                } else {
+                    text += "à proposé ";
+
+                    let parts = [];
+
+                    if (service.cm > 0)
+                        parts.push(service.cm + ' heures de CM');
+
+                    if (service.projet > 0)
+                        parts.push(service.projet + ' heures de projet');
+
+                    if (service.td > 0)
+                        parts.push(service.td + ' heures de TD');
+
+                    if (service.tp > 0)
+                        parts.push(service.tp + ' heures de TP');
+
+                    if (service.administration > 0)
+                        parts.push(service.administration + ' heures d\'administration');
+
+                    if (service.external > 0)
+                        parts.push(service.external + ' heures externes');
+
+                    text += parts.slice(0, -1).join(', ') + ' et ' + parts.slice(-1);
+                    text += '.';
+                }
+
+                paragraphs.push(text);
+            }
+
+            paragraphs.push(
+                'La valeur total de son service est de ' + this.state.teacher.totalService + ' heures.'
+            );
+        }
+
+        console.log(this.state.teacher);
 
         return (
             <div className="teacher-student-details-container">
@@ -103,7 +156,11 @@ class TeacherDetails extends Component {
                 <div className="teacher-student-details">
                     <div className="left">
                         <div className="teacher-student-details-infos">
-                            <List>
+                            <div className="teacher-student-details-infos-title">
+                                Informations
+                            </div>
+
+                            <List className="teacher-student-details-infos-list">
                                 <ListItem>
                                     <ListItemIcon>
                                         <AccountCircle />
@@ -143,6 +200,14 @@ class TeacherDetails extends Component {
                                     <ListItemText primary={rank} secondary="Grade" inset />
                                 </ListItem>
                             </List>
+
+                            <div className="teacher-student-details-infos-title">
+                                Service
+                            </div>
+
+                            <div className="teacher-student-details-infos-service">
+                                {paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+                            </div>
                         </div>
 
                         <div className="teacher-student-details-calendar-picker">
