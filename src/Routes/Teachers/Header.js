@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ArrowBack } from "@material-ui/icons";
+import IconButton from '@material-ui/core/IconButton';
+import Edit from '@material-ui/icons/Edit';
 
 class Header extends Component {
     constructor(props) {
@@ -11,7 +13,7 @@ class Header extends Component {
         this.handleClick = this.handleClick.bind(this)
     }
 
-    handleClick() {
+    handleClick(event) {
         event.preventDefault()
         this.props.history.goBack()
     }
@@ -21,22 +23,21 @@ class Header extends Component {
 
         if (this.props.type === "Teacher")
             type = (
-                <div id="notseleted-header">
-                    <div id="title-teacher">Enseignant(e) &quot; &quot;</div>
+                <div className="notselected-header">
+                    <div className="title-teacher">Enseignant(e) &quot;{this.props.name}&quot;</div>
                 </div>
             )
         else type = (
-            <div id="notseleted-header">
-                <div id="title-student">Étudiant(e) &quot; &quot;</div>
+            <div className="notselected-header">
+                <div className="title-student">Étudiant(e) &quot;{this.props.name}&quot;</div>
             </div>
-        )
-
+        );
 
         return (
             <div className="header">
-                <div className="today-button-container">
-                    <ArrowBack onClick={this.handleClick} />
-                </div>
+                <IconButton aria-label="chevron-left" onClick={this.handleClick}>
+                    <ArrowBack />
+                </IconButton>
 
                 <div>
                     {type}
@@ -48,21 +49,25 @@ class Header extends Component {
                         <MenuItem value="week">Week</MenuItem>
                         <MenuItem value="day">Day</MenuItem>
                     </Select>
+                    <div className="edit-button">
+                        <IconButton aria-label="edit" onClick={(e) => { /* TODO */ }}>
+                            <Edit />
+                        </IconButton>
+                    </div>
                 </div>
             </div>
         );
     }
 }
 
-
-const { string, object } = PropTypes
 Header.propTypes = {
-    type: PropTypes.object,
-    onToday: PropTypes.func,
+    type: PropTypes.string,
+    //onToday: PropTypes.func,
     view: PropTypes.string,
     onChangeView: PropTypes.func,
-    title: string.isRequired,
-    history: object
+    //title: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    history: PropTypes.object
 }
 
 export default withRouter(Header)

@@ -1,6 +1,6 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
@@ -28,10 +28,10 @@ import Typography from '@material-ui/core/Typography';
 import "./Teachers.css"
 
 import Scolendar from '../../scolendar/src';
-import {getUser} from '../../auth.js';
+import { getUser } from '../../auth.js';
 import Splash from "../Splash/Splash";
 import Checkbox from '@material-ui/core/Checkbox';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 export class Teachers extends Component {
     constructor(props) {
@@ -79,15 +79,15 @@ export class Teachers extends Component {
     }
 
     setNewPassword(newPassword) {
-        this.setState({newPassword: newPassword})
+        this.setState({ newPassword: newPassword })
     }
 
     setNewUsername(newUsername) {
-        this.setState({newUsername: newUsername})
+        this.setState({ newUsername: newUsername })
     }
 
     setSuccessOpen(successOpen) {
-        this.setState({successOpen: successOpen})
+        this.setState({ successOpen: successOpen })
         if (!successOpen) {
             this.setState({
                 newPassword: null,
@@ -97,20 +97,20 @@ export class Teachers extends Component {
     }
 
     setPopOverText(text) {
-        this.setState({popOverText: text})
+        this.setState({ popOverText: text })
     }
 
     setPopOverOpen(popOverOpen) {
-        this.setState({popOverOpen: popOverOpen})
+        this.setState({ popOverOpen: popOverOpen })
     }
 
     setPage(page) {
-        this.setState({page: page});
+        this.setState({ page: page });
         setTimeout(() => this.loadData(), 200);
     }
 
     onQueryChange(event) {
-        this.setState({query: event.target.value})
+        this.setState({ query: event.target.value })
         let immediate = false
         if (event.target.value === "")
             immediate = true;
@@ -118,40 +118,39 @@ export class Teachers extends Component {
     }
 
     onNameChange(event) {
-        this.setState({firstName: event.target.value})
+        this.setState({ firstName: event.target.value })
     }
 
     onlastNameChange(event) {
-        this.setState({lastName: event.target.value})
+        this.setState({ lastName: event.target.value })
     }
 
     onEmailChange(event) {
-        this.setState({email: event.target.value})
+        this.setState({ email: event.target.value })
     }
 
     onPhoneChange(event) {
-        this.setState({phone: event.target.value})
+        this.setState({ phone: event.target.value })
     }
 
     onGradeChange(event) {
-        this.setState({grade: event.target.value})
+        this.setState({ grade: event.target.value })
     }
 
     setAddOpen(addOpen) {
-        this.setState({addOpen: addOpen})
+        this.setState({ addOpen: addOpen })
     }
 
     setDeleteOpen(deleteOpen) {
-        this.setState({deleteOpen: deleteOpen})
+        this.setState({ deleteOpen: deleteOpen })
     }
 
     componentDidMount() {
         this.loadData();
     }
 
-
-
-    routeToDetails(id) {
+    routeToDetails(e, id) {
+        e.preventDefault();
         // eslint-disable-next-line
         this.props.history.push('/teachers/' + id);
     }
@@ -183,7 +182,7 @@ export class Teachers extends Component {
                     teachers: data.teachers,
                     total: data.total
                 })
-                this.setState({loaded: true})
+                this.setState({ loaded: true })
             }
         };
         apiInstance.teachersGet(opts, callback);
@@ -200,13 +199,13 @@ export class Teachers extends Component {
     checkAll() {
         let toAdd = this.state.teachers.map(t => t.id).filter(id => !this.isChecked(id));
         let checked = [...this.state.checked, ...toAdd];
-        this.setState({checked, allChecked: true});
+        this.setState({ checked, allChecked: true });
     }
 
     unCheckAll() {
         let toRemove = this.state.teachers.map(t => t.id).filter(this.isChecked);
         let checked = this.state.checked.filter(id => !toRemove.includes(id));
-        this.setState({checked, allChecked: false})
+        this.setState({ checked, allChecked: false })
     }
 
     isChecked(id) {
@@ -218,8 +217,8 @@ export class Teachers extends Component {
             return;
         let checked = [...this.state.checked];
         checked.splice(this.state.checked.indexOf(id), 1)
-        this.setState({checked: checked})
-        this.setState({allChecked: false})
+        this.setState({ checked: checked })
+        this.setState({ allChecked: false })
     }
 
     check(id) {
@@ -227,9 +226,9 @@ export class Teachers extends Component {
             return;
         let checked = [...this.state.checked];
         checked.push(id);
-        this.setState({checked: checked})
+        this.setState({ checked: checked })
         setTimeout(() => {
-            this.setState({allChecked: this.testIfAllChecked()})
+            this.setState({ allChecked: this.testIfAllChecked() })
         }, 1);
 
     }
@@ -271,13 +270,13 @@ export class Teachers extends Component {
             }
         };
         apiInstance.teachersDelete(this.state.checked, callback);
-        this.setState({checked : []})
+        this.setState({ checked: [] })
         this.loadData();
     }
 
     addTeacher(event) {
         event.preventDefault();
-        this.setState({addOpen: false})
+        this.setState({ addOpen: false })
 
 
         const defaultClient = Scolendar.ApiClient.instance;
@@ -322,23 +321,23 @@ export class Teachers extends Component {
 
     render() {
         if (!this.state.loaded)
-            return <Splash/>
+            return <Splash />
         const rows = this.state.teachers;
         let head;
         if (this.state.checked.length === 0) {
             head = (
                 <div id="notseleted-header">
                     <div id="title-teachers">Tous les enseignants</div>
-                    <div className="spacer"/>
+                    <div className="spacer" />
                     <TextField label="Chercher par nom ..."
-                               type="text"
-                               variant='filled'
-                               float="right"
-                               onChange={this.onQueryChange.bind(this)}
-                               InputProps={{
-                                   endAdornment: <InputAdornment position="end"><SearchIcon/></InputAdornment>,
-                               }}
-                               className="field"
+                        type="text"
+                        variant='filled'
+                        float="right"
+                        onChange={this.onQueryChange.bind(this)}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end"><SearchIcon /></InputAdornment>,
+                        }}
+                        className="field"
                     />
                 </div>
             );
@@ -346,9 +345,9 @@ export class Teachers extends Component {
             head = (
                 <div id="selected-header">
                     <div id="count-teachers">{this.state.checked.length} sélectionnés</div>
-                    <div className="spacer"/>
+                    <div className="spacer" />
                     <IconButton size="small" color="inherit"
-                                onClick={() => this.setDeleteOpen(true)}><DeleteIcon/></IconButton>
+                        onClick={() => this.setDeleteOpen(true)}><DeleteIcon /></IconButton>
                 </div>
             )
         }
@@ -378,11 +377,11 @@ export class Teachers extends Component {
                         <TableBody>
                             {rows.map((row) => (
                                 <TableRow key={row.id}
-                                          className={clsx(
-                                              {
-                                                  "row-selected": this.isChecked(row.id)
-                                              })
-                                          }>
+                                    className={clsx(
+                                        {
+                                            "row-selected": this.isChecked(row.id)
+                                        })
+                                    }>
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             onChange={event => this.callCheck(row.id)}
@@ -390,7 +389,7 @@ export class Teachers extends Component {
                                         />
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.firstName}</a>
+                                        <a href="" onClick={(e) => this.routeToDetails(e, row.id)}>{row.firstName}</a>
                                     </TableCell>
                                     <TableCell component="th" scope="row">{row.lastName}</TableCell>
                                     <TableCell component="th" scope="row">{row.email}</TableCell>
@@ -444,33 +443,33 @@ export class Teachers extends Component {
                     <form onSubmit={this.addTeacher}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Prénom"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onNameChange.bind(this)}
+                                type="text"
+                                variant='filled'
+                                className="add field"
+                                onChange={this.onNameChange.bind(this)}
                             />
                             <TextField required label="Nom"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onlastNameChange.bind(this)}
+                                type="text"
+                                variant='filled'
+                                className="add field"
+                                onChange={this.onlastNameChange.bind(this)}
                             />
                             <TextField label="Email"
-                                       type="email"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onEmailChange.bind(this)}
+                                type="email"
+                                variant='filled'
+                                className="add field"
+                                onChange={this.onEmailChange.bind(this)}
                             />
                             <TextField label="Numéro de téléphone"
-                                       type="tel"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onPhoneChange.bind(this)}
+                                type="tel"
+                                variant='filled'
+                                className="add field"
+                                onChange={this.onPhoneChange.bind(this)}
                             />
                             <FormControl variant="filled" required className="add field">
                                 <InputLabel>Grade</InputLabel>
                                 <Select native required onChange={this.onGradeChange.bind(this)}>
-                                    <option value="" aria-label="None"/>
+                                    <option value="" aria-label="None" />
                                     <option value={"MACO"}>MACO</option>
                                     <option value={"PROF"}>PROF</option>
                                     <option value={"PRAG"}>PRAG</option>
@@ -497,8 +496,8 @@ export class Teachers extends Component {
                 >
                     <DialogTitle id="alert-dialog-title">{"Succès"}</DialogTitle>
                     <DialogContent>
-                            Veuillez transmettre les informations suivantes : <br/>
-                            Nom d’utilisateur : {this.state.newUsername} <br/>
+                        Veuillez transmettre les informations suivantes : <br />
+                            Nom d’utilisateur : {this.state.newUsername} <br />
                             Mot de passe : {this.state.newPassword}
                     </DialogContent>
                     <DialogActions>
@@ -508,7 +507,7 @@ export class Teachers extends Component {
                     </DialogActions>
                 </Dialog>
                 <Fab id="add-button" aria-label="add" onClick={() => this.setAddOpen(true)}>
-                    <AddIcon/>
+                    <AddIcon />
                 </Fab>
                 <Popover open={this.state.popOverOpen}>
                     {this.state.popOverText}

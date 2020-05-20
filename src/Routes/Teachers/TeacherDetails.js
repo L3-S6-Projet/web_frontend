@@ -1,58 +1,171 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Avatar from '@material-ui/core/Avatar';
 import EmailIcon from '@material-ui/icons/Email';
-import {AccountCircle, Call} from "@material-ui/icons";
-import Header from './Header.js'
+import { AccountCircle, Call } from "@material-ui/icons";
+import { withRouter } from 'react-router-dom';
+
+import Header from './Header.js';
+import Calendar from '../../Components/Calendar/Calendar.js';
+import CalendarDatePicker from '../../Components/Calendar/DatePicker/CalendarDatePicker.js';
+import SelectedDate from "../../Components/Calendar/SelectedDate.js";
+import Scolendar from '../../scolendar/src';
+import { getUser } from '../../auth.js';
+
+import '../Details.css';
 
 class TeacherDetails extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.loadOccupancies = this.loadOccupancies.bind(this);
+
+        this.state = {
+            selectedDate: SelectedDate.today(),
+            view: 'day',
+            teacher: null,
+        };
+
+        this.onSelectDay = this.onSelectDay.bind(this);
+    }
+
+    componentDidMount() {
+        this.loadTeacher();
+    }
+
+    loadTeacher() {
+        // eslint-disable-next-line
+        const id = this.props.match.params.id;
+
+        const defaultClient = Scolendar.ApiClient.instance;
+
+        const token = defaultClient.authentications['token'];
+        token.apiKey = getUser().token;
+        token.apiKeyPrefix = 'Bearer';
+
+        const apiInstance = new Scolendar.TeacherApi();
+
+        const callback = (error, data, response) => {
+            if (error) {
+                console.error(error);
+            } else {
+                this.setState({ teacher: data.teacher });
+            }
+        };
+
+        apiInstance.teachersIdGet(id, callback);
+    }
+
+    loadOccupancies(request, callback) {
+        // eslint-disable-next-line
+        const id = this.props.match.params.id;
+
+        const apiInstance = new Scolendar.TeacherApi();
+        apiInstance.teachersIdOccupanciesGet(id, request, callback);
+    }
+
+    onSelectDay(day) {
+        const selectedDate = new SelectedDate(
+            day.dayNumber,
+            day.monthNumber,
+            day.yearNumber
+        );
+
+        this.setState({ selectedDate });
     }
 
     render() {
-        return (
-            <div>
-                <Header type="Teacher"/>
-                <List>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <AccountCircle/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Nom de prof" secondary="Nom"/>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemText primary="Nom utilisateur" secondary="Nom d'utilisateur"/>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <EmailIcon/>
-                            </Avatar>
-                        </ListItemAvatar>
+        let rank = null;
 
-                        <ListItemText primary="Mail" secondary="Email"/>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <Call/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Num" secondary="Numéro de téléphone"/>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemText primary="Professeur" secondary="Grade"/>
-                    </ListItem>
-                </List>
+        if (this.state.teacher !== null) {
+            const rankEnum = this.state.teacher.rank;
+            const mapping = {
+                "MACO": "Maître de conférences",
+                "PROF": "Professeur",
+                "PRAG": "PRAG",
+                "ATER": "ATER",
+                "PAST": "PAST",
+                "MONI": "Moniteur",
+            };
+            rank = mapping[this.state.teacher.rank];
+        }
+
+        return (
+            <div className="teacher-student-details-container">
+                <Header
+                    type="Teacher"
+                    name={this.state.teacher === null ? ':' : (this.state.teacher.firstName + ' ' + this.state.teacher.lastName)}
+                    view={this.state.view}
+                    onChangeView={view => this.setState({ view })} />
+
+                <div className="teacher-student-details">
+                    <div className="left">
+                        <div className="teacher-student-details-infos">
+                            <List>
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <AccountCircle />
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        primary={this.state.teacher === null ? ':' : (this.state.teacher.firstName + ' ' + this.state.teacher.lastName)}
+                                        secondary="Nom" />
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItemText
+                                        primary={this.state.teacher === null ? ':' : this.state.teacher.username}
+                                        secondary="Nom d'utilisateur"
+                                        inset />
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <EmailIcon />
+                                    </ListItemIcon>
+
+                                    <ListItemText
+                                        primary={this.state.teacher === null ? ':' : (this.state.teacher.email === null ? 'Non ajouté' : this.state.teacher.email)}
+                                        secondary="Email" />
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <Call />
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        primary={this.state.teacher === null ? ':' : (this.state.teacher.phoneNumber === null ? 'Non ajouté' : this.state.teacher.phoneNumber)}
+                                        secondary="Numéro de téléphone" />
+                                </ListItem>
+
+                                <ListItem>
+                                    <ListItemText primary={rank} secondary="Grade" inset />
+                                </ListItem>
+                            </List>
+                        </div>
+
+                        <div className="teacher-student-details-calendar-picker">
+                            <CalendarDatePicker
+                                selectedDate={this.state.selectedDate}
+                                onPrevMonth={() => this.setState({ selectedDate: this.state.selectedDate.previousMonth() })}
+                                onNextMonth={() => this.setState({ selectedDate: this.state.selectedDate.nextMonth() })}
+                                onSelectDay={this.onSelectDay}
+                                view={this.state.view} />
+                        </div>
+                    </div>
+                    <div className="right">
+                        <Calendar
+                            loadOccupancies={this.loadOccupancies}
+                            showHeader={false}
+                            view={this.state.view}
+                            setView={null}
+                            selectedDate={this.state.selectedDate} />
+                    </div>
+                </div>
             </div>
         );
     }
 }
 
-export default TeacherDetails
+export default withRouter(TeacherDetails);

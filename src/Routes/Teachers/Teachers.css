@@ -24,12 +24,12 @@ a{
     color: rgba(0, 0, 0, 0.87);
 }
 
-#notseleted-header {
+.notselected-header {
     display: flex;
     flex-direction: row;
 }
 
-#selected-header {
+.selected-header {
     display: flex;
     flex-direction: row;
     background: #303F9F;

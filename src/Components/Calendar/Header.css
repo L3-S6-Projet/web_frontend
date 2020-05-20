@@ -1,8 +1,10 @@
 .header {
-    padding: 28px;
+    padding: 52px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: 1px solid #BDBDBD;
+    height: 160px;
 }
 
 .today-button-container {
@@ -20,4 +22,13 @@
     flex: 1;
     display: flex;
     justify-content: flex-end;
+}
+
+.title-teacher, .title-student {
+    font-size: 24px;
+    padding-left: 12px;
+}
+
+.edit-button {
+    margin-left: 16px;
 }

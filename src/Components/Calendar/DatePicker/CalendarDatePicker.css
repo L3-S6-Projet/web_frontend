@@ -1,0 +1,52 @@
+.calendar-date-picker {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.calendar-date-picker-controls {
+    padding-left: 16px;
+    padding-right: 6px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.calendar-date-picker-days {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-date-picker-column-header {
+    font-weight: bold;
+}
+
+.calendar-date-picker-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-date-picker-cell-day {
+    cursor: pointer;
+}
+
+.calendar-date-picker-cell.selected {
+    font-weight: bold;
+}
+
+.calendar-date-picker-cell.today > div {
+    color: white;
+    background: #FF9800;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    width: 32px;
+}
+
+.calendar-date-picker-date {
+    font-weight: bold;
+}

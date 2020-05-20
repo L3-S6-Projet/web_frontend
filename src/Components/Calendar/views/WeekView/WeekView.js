@@ -137,6 +137,7 @@ WeekView.propTypes = {
     onSelect: PropTypes.func,
     occupancies: PropTypes.object,
     selectedDate: PropTypes.object,
+    showHeader: PropTypes.bool,
 }
 
 export default WeekView;

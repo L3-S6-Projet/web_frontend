@@ -127,5 +127,6 @@ Cell.propTypes = {
     selected: PropTypes.bool,
     height: PropTypes.number,
     onSelect: PropTypes.func,
-    occupancies: PropTypes.object,
+    occupancies: PropTypes.array,
+    showHeader: PropTypes.bool,
 }

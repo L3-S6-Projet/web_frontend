@@ -1,0 +1,27 @@
+.teacher-student-details {
+    height: calc(100vh - 160px);
+    display: flex;
+}
+
+.teacher-student-details > .left {
+    width: 292px;
+    border-right: 1px solid #BDBDBD;
+    display: flex;
+    flex-direction: column;
+}
+
+.teacher-student-details-infos {
+    flex: 1;
+    overflow: auto;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+.teacher-student-details-calendar-picker {
+    height: 390px;
+    display: flex;
+}
+
+.teacher-student-details > .right {
+    flex: 1;
+    display: flex;
+}

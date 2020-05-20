@@ -9,44 +9,23 @@ import './Calendar.css';
 export default class Calendar extends Component {
     constructor(props) {
         super(props);
-        this.state = { occupancies: null };
-    }
-
-    componentDidMount() {
-        this.loadData();
-    }
-
-    loadData() {
-        // TODO: only load needed data
-
-        const defaultClient = Scolendar.ApiClient.instance;
-
-        const token = defaultClient.authentications['token'];
-        token.apiKey = getUser().token;
-        token.apiKeyPrefix = 'Bearer';
-
-        const apiInstance = new Scolendar.OccupanciesApi();
-
-        const opts = {};
-
-        const callback = (error, data, response) => {
-            if (error) {
-                // TODO: handle error
-                console.error(error);
-            } else {
-                this.setState({ occupancies: data });
-            }
-        };
-        apiInstance.occupanciesGet(opts, callback);
+        this.state = { view: 'month' };
     }
 
     render() {
         return (
             <div className="calendar-widget">
                 <CalendarWidget
-                    occupancies={this.state.occupancies}
-                    defaultView='week' />
+                    loadOccupancies={loadOccupancies}
+                    showHeader={true}
+                    view={this.state.view}
+                    onViewChange={view => this.setState({ view })} />
             </div>
         );
     }
 }
+
+const loadOccupancies = (request, callback) => {
+    const apiInstance = new Scolendar.OccupanciesApi();
+    apiInstance.occupanciesGet(request, callback);
+};

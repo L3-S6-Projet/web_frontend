@@ -56,13 +56,13 @@ export default class SelectedDate {
     days() {
         // TODO: clean up all this
 
-        let n = numberOfDaysInMonth(this.monthNumber, this.yearNumber);
+        const n = numberOfDaysInMonth(this.monthNumber, this.yearNumber);
 
         const days = [];
 
         // First, add all days in the same week before the start of the first day.
         const previousMonthN = numberOfDaysInMonth(this.monthNumber - 1, this.yearNumber);
-        const previousMonthtoAdd = getWeekDay(this.dayNumber, this.monthNumber, this.yearNumber) - 2;
+        const previousMonthtoAdd = getWeekDay(1, this.monthNumber, this.yearNumber);
 
         const lastMonthDate = new Date(this.yearNumber, this.monthNumber - 1);
         const nextMonthDate = new Date(this.yearNumber, this.monthNumber + 1);
@@ -119,6 +119,13 @@ export default class SelectedDate {
         return days;
     }
 
+    equals(other) {
+        return (
+            this.dayNumber === other.dayNumber &&
+            this.monthNumber === other.monthNumber &&
+            this.yearNumber === other.yearNumber
+        );
+    }
 }
 
 function numberOfDaysInMonth(monthNumber, yearNumber) {

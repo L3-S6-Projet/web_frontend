@@ -80,17 +80,29 @@ class DayView extends Component {
         const selected = this.props.selectedDate.dayNumber == today.getDate() && this.props.selectedDate.monthNumber == today.getMonth() && this.props.selectedDate.yearNumber == today.getFullYear()
         const dayClassName = 'day' + ((selected) ? ' selected' : '');
 
-        return (
-            <div className="week-view">
-                <div className="days left">
+        let header = [];
+
+        if (this.props.showHeader) {
+            header = [
+                <div className="days left" key={0}>
                     <div className="days-spacer"></div>
                     <div className="day">{jsDate.toLocaleString('default', { weekday: 'long' })}</div>
-                </div>
+                </div>,
 
-                <div className="week-view-day-numbers left">
+                <div className="week-view-day-numbers left" key={1}>
                     <div className="week-view-day-numbers-spacer"></div>
                     <div className={dayClassName}><div>{this.props.selectedDate.dayNumber}</div></div>
                 </div>
+            ];
+        } else {
+            header = [
+                <div key={0} style={{ paddingTop: 56 }}></div>
+            ]
+        }
+
+        return (
+            <div className="week-view">
+                {header}
 
                 {/* TODO: selected day number */}
 
@@ -135,6 +147,7 @@ DayView.propTypes = {
     onSelect: PropTypes.func,
     occupancies: PropTypes.object,
     selectedDate: PropTypes.object,
+    showHeader: PropTypes.bool,
 }
 
 export default DayView;
