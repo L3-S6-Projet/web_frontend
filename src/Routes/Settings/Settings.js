@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import DialogContentText from "@material-ui/core/DialogContentText";
-import {getUser} from "../../auth";
+import { getUser, getUserKind } from "../../auth";
 import Scolendar from '../../scolendar/src';
 
 import Popover from '@material-ui/core/Popover';
@@ -31,8 +31,8 @@ export default class Settings extends Component {
             newPassword: null,
             showOldPassword: false,
             showNewPassword: false,
-            passwordChangeOpen : false,
-            deleteDataOpen : false
+            passwordChangeOpen: false,
+            deleteDataOpen: false
         };
 
         this.changePassword = this.changePassword.bind(this);
@@ -59,7 +59,7 @@ export default class Settings extends Component {
         this.setState({
             oldPassword: event.target.value,
         })
-        console.log('OlPass'+ this.state.oldPassword)
+        console.log('OlPass' + this.state.oldPassword)
     }
 
     onNewPasswordChange(event) {
@@ -69,93 +69,93 @@ export default class Settings extends Component {
         console.log('NewPass' + this.state.newPassword)
     }
 
-    setPasswordChangeOpen(boolean){
-        this.setState({passwordChangeOpen: boolean})
+    setPasswordChangeOpen(boolean) {
+        this.setState({ passwordChangeOpen: boolean })
     }
 
-    setDeleteDataOpen(boolean){
-        this.setState({deleteDataOpen: boolean})
+    setDeleteDataOpen(boolean) {
+        this.setState({ deleteDataOpen: boolean })
     }
 
 
     //TODO : Mettre ça pour les Étudiants et les Prof seulement
-    SettingsStudentTeacher(){
+    SettingsStudentTeacher() {
         return (<div id='settings-page'>
-                <div id='settings-column'>
-                    <div className="spacer"></div>
+            <div id='settings-column'>
+                <div className="spacer"></div>
 
-                    <div id='title'>Changer mon mot de passe :</div>
-                    <form onSubmit={this.changePassword}>
-                        <TextField variant="filled"
-                                   label="Votre ancien mot de passe"
-                                   type={this.state.showOldPassword ? 'text' : 'password'}
-                                   autoComplete="current-password"
-                                   disabled={this.state.loading}
-                                   margin="normal"
-                                   size="small"
-                                   fullWidth={true}
-                                   autoFocus
-                                   onChange={this.onOldPasswordChange.bind(this)}
-                                   value={this.state.oldPassword}
-                                   InputProps={{
-                                       endAdornment: <InputAdornment position="end">
-                                           <IconButton
-                                               aria-label="toggle password visibility"
-                                               onClick={this.handleClickShowOldPassword.bind(this)}
-                                               onMouseDown={
-                                                   this.handleMouseDownPassword.bind(this)
-                                               }
-                                               edge="end"
-                                           >
-                                               {this.state.showOldPassword ? <Visibility/> : <VisibilityOff/>}
-                                           </IconButton>
-                                       </InputAdornment>,
-                                   }}
+                <div id='title'>Changer mon mot de passe :</div>
+                <form onSubmit={this.changePassword}>
+                    <TextField variant="filled"
+                        label="Votre ancien mot de passe"
+                        type={this.state.showOldPassword ? 'text' : 'password'}
+                        autoComplete="current-password"
+                        disabled={this.state.loading}
+                        margin="normal"
+                        size="small"
+                        fullWidth={true}
+                        autoFocus
+                        onChange={this.onOldPasswordChange.bind(this)}
+                        value={this.state.oldPassword}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={this.handleClickShowOldPassword.bind(this)}
+                                    onMouseDown={
+                                        this.handleMouseDownPassword.bind(this)
+                                    }
+                                    edge="end"
+                                >
+                                    {this.state.showOldPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>,
+                        }}
 
-                        />
+                    />
 
-                        <TextField variant="filled"
-                                   label="Votre nouveau mot de passe"
-                                   type={this.state.showNewPassword ? 'text' : 'password'}
-                                   autoComplete="current-password"
-                                   disabled={this.state.loading}
-                                   margin="normal"
-                                   size="small"
-                                   fullWidth={true}
-                                   autoFocus
-                                   onChange={this.onNewPasswordChange.bind(this)}
-                                   value={this.state.newPassword}
-                                   InputProps={{
-                                       endAdornment: <InputAdornment position="end">
-                                           <IconButton
-                                               aria-label="toggle password visibility"
-                                               onClick={this.handleClickShowNewPassword.bind(this)}
-                                               onMouseDown={
-                                                   this.handleClickShowNewPassword.bind(this)
-                                               }
-                                               edge="end"
-                                           >
-                                               {this.state.showNewPassword ? <Visibility/> : <VisibilityOff/>}
-                                           </IconButton>
-                                       </InputAdornment>,
-                                   }}
+                    <TextField variant="filled"
+                        label="Votre nouveau mot de passe"
+                        type={this.state.showNewPassword ? 'text' : 'password'}
+                        autoComplete="current-password"
+                        disabled={this.state.loading}
+                        margin="normal"
+                        size="small"
+                        fullWidth={true}
+                        autoFocus
+                        onChange={this.onNewPasswordChange.bind(this)}
+                        value={this.state.newPassword}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={this.handleClickShowNewPassword.bind(this)}
+                                    onMouseDown={
+                                        this.handleClickShowNewPassword.bind(this)
+                                    }
+                                    edge="end"
+                                >
+                                    {this.state.showNewPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>,
+                        }}
 
-                        />
-                        <div className="container">
-                            <div id="controls">
-                                <Button
-                                    type="submit"
-                                    disabled={this.state.loading}
-                                    id='settings-button'
-                                    variant="contained">
-                                    Valider
+                    />
+                    <div className="container">
+                        <div id="controls">
+                            <Button
+                                type="submit"
+                                disabled={this.state.loading}
+                                id='settings-button'
+                                variant="contained">
+                                Valider
                                 </Button>
-                            </div>
                         </div>
-                    </form>
-                    <div className="spacer"></div>
-                </div>
+                    </div>
+                </form>
+                <div className="spacer"></div>
             </div>
+        </div>
         )
     }
 
@@ -171,7 +171,7 @@ export default class Settings extends Component {
     //Todo : add a function to check invalid form for password
 
 
-    changePassword(event){
+    changePassword(event) {
         event.preventDefault();
         const defaultClient = Scolendar.ApiClient.instance;
 
@@ -184,10 +184,10 @@ export default class Settings extends Component {
         const profileUpdateRequest = new Scolendar.ProfileUpdateRequest(); // ProfileUpdateRequest |
 
         profileUpdateRequest.oldPassword = this.state.oldPassword;
-        profileUpdateRequest.password= this.state.newPassword;
+        profileUpdateRequest.password = this.state.newPassword;
         console.log(profileUpdateRequest)
 
-        const callback = function(error, data, response) {
+        const callback = function (error, data, response) {
             if (error) {
                 console.error(error);
             } else {
@@ -195,7 +195,7 @@ export default class Settings extends Component {
             }
         };
 
-        apiInstance.profilePut( {
+        apiInstance.profilePut({
             "old_password": this.state.oldPassword,
             "password": this.state.newPassword,
         }, callback);
@@ -205,19 +205,21 @@ export default class Settings extends Component {
     }
 
     //TODO : Reset entièrement les données du serveur via API
-    deleteData (){
+    deleteData() {
         alert('Tout est supprimé');
     }
 
     render() {
+        const kind = getUserKind();
+
         return (
-            <div >
+            <div className="settings-page">
                 <div id='title'>Paramètres</div>
                 <Paper>
                     <MenuList>
                         <MenuItem onClick={() => this.setPasswordChangeOpen(true)}>Changer mon mot de passe</MenuItem>
-                        <Divider />
-                        <MenuItem onClick={() => this.setDeleteDataOpen(true)}>Supprimer toutes les données du serveur</MenuItem>
+                        {kind.administrator && <Divider />}
+                        {kind.administrator && <MenuItem onClick={() => this.setDeleteDataOpen(true)}>Supprimer toutes les données du serveur</MenuItem>}
                     </MenuList>
                 </Paper>
 
@@ -229,57 +231,57 @@ export default class Settings extends Component {
                     <DialogTitle id="add-dialog-title">{"Changement de mot de passe"}</DialogTitle>
                     <form onSubmit={this.changePassword}>
                         <TextField variant="filled"
-                                   label="Votre ancien mot de passe"
-                                   type={this.state.showOldPassword ? 'text' : 'password'}
-                                   autoComplete="current-password"
-                                   disabled={this.state.loading}
-                                   margin="normal"
-                                   size="small"
-                                   fullWidth={true}
-                                   autoFocus
-                                   onChange={this.onOldPasswordChange.bind(this)}
-                                   value={this.state.oldPassword || ''}
-                                   InputProps={{
-                                       endAdornment: <InputAdornment position="end">
-                                           <IconButton
-                                               aria-label="toggle password visibility"
-                                               onClick={this.handleClickShowOldPassword.bind(this)}
-                                               onMouseDown={
-                                                   this.handleMouseDownPassword.bind(this)
-                                               }
-                                               edge="end"
-                                           >
-                                               {this.state.showOldPassword ? <Visibility/> : <VisibilityOff/>}
-                                           </IconButton>
-                                       </InputAdornment>,
-                                   }}
+                            label="Votre ancien mot de passe"
+                            type={this.state.showOldPassword ? 'text' : 'password'}
+                            autoComplete="current-password"
+                            disabled={this.state.loading}
+                            margin="normal"
+                            size="small"
+                            fullWidth={true}
+                            autoFocus
+                            onChange={this.onOldPasswordChange.bind(this)}
+                            value={this.state.oldPassword || ''}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={this.handleClickShowOldPassword.bind(this)}
+                                        onMouseDown={
+                                            this.handleMouseDownPassword.bind(this)
+                                        }
+                                        edge="end"
+                                    >
+                                        {this.state.showOldPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>,
+                            }}
 
                         />
                         <TextField variant="filled"
-                                   label="Votre nouveau mot de passe"
-                                   type={this.state.showNewPassword ? 'text' : 'password'}
-                                   autoComplete="current-password"
-                                   disabled={this.state.loading}
-                                   margin="normal"
-                                   size="small"
-                                   fullWidth={true}
-                                   autoFocus
-                                   onChange={this.onNewPasswordChange.bind(this)}
-                                   value={this.state.newPassword}
-                                   InputProps={{
-                                       endAdornment: <InputAdornment position="end">
-                                           <IconButton
-                                               aria-label="toggle password visibility"
-                                               onClick={this.handleClickShowNewPassword.bind(this)}
-                                               onMouseDown={
-                                                   this.handleClickShowNewPassword.bind(this)
-                                               }
-                                               edge="end"
-                                           >
-                                               {this.state.showNewPassword ? <Visibility/> : <VisibilityOff/>}
-                                           </IconButton>
-                                       </InputAdornment>,
-                                   }}
+                            label="Votre nouveau mot de passe"
+                            type={this.state.showNewPassword ? 'text' : 'password'}
+                            autoComplete="current-password"
+                            disabled={this.state.loading}
+                            margin="normal"
+                            size="small"
+                            fullWidth={true}
+                            autoFocus
+                            onChange={this.onNewPasswordChange.bind(this)}
+                            value={this.state.newPassword}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={this.handleClickShowNewPassword.bind(this)}
+                                        onMouseDown={
+                                            this.handleClickShowNewPassword.bind(this)
+                                        }
+                                        edge="end"
+                                    >
+                                        {this.state.showNewPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>,
+                            }}
 
                         />
                         <DialogActions>
@@ -296,7 +298,7 @@ export default class Settings extends Component {
                     open={this.state.deleteDataOpen}
                     onClose={() => this.setDeleteDataOpen(false)}
                     id="add-dialog"
-                 >
+                >
                     <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
