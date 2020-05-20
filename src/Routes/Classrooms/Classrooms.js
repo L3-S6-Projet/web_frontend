@@ -1,6 +1,6 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
@@ -22,24 +22,24 @@ import clsx from 'clsx';
 import "./Classrooms.css"
 
 import Scolendar from '../../scolendar/src';
-import {getUser} from '../../auth.js';
+import { getUser } from '../../auth.js';
 import Splash from "../Splash/Splash";
 
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class Classrooms extends Component {
     constructor(props) {
         super(props);
-        this.state= {
+        this.state = {
             classrooms: [],
             loaded: false,
             checked: [],
             allChecked: false,
             deleteOpen: false,
             addOpen: false,
-            name :null,
+            name: null,
             capacity: 0,
-            page : 0,
+            page: 0,
             total: null
         }
         this.checkAll = this.checkAll.bind(this);
@@ -61,24 +61,24 @@ class Classrooms extends Component {
         this.props.history.push('/classrooms/' + id);
     }
 
-    setPage(page){
-        this.setState({page : page});
+    setPage(page) {
+        this.setState({ page: page });
         this.loadData();
     }
 
-    onNameChange(event){
-        this.setState({name : event.target.value})
+    onNameChange(event) {
+        this.setState({ name: event.target.value })
     }
-    onCapacityChange(event){
-        this.setState({capacity : event.target.value})
+    onCapacityChange(event) {
+        this.setState({ capacity: event.target.value })
     }
 
     setAddOpen(addOpen) {
-        this.setState({addOpen: addOpen})
+        this.setState({ addOpen: addOpen })
     }
 
     setDeleteOpen(deleteOpen) {
-        this.setState({deleteOpen: deleteOpen})
+        this.setState({ deleteOpen: deleteOpen })
     }
 
     componentDidMount() {
@@ -110,7 +110,7 @@ class Classrooms extends Component {
                     classrooms: data.classrooms,
                     total: data.total
                 })
-                this.setState({loaded: true})
+                this.setState({ loaded: true })
             }
         };
         apiInstance.classroomsGet(opts, callback);
@@ -127,13 +127,13 @@ class Classrooms extends Component {
     checkAll() {
         let toAdd = this.state.classrooms.map(t => t.id).filter(id => !this.isChecked(id));
         let checked = [...this.state.checked, ...toAdd];
-        this.setState({checked, allChecked: true});
+        this.setState({ checked, allChecked: true });
     }
 
     unCheckAll() {
         let toRemove = this.state.classrooms.map(t => t.id).filter(this.isChecked);
         let checked = this.state.checked.filter(id => !toRemove.includes(id));
-        this.setState({checked, allChecked: false})
+        this.setState({ checked, allChecked: false })
     }
 
     isChecked(id) {
@@ -145,8 +145,8 @@ class Classrooms extends Component {
             return;
         let checked = [...this.state.checked];
         checked.splice(this.state.checked.indexOf(id), 1)
-        this.setState({checked: checked})
-        this.setState({allChecked: false})
+        this.setState({ checked: checked })
+        this.setState({ allChecked: false })
     }
 
     check(id) {
@@ -154,9 +154,9 @@ class Classrooms extends Component {
             return;
         let checked = [...this.state.checked];
         checked.push(id);
-        this.setState({checked: checked})
+        this.setState({ checked: checked })
         setTimeout(() => {
-            this.setState({allChecked: this.testIfAllChecked()})
+            this.setState({ allChecked: this.testIfAllChecked() })
         }, 1);
 
     }
@@ -197,14 +197,14 @@ class Classrooms extends Component {
             }
         };
         apiInstance.classroomsDelete(this.state.checked, callback);
-        this.setState({checked: []})
+        this.setState({ checked: [] })
         this.loadData();
     }
 
     //TODO : Vérifier dans la liste car l 'ajout du côté serveur mais je ne le vois pas dans la liste...
-    addClassroom(event){
+    addClassroom(event) {
         event.preventDefault();
-        this.setState({addOpen: false})
+        this.setState({ addOpen: false })
 
         const defaultClient = Scolendar.ApiClient.instance;
 
@@ -217,10 +217,10 @@ class Classrooms extends Component {
         const classroomCreationRequest = new Scolendar.ClassroomCreationRequest(); // ClassroomCreationRequest |
 
         classroomCreationRequest.name = this.state.name;
-        classroomCreationRequest.capacity= this.state.capacity;
+        classroomCreationRequest.capacity = this.state.capacity;
         console.log(classroomCreationRequest)
 
-        const callback = function(error, data, response) {
+        const callback = function (error, data, response) {
             if (error) {
                 console.error(error);
             } else {
@@ -230,29 +230,29 @@ class Classrooms extends Component {
 
         apiInstance.classroomsPost({
             "name": this.state.name,
-            "capacity": this.state.capacity,
+            "capacity": parseInt(this.state.capacity),
         }, callback);
         this.loadData();
     }
 
     render() {
         if (!this.state.loaded)
-            return <Splash/>
+            return <Splash />
         const rows = this.state.classrooms;
         let head;
         if (this.state.checked.length === 0) {
             head = (
                 <div id="notseleted-header">
                     <div id="title-classrooms">Toutes les salles</div>
-                    <div className="spacer"/>
+                    <div className="spacer" />
                     <TextField label="Chercher par nom ..."
-                               type="text"
-                               variant='filled'
-                               float="right"
-                               InputProps={{
-                                   endAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
-                               }}
-                               className="field"
+                        type="text"
+                        variant='filled'
+                        float="right"
+                        InputProps={{
+                            endAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+                        }}
+                        className="field"
                     />
                 </div>
             );
@@ -260,9 +260,9 @@ class Classrooms extends Component {
             head = (
                 <div id="selected-header">
                     <div id="count-classrooms">{this.state.checked.length} sélectionnés</div>
-                    <div className="spacer"/>
+                    <div className="spacer" />
                     <IconButton size="small" color="inherit"
-                                onClick={() => this.setDeleteOpen(true)}><DeleteIcon/></IconButton>
+                        onClick={() => this.setDeleteOpen(true)}><DeleteIcon /></IconButton>
                 </div>
             )
         }
@@ -290,11 +290,11 @@ class Classrooms extends Component {
                         <TableBody>
                             {rows.map((row) => (
                                 <TableRow key={row.id}
-                                          className={clsx(
-                                              {
-                                                  "row-selected": this.isChecked(row.id)
-                                              })
-                                          }>
+                                    className={clsx(
+                                        {
+                                            "row-selected": this.isChecked(row.id)
+                                        })
+                                    }>
                                     <TableCell padding="checkbox">
                                         <Checkbox
                                             onChange={event => this.callCheck(row.id)}
@@ -310,17 +310,17 @@ class Classrooms extends Component {
                         </TableBody>
                         <TableFooter>
                             <TablePagination
-                                count ={this.state.total}
-                                page = {this.state.page}
-                                onChangePage={(event,page)=>{this.setPage(page)}}
-                                rowsPerPage = {10}
+                                count={this.state.total}
+                                page={this.state.page}
+                                onChangePage={(event, page) => { this.setPage(page) }}
+                                rowsPerPage={10}
                                 rowsPerPageOptions={[]}
                             />
                         </TableFooter>
                     </Table>
                 </TableContainer>
                 <Fab id="add-button" aria-label="add" onClick={() => this.setAddOpen(true)}>
-                    <AddIcon/>
+                    <AddIcon />
                 </Fab>
                 <Dialog
                     open={this.state.deleteOpen}
@@ -354,16 +354,16 @@ class Classrooms extends Component {
                     <form onSubmit={this.addClassroom}>
                         <DialogContent id="add-dialog-form">
                             <TextField required label="Nom"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onNameChange.bind(this)}
+                                type="text"
+                                variant='filled'
+                                className="add field"
+                                onChange={this.onNameChange.bind(this)}
                             />
                             <TextField required label="Capacité"
-                                       type="text"
-                                       variant='filled'
-                                       className="add field"
-                                       onChange={this.onCapacityChange.bind(this)}
+                                type="text"
+                                variant='filled'
+                                className="add field"
+                                onChange={this.onCapacityChange.bind(this)}
                             />
 
                         </DialogContent>
