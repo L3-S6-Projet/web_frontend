@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
@@ -22,10 +22,10 @@ import clsx from 'clsx';
 import "./Classrooms.css"
 
 import Scolendar from '../../scolendar/src';
-import { getUser } from '../../auth.js';
+import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
 
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 class Classrooms extends Component {
     constructor(props) {
@@ -201,7 +201,6 @@ class Classrooms extends Component {
         this.loadData();
     }
 
-    //TODO : Vérifier dans la liste car l 'ajout du côté serveur mais je ne le vois pas dans la liste...
     addClassroom(event) {
         event.preventDefault();
         this.setState({ addOpen: false })

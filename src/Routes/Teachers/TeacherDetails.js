@@ -1,21 +1,33 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Avatar from '@material-ui/core/Avatar';
 import EmailIcon from '@material-ui/icons/Email';
-import { AccountCircle, Call } from "@material-ui/icons";
-import { withRouter } from 'react-router-dom';
+import {AccountCircle, Call} from "@material-ui/icons";
+import {withRouter} from 'react-router-dom';
 
-import Header from './Header.js';
+import Header from '../Header.js';
 import Calendar from '../../Components/Calendar/Calendar.js';
 import CalendarDatePicker from '../../Components/Calendar/DatePicker/CalendarDatePicker.js';
 import SelectedDate from "../../Components/Calendar/SelectedDate.js";
 import Scolendar from '../../scolendar/src';
-import { getUser } from '../../auth.js';
+import {getUser} from '../../auth.js';
 
 import '../Details.css';
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 class TeacherDetails extends Component {
     constructor(props) {
@@ -26,13 +38,58 @@ class TeacherDetails extends Component {
             selectedDate: SelectedDate.today(),
             view: 'day',
             teacher: null,
+            editOpen: false,
+            firstName: null,
+            lastName: null,
+            email: null,
+            phone: null,
+            grade: null,
+            password: null,
+            showPassword: false
         };
 
         this.onSelectDay = this.onSelectDay.bind(this);
     }
 
+
+    handleClickShowPassword() {
+        this.setState({
+            showPassword: this.showPassword = !this.showPassword
+        });
+    };
+
+    handleMouseDownPassword(event) {
+        event.preventDefault();
+    };
+    setEditOpen(addOpen) {
+        this.setState({ addOpen: addOpen })
+    }
+
     componentDidMount() {
         this.loadTeacher();
+    }
+
+    onNameChange(event) {
+        this.setState({ firstName: event.target.value })
+    }
+    onPasswordChange(event) {
+        this.setState({ password: event.target.value })
+    }
+
+    onlastNameChange(event) {
+        this.setState({ lastName: event.target.value })
+    }
+
+    onEmailChange(event) {
+        this.setState({ email: event.target.value })
+    }
+
+    onPhoneChange(event) {
+        this.setState({ phone: event.target.value })
+    }
+
+    onGradeChange(event) {
+        this.setState({ grade: event.target.value })
     }
 
     loadTeacher() {
@@ -99,7 +156,7 @@ class TeacherDetails extends Component {
 
                 let total = (
                     service.cm +
-                    service.projet +
+                    service.project +
                     service.td +
                     service.tp +
                     service.administration +
@@ -117,7 +174,7 @@ class TeacherDetails extends Component {
                         parts.push(service.cm + ' heures de CM');
 
                     if (service.projet > 0)
-                        parts.push(service.projet + ' heures de projet');
+                        parts.push(service.project + ' heures de projet');
 
                     if (service.td > 0)
                         parts.push(service.td + ' heures de TD');
@@ -227,6 +284,86 @@ class TeacherDetails extends Component {
                             setView={null}
                             selectedDate={this.state.selectedDate} />
                     </div>
+
+                    <Dialog
+                        open={this.state.editOpen}
+                        onClose={() => this.setEditOpen(false)}
+                        id="edit-dialog"
+                    >
+                        <DialogTitle id="add-dialog-title">{"Edition"}</DialogTitle>
+                        <form onSubmit={this.editTeacher}>
+                            <DialogContent id="edit-dialog-form">
+                                <TextField required label="Prénom"
+                                           type="text"
+                                           variant='filled'
+                                           className="add field"
+                                           onChange={this.onNameChange.bind(this)}
+                                />
+                                <TextField required label="Nom"
+                                           type="text"
+                                           variant='filled'
+                                           className="add field"
+                                           onChange={this.onlastNameChange.bind(this)}
+                                />
+                                <TextField label="Email"
+                                           type="email"
+                                           variant='filled'
+                                           className="add field"
+                                           onChange={this.onEmailChange.bind(this)}
+                                />
+                                <TextField label="Numéro de téléphone"
+                                           type="tel"
+                                           variant='filled'
+                                           className="add field"
+                                           onChange={this.onPhoneChange.bind(this)}
+                                />
+                                <FormControl variant="filled" required className="add field">
+                                    <InputLabel>Grade</InputLabel>
+                                    <Select native required onChange={this.onGradeChange.bind(this)}>
+                                        <option value="" aria-label="None" />
+                                        <option value={"MACO"}>MACO</option>
+                                        <option value={"PROF"}>PROF</option>
+                                        <option value={"PRAG"}>PRAG</option>
+                                        <option value={"ATER"}>ATER</option>
+                                        <option value={"PAST"}>PAST</option>
+                                        <option value={"MONI"}>MONI</option>
+                                    </Select>
+                                </FormControl>
+                                <TextField variant="filled"
+                                           label="Mot de Passe "
+                                           type={this.state.showPassword ? 'text' : 'password'}
+                                           autoComplete="current-password"
+                                           disabled={this.state.loading}
+                                           margin="normal"
+                                           size="small"
+                                           onChange={this.onPasswordChange.bind(this)}
+                                           value={this.state.password || ''}
+                                           InputProps={{
+                                               endAdornment: <InputAdornment position="end">
+                                                   <IconButton
+                                                       aria-label="toggle password visibility"
+                                                       onClick={this.handleClickShowPassword.bind(this)}
+                                                       onMouseDown={
+                                                           this.handleMouseDownPassword.bind(this)
+                                                       }
+                                                       edge="end"
+                                                   >
+                                                       {this.state.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                                   </IconButton>
+                                               </InputAdornment>,
+                                           }}
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => this.setAddOpen(false)} color="primary">
+                                    ANNULER
+                                </Button>
+                                <Button type="submit" id="creation-button" color="primary" autoFocus>
+                                    CRÉER
+                                </Button>
+                            </DialogActions>
+                        </form>
+                    </Dialog>
                 </div>
             </div>
         );

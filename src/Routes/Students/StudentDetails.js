@@ -1,20 +1,18 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import Avatar from '@material-ui/core/Avatar';
-import EmailIcon from '@material-ui/icons/Email';
-import { AccountCircle, Call } from "@material-ui/icons";
-import { withRouter } from 'react-router-dom';
+import {AccountCircle} from "@material-ui/icons";
+import {withRouter} from 'react-router-dom';
 
-import Header from '../Teachers/Header.js';
+import Header from '../Header.js';
 import Calendar from '../../Components/Calendar/Calendar.js';
 import CalendarDatePicker from '../../Components/Calendar/DatePicker/CalendarDatePicker.js';
 import SelectedDate from "../../Components/Calendar/SelectedDate.js";
 import Scolendar from '../../scolendar/src';
-import { getUser } from '../../auth.js';
-import { capitalize } from '../../Utils/capitalize.js';
+import {getUser} from '../../auth.js';
+import {capitalize} from '../../Utils/capitalize.js';
 
 import '../Details.css';
 
