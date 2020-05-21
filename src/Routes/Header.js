@@ -32,6 +32,12 @@ class Header extends Component {
                 <div className="title-student">Étudiant(e) &quot;{this.props.name}&quot;</div>
             </div>
         )
+        else if (this.props.type === "Classroom")
+            type = (
+                <div className="notselected-header">
+                    <div className="title-student">Salle &quot;{this.props.name}&quot;</div>
+                </div>
+            )
         else if (this.props.type === "Classe")
             type = (
                 <div className="notselected-header">
