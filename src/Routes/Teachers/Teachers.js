@@ -17,14 +17,13 @@ import AddIcon from '@material-ui/icons/Add';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import DialogContent from '@material-ui/core/DialogContent';
+import Snackbar from '@material-ui/core/Snackbar';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import debounce from "../../Utils/debounce-description"
-import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
-//import PopupState, {bindTrigger, bindPopover} from 'material-ui-popup-state';
 import "./Teachers.css"
 
 import Scolendar from '../../scolendar/src';
@@ -32,6 +31,7 @@ import { getUser } from '../../auth.js';
 import Splash from "../Splash/Splash";
 import Checkbox from '@material-ui/core/Checkbox';
 import { withRouter } from "react-router-dom";
+import SlideTransition from "@material-ui/pickers/views/Calendar/SlideTransition";
 
 export class Teachers extends Component {
     constructor(props) {
@@ -52,8 +52,8 @@ export class Teachers extends Component {
             page: 1,
             total: null,
             query: null,
-            popOverOpen: false,
-            popOverText: null,
+            snackBarOpen: false,
+            snackBarText: null,
             newPassword: null,
             newUsername: null
         };
@@ -71,8 +71,8 @@ export class Teachers extends Component {
         this.setPage = this.setPage.bind(this);
         this.addTeacher = this.addTeacher.bind(this);
         this.onQueryChange = this.onQueryChange.bind(this);
-        this.setPopOverOpen = this.setPopOverOpen.bind(this);
-        this.setPopOverText = this.setPopOverText.bind(this);
+        this.setSnackBarOpen = this.setSnackBarOpen.bind(this);
+        this.setSnackBarText = this.setSnackBarText.bind(this);
         this.setSuccessOpen = this.setSuccessOpen.bind(this);
         this.setNewPassword = this.setNewPassword.bind(this);
         this.setNewUsername = this.setNewUsername.bind(this)
@@ -96,12 +96,12 @@ export class Teachers extends Component {
         }
     }
 
-    setPopOverText(text) {
-        this.setState({ popOverText: text })
+    setSnackBarText(text) {
+        this.setState({ snackBarText: text })
     }
 
-    setPopOverOpen(popOverOpen) {
-        this.setState({ popOverOpen: popOverOpen })
+    setSnackBarOpen(snackBarOpen) {
+        this.setState({ snackBarOpen: snackBarOpen })
     }
 
     setPage(page) {
@@ -155,6 +155,11 @@ export class Teachers extends Component {
         this.props.history.push('/teachers/' + id);
     }
 
+    snackMessage(message){
+        this.setSnackBarText(message);
+        this.setSnackBarOpen(true);
+    }
+
     // Load all teachers
     loadData() {
         const defaultClient = Scolendar.ApiClient.instance;
@@ -174,7 +179,7 @@ export class Teachers extends Component {
 
         const callback = (error, data, response) => {
             if (error) {
-                console.error(error);
+                this.snackMessage(error.toString())
             } else {
                 console.log('API called successfully. Returned data: ' + data);
                 window.data = data;
@@ -262,10 +267,12 @@ export class Teachers extends Component {
         const apiInstance = new Scolendar.TeacherApi();
 
 
-        const callback = function (error, data, response) {
+        const callback =  (error, data, response) => {
             if (error) {
+                this.snackMessage(error.toString())
                 console.error(error);
             } else {
+                this.snackMessage("Teachers successfully deleted.")
                 console.log('API called successfully. Returned data: ' + data);
             }
         };
@@ -301,6 +308,7 @@ export class Teachers extends Component {
             if (error) {
                 console.error(error);
             } else {
+                this.snackMessage("Teachers successfully added.")
                 console.log('Teacher added successfully. Returned data: ');
                 console.log(data)
                 this.setState({
@@ -509,9 +517,9 @@ export class Teachers extends Component {
                 <Fab id="add-button" aria-label="add" onClick={() => this.setAddOpen(true)}>
                     <AddIcon />
                 </Fab>
-                <Popover open={this.state.popOverOpen}>
-                    {this.state.popOverText}
-                </Popover>
+                <Snackbar autoHideDuration={10000} anchorOrigin={{vertical:'bottom',horizontal:'right'}} open={!this.state.snackBarOpen}
+                          onClose={()=>this.setSnackBarOpen(false)} message={"this.state.snackBarText"} TransitionComponent={SlideTransition}
+                 className="snackbar"/>
             </div>
         );
     }

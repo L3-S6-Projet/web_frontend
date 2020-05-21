@@ -16,7 +16,7 @@
     /* Black — High Emphasis */
 
     color: rgba(0, 0, 0, 0.87);
-    mix-blend-mode: normal;;
+    mix-blend-mode: normal;
 }
 
 a{
@@ -62,4 +62,8 @@ a{
 
 .field {
     width: 364px;
+}
+
+.snackbar{
+    position: absolute !important
 }
