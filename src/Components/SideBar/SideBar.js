@@ -76,9 +76,9 @@ class Sidebar extends Component {
         }
         else sidebar = (
             <nav id="sidebar-nav">
-                <NavLink exact className="link" activeClassName="active" to="/"><HomeIcon className="icon" />Home</NavLink>
-                <NavLink className="link" activeClassName="active" to="/teachers"><CalendarToday className="icon" />Emploi du temps</NavLink>
-                <NavLink className="link" activeClassName="active" to="/subjects"><LibraryBooks className="icon" />Unités d&apos;enseignement</NavLink>
+                <NavLink exact className="link" activeClassName="active" to="/home"><HomeIcon className="icon" />Home</NavLink>
+                <NavLink className="link" activeClassName="active" to="/"><CalendarToday className="icon" />Emploi du temps</NavLink>
+                <NavLink className="link" activeClassName="active" to="/subjectsStudents"><LibraryBooks className="icon" />Unités d&apos;enseignement</NavLink>
                 <NavLink className="link" activeClassName="active" to="/settings"><Settings className="icon" />Paramètres</NavLink>
                 <Link className="link" to="/logout"><ExitToApp className="icon" />Déconnexion</Link>
                 <div id="sidebar-nav-indicator"></div>

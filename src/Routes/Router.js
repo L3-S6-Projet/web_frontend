@@ -25,10 +25,14 @@ import SubjectDetails from './Subjects/SubjectDetails.js';
 import Settings from './Settings/Settings.js';
 import Splash from "./Splash/Splash.js"
 
+import Home from './StudentsView/Home.js'
+import SubjectsForStudents from "./StudentsView/SubjectsForStudents.js";
 import SidebarContainer from '../Components/SideBar/SideBar.js';
+import SubjectsForStudentsDetails from './StudentsView/SubjectsForStudentsDetails.js'
 
 import {GuardedRoute, GuardProvider} from 'react-router-guards';
 import {isLoggedIn} from '../auth.js';
+
 
 const requireLogin = (to, from, next) => {
     const isProtected = to.meta.auth;
@@ -106,12 +110,24 @@ export default class Router extends Component {
                                 <SubjectDetails />
                             </GuardedRoute>
 
+                            <GuardedRoute exact path="/subjectsStudents" meta={{ auth: true }}>
+                                <SubjectsForStudents />
+                            </GuardedRoute>
+
+                            <GuardedRoute exact path="/subjectsStudents/:id" meta={{ auth: true }}>
+                                <SubjectsForStudentsDetails />
+                            </GuardedRoute>
+
                             <GuardedRoute exact path="/subjects" meta={{ auth: true }}>
                                 <Subjects />
                             </GuardedRoute>
 
                             <GuardedRoute exact path="/settings" meta={{ auth: true }}>
                                 <Settings />
+                            </GuardedRoute>
+
+                            <GuardedRoute exact path="/home" meta={{ auth: true }}>
+                                <Home />
                             </GuardedRoute>
 
                             <GuardedRoute exact path="/" meta={{ auth: true }}>

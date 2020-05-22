@@ -8,6 +8,7 @@ import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
 
 import '../Details.css';
+import SubjectsForStudentsDetails from "../StudentsView/SubjectsForStudentsDetails";
 
 class SubjectDetails extends Component {
     constructor(props) {
@@ -67,44 +68,70 @@ class SubjectDetails extends Component {
         this.setState({ selectedDate });
     }
 
+    userKindAsString(user) {
+        if (user.user.kind == 'ADM')
+            return 'Administrateur';
+        else if (user.user.kind == 'TEA')
+            return 'Professeur';
+
+        return 'Étudiant';
+    }
 
     render() {
-        console.log(this.state.subject);
-        return (
-            <div className="teacher-student-details-container">
-                <Header
-                    type="Subject"
-                    name={this.state.subject === null ? ':' : (this.state.subject.name)}
-                    view={this.state.view}
-                    onChangeView={view => this.setState({ view })} />
 
-                <div className="teacher-student-details">
-                    <div className="left">
-                        <div className="teacher-student-details-infos">
-                           TODO navbar
-                        </div>
+        const user = getUser();
+        if (this.userKindAsString(user) === 'Administrateur') {
+            return (
+                <div className="teacher-student-details-container">
+                    <Header
+                        type="Subject"
+                        name={this.state.subject === null ? ':' : (this.state.subject.name)}
+                        view={this.state.view}
+                        onChangeView={view => this.setState({view})}/>
 
-                        <div className="teacher-student-details-calendar-picker">
-                            <CalendarDatePicker
-                                selectedDate={this.state.selectedDate}
-                                onPrevMonth={() => this.setState({ selectedDate: this.state.selectedDate.previousMonth() })}
-                                onNextMonth={() => this.setState({ selectedDate: this.state.selectedDate.nextMonth() })}
-                                onSelectDay={this.onSelectDay}
-                                view={this.state.view} />
+                    <div className="teacher-student-details">
+                        <div className="left">
+                            <div className="teacher-student-details-infos">
+                                TODO navbar
+                            </div>
+
+                            <div className="teacher-student-details-calendar-picker">
+                                <CalendarDatePicker
+                                    selectedDate={this.state.selectedDate}
+                                    onPrevMonth={() => this.setState({selectedDate: this.state.selectedDate.previousMonth()})}
+                                    onNextMonth={() => this.setState({selectedDate: this.state.selectedDate.nextMonth()})}
+                                    onSelectDay={this.onSelectDay}
+                                    view={this.state.view}/>
+                            </div>
                         </div>
-                    </div>
-                    <div className="right">
-                        <Calendar
-                            loadOccupancies={this.loadOccupancies}
-                            showHeader={false}
-                            view={this.state.view}
-                            setView={null}
-                            selectedDate={this.state.selectedDate} />
+                        <div className="right">
+                            <Calendar
+                                loadOccupancies={this.loadOccupancies}
+                                showHeader={false}
+                                view={this.state.view}
+                                setView={null}
+                                selectedDate={this.state.selectedDate}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        } else if (this.userKindAsString(user) === 'Étudiant') {
+            return (
+                <div className="teacher-student-details-container">
+                    <Header
+                        type="Subject"
+                        name={this.state.subject === null ? ':' : (this.state.subject.name)}
+                        view={this.state.view}
+                        onChangeView={view => this.setState({view})}/>
+
+                    <div className="teacher-student-details">
+                        <SubjectsForStudentsDetails />
+                    </div>
+                </div>)
+
+        }
     }
+
 }
 
 export default withRouter(SubjectDetails);
