@@ -74,7 +74,6 @@ class ClassroomDetails extends Component {
     }
 
     render() {
-        console.log(this.state.student);
 
         return (
             <div className="teacher-student-details-container">

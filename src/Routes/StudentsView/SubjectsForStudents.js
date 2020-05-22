@@ -66,7 +66,6 @@ class SubjectsForStudents extends Component {
             } else {
 
                 console.log('API called successfully. Returned data: ');
-                console.log(data.students);
                 this.setState({
                     subjectsStudent: data.subjects,
                     total: data.total
@@ -74,7 +73,7 @@ class SubjectsForStudents extends Component {
                 this.setState({loaded: true})
             }
         };
-        apiInstance.studentsIdSubjectsGet(id, callback);
+        apiInstance.studentsIdSubjectsGet(id,opts, callback);
     }
 
     render() {

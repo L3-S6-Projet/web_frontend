@@ -109,7 +109,6 @@ class Subjects extends Component {
             } else {
 
                 console.log('API called successfully. Returned data: ');
-                console.log(data.students);
                 this.setState({
                     subjects: data.subjects,
                     total: data.total

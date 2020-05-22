@@ -66,14 +66,12 @@ export default class Settings extends Component {
         this.setState({
             oldPassword: event.target.value,
         })
-        console.log('OlPass' + this.state.oldPassword)
     }
 
     onNewPasswordChange(event) {
         this.setState({
             newPassword: event.target.value,
         })
-        console.log('NewPass' + this.state.newPassword)
     }
 
     setPasswordChangeOpen(boolean) {

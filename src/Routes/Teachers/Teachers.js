@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
@@ -23,14 +23,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import clsx from 'clsx';
 import debounce from "../../Utils/debounce-description"
-import Typography from '@material-ui/core/Typography';
 import "./Teachers.css"
 
 import Scolendar from '../../scolendar/src';
-import { getUser } from '../../auth.js';
+import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
 import Checkbox from '@material-ui/core/Checkbox';
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import SlideTransition from "@material-ui/pickers/views/Calendar/SlideTransition";
 
 export class Teachers extends Component {
@@ -175,8 +174,6 @@ export class Teachers extends Component {
             'query': this.state.query
         };
 
-        //console.log(opts)
-
         const callback = (error, data, response) => {
             if (error) {
                 this.snackMessage(error.toString())
@@ -301,7 +298,7 @@ export class Teachers extends Component {
         teacherCreationRequest.phoneNumber = this.state.phone;
         teacherCreationRequest.email = this.state.email;
         teacherCreationRequest.rank = this.state.grade;
-        //console.log(teacherCreationRequest)
+        console.log(teacherCreationRequest)
 
 
         const callback = (error, data, response) => {

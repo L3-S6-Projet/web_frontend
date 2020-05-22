@@ -200,8 +200,6 @@ class TeacherDetails extends Component {
             );
         }
 
-        console.log(this.state.teacher);
-
         return (
             <div className="teacher-student-details-container">
                 <Header
