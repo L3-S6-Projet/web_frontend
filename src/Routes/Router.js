@@ -29,6 +29,7 @@ import Home from './StudentsView/Home.js'
 import SubjectsForStudents from "./StudentsView/SubjectsForStudents.js";
 import SidebarContainer from '../Components/SideBar/SideBar.js';
 import SubjectsForStudentsDetails from './StudentsView/SubjectsForStudentsDetails.js'
+import StudentCalendar from './StudentsView/StudentCalendar.js'
 
 import {GuardedRoute, GuardProvider} from 'react-router-guards';
 import {isLoggedIn} from '../auth.js';
@@ -129,6 +130,11 @@ export default class Router extends Component {
                             <GuardedRoute exact path="/home" meta={{ auth: true }}>
                                 <Home />
                             </GuardedRoute>
+
+                            <GuardedRoute exact path="/studentCalendar" meta={{ auth: true }}>
+                                <StudentCalendar />
+                            </GuardedRoute>
+
 
                             <GuardedRoute exact path="/" meta={{ auth: true }}>
                                 <Calendar />

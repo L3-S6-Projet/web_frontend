@@ -136,7 +136,8 @@ class SubjectDetails extends Component {
                     <div className="teacher-student-details">
                         <SubjectsForStudentsDetails />
                     </div>
-                </div>)
+                </div>
+            )
 
         }
     }

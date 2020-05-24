@@ -29,25 +29,25 @@ class Header extends Component {
         else if (this.props.type === "Student")
             type = (
             <div className="notselected-header">
-                <div className="title-student">Étudiant(e) &quot;{this.props.name}&quot;</div>
+                <div className="title-teacher">Étudiant(e) &quot;{this.props.name}&quot;</div>
             </div>
         )
         else if (this.props.type === "Classroom")
             type = (
                 <div className="notselected-header">
-                    <div className="title-student">Salle &quot;{this.props.name}&quot;</div>
+                    <div className="title-teacher">Salle &quot;{this.props.name}&quot;</div>
                 </div>
             )
         else if (this.props.type === "Classe")
             type = (
                 <div className="notselected-header">
-                    <div className="title-classe">Classe &quot;{this.props.name}&quot;</div>
+                    <div className="title-teacher">Classe &quot;{this.props.name}&quot;</div>
                 </div>
             )
         else if (this.props.type === "Subject")
             type = (
                 <div className="notselected-header">
-                    <div className="title-classe">Unité d&apos;enseignement &quot;{this.props.name}&quot;</div>
+                    <div className="title-teacher">Unité d&apos;enseignement &quot;{this.props.name}&quot;</div>
                 </div>
             );
 
