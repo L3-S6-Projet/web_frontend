@@ -11,6 +11,9 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import {AccountCircle} from "@material-ui/icons";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 function TabPanel(props) {
     const {children, value, index, ...other} = props;
@@ -56,10 +59,14 @@ const useStyles = makeStyles((theme) => ({
 ScrollableTabsButtonForce.propTypes = {
     name: PropTypes.string,
     classe: PropTypes.string,
-    time: PropTypes.any
+    time: PropTypes.number,
+    teachersFirstName : PropTypes.string,
+    teachersLastName :  PropTypes.string,
+    groupName : PropTypes.string,
+    groupCount : PropTypes.number,
 }
 export default function ScrollableTabsButtonForce(props) {
-    const {name, classe, time} = props;
+    const {name, classe, time, teachersFirstName, teachersLastName , groupName, groupCount} = props;
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
@@ -115,10 +122,31 @@ export default function ScrollableTabsButtonForce(props) {
                 </div>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
+                <List className="subjects-details-infos-list">
+                    <ListItem>
+                        <ListItemText
+                            primary={teachersFirstName + " " + teachersLastName }
+                            secondary="Responsable"/>
+                    </ListItem>
+                </List>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Item Three
+                <div className="teacher-student-details-infos-title">
+                    Note : les étudiants sont répartis automatiquement dans les groupes.
+                </div>
+                <List className="subjects-details-infos-list">
+                    <ListItem>
+                        <ListItemText
+                            primary={groupName}
+                            secondary= {groupCount + " élèves" }/>
+
+                        <ListItemSecondaryAction>
+                            <IconButton edge="end" aria-label="delete">
+                                <DeleteIcon />
+                            </IconButton>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                </List>
             </TabPanel>
         </div>
     );

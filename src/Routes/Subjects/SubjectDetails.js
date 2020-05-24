@@ -77,9 +77,9 @@ class SubjectDetails extends Component {
         return 'Étudiant';
     }
 
+
     render() {
         const user = getUser();
-
         if (this.userKindAsString(user) === 'Administrateur') {
             return (
                 <div className="teacher-student-details-container">
@@ -95,8 +95,13 @@ class SubjectDetails extends Component {
                                 <AppBar name = {this.state.subject === null ? ':' : (this.state.subject.name)}
                                         classe = {this.state.subject === null ? ':' : (this.state.subject.className)}
                                         time = {this.state.subject === null ? ':' : (this.state.subject.totalHours)}
+                                        teachersFirstName = {this.state.subject === null ? ':' : (this.state.subject.teachers[0].firstName)}
+                                        teachersLastName = {this.state.subject === null ? ':' : (this.state.subject.teachers[0].lastName)}
+                                        groupName = {this.state.subject === null ? ':' : (this.state.subject.groups[0].name)}
+                                        groupCount= {this.state.subject === null ? ':' : (this.state.subject.groups[0].count)}
                                 />
                             </div>
+
                             <div className="teacher-student-details-calendar-picker">
                                 <CalendarDatePicker
                                     selectedDate={this.state.selectedDate}
@@ -106,6 +111,8 @@ class SubjectDetails extends Component {
                                     view={this.state.view}/>
                             </div>
                         </div>
+
+
                         <div className="right">
                             <Calendar
                                 loadOccupancies={this.loadOccupancies}
