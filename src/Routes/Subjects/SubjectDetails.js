@@ -9,12 +9,13 @@ import {getUser} from '../../auth.js';
 
 import '../Details.css';
 import SubjectsForStudentsDetails from "../StudentsView/SubjectsForStudentsDetails";
+import AppBar from './AppBar.js'
+
 
 class SubjectDetails extends Component {
     constructor(props) {
         super(props);
         this.loadOccupancies = this.loadOccupancies.bind(this);
-
         this.state = {
             selectedDate: SelectedDate.today(),
             view: 'day',
@@ -27,7 +28,6 @@ class SubjectDetails extends Component {
         this.loadSubject();
     }
 
-    //TODO : TO FIX
     loadSubject() {
         // eslint-disable-next-line
         const id = this.props.match.params.id;
@@ -78,8 +78,8 @@ class SubjectDetails extends Component {
     }
 
     render() {
-
         const user = getUser();
+
         if (this.userKindAsString(user) === 'Administrateur') {
             return (
                 <div className="teacher-student-details-container">
@@ -92,9 +92,11 @@ class SubjectDetails extends Component {
                     <div className="teacher-student-details">
                         <div className="left">
                             <div className="teacher-student-details-infos">
-                                TODO navbar
+                                <AppBar name = {this.state.subject === null ? ':' : (this.state.subject.name)}
+                                        classe = {this.state.subject === null ? ':' : (this.state.subject.className)}
+                                        time = {this.state.subject === null ? ':' : (this.state.subject.totalHours)}
+                                />
                             </div>
-
                             <div className="teacher-student-details-calendar-picker">
                                 <CalendarDatePicker
                                     selectedDate={this.state.selectedDate}

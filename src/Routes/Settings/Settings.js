@@ -16,9 +16,6 @@ import MenuList from '@material-ui/core/MenuList';
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {getUser, getUserKind} from "../../auth";
 import Scolendar from '../../scolendar/src';
-
-import Popover from '@material-ui/core/Popover';
-
 import Divider from '@material-ui/core/Divider';
 
 
@@ -168,10 +165,8 @@ export default class Settings extends Component {
         this.setState({errorMessage, password: ''});
     }
 
-    //TODO : Reset API datas
-    //  Check validation when password form is filled
     deleteData() {
-        alert('TODO');
+        alert('Pas encore implémentée');
     }
 
     render() {
@@ -294,21 +289,6 @@ export default class Settings extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-
-                <Popover
-                    anchorReference="anchorPosition"
-                    anchorPosition={{top: 500, left: 700}}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                >
-                    The content of the Popover.
-                </Popover>
             </div>
         );
     }

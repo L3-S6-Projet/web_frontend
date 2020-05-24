@@ -19,6 +19,7 @@ export class Home extends Component {
             loaded: false,
             selectedDate: SelectedDate.today(),
             view: 'day',
+            nextOccupancy : null,
         }
         this.loadOccupancies = this.loadOccupancies.bind(this);
     }
@@ -37,6 +38,36 @@ export class Home extends Component {
         this.loadModifications();
     }
 
+    loadNextOccupancy() {
+        const user = getUser();
+
+        // eslint-disable-next-line
+        const id = user.user.id;
+
+        const start = Math.floor(Date.now() / 1000);
+        const end = start + 604800; // one week
+
+        var opts = {
+            'start': start,
+            'end': end,
+            'occupanciesPerDay': 1
+        };
+
+        const callback = (error, data, response) => {
+            const nextOccupancy = data.days
+                .flatMap(x => x.occupancies)
+                .reduce((best, e) => {
+                    if (best == null) return e;
+                    if (best.start < e.start) return best;
+                    return e;
+                }, null);
+
+            this.setState({ nextOccupancy : nextOccupancy });
+        };
+
+        const apiInstance = new Scolendar.RoleStudentApi();
+        apiInstance.studentsIdOccupanciesGet(id, opts, callback);
+    }
 
     loadModifications () {
         const defaultClient = Scolendar.ApiClient.instance;
@@ -46,7 +77,7 @@ export class Home extends Component {
 
         const apiInstance = new Scolendar.RoleStudentApi();
 
-        const callback = function(error, data, response) {
+        const callback = (error, data, response) => {
             if (error) {
                 console.error(error);
             } else {
@@ -84,7 +115,8 @@ export class Home extends Component {
                         <Grid item xs={10}>
                             <Grid item xs container direction="row" spacing={3}>
                                 <Grid item xs={12}>
-                                    <Paper>Prochain cours</Paper>
+                                    <Paper>Prochain cours
+                                    </Paper>
                                 </Grid>
                                 <Grid item xs={8}>
                                     <Paper>Dernières modifs</Paper>

@@ -2,8 +2,6 @@ import React, {Component} from "react";
 
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
-import TableFooter from '@material-ui/core/TableFooter';
-import TablePagination from '@material-ui/core/TablePagination';
 
 import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
@@ -56,11 +54,8 @@ class SubjectsForStudents extends Component {
         const user = getUser();
         const id = user.user.id ;
 
-        const opts = {
-            'page': + this.state.page + 1,
-        };
 
-        const callback = (error, data, response) => {
+        const callback = (error, data, response) =>  {
             if (error) {
                 console.error(error);
             } else {
@@ -73,7 +68,7 @@ class SubjectsForStudents extends Component {
                 this.setState({loaded: true})
             }
         };
-        apiInstance.studentsIdSubjectsGet(id,opts, callback);
+        apiInstance.studentsIdSubjectsGet(id, callback);
     }
 
     render() {
@@ -109,15 +104,6 @@ class SubjectsForStudents extends Component {
                                 </TableRow>
                             ))}
                         </TableBody>
-                        <TableFooter>
-                            <TablePagination
-                                count ={this.state.total}
-                                page = {this.state.page}
-                                onChangePage={(event,page)=>{this.setPage(page)}}
-                                rowsPerPage = {10}
-                                rowsPerPageOptions={[]}
-                            />
-                        </TableFooter>
                     </Table>
                 </TableContainer>
 
