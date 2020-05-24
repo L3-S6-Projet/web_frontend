@@ -12,12 +12,8 @@ class SubjectsForStudents extends Component {
     constructor(props) {
         super(props);
         this.state= {
-            subjects: [],
+            subjectsStudent: [],
             loaded: false,
-            checked: [],
-            allChecked: false,
-            deleteOpen: false,
-            addOpen: false,
             className :null,
             name: null,
             prof : null,
@@ -25,17 +21,11 @@ class SubjectsForStudents extends Component {
             total: null,
             id : 0,
         }
-        this.setPage = this.setPage.bind(this);
     }
 
-    routeToDetails(id) {
+    routeToDetails(name) {
         // eslint-disable-next-line
-        this.props.history.push('/subjects/' + id);
-    }
-
-    setPage(page){
-        this.setState({page : page});
-        this.loadData();
+        this.props.history.push('/subjectsStudents/' + name);
     }
 
     componentDidMount() {
@@ -63,7 +53,6 @@ class SubjectsForStudents extends Component {
                 console.log('API called successfully. Returned data: ');
                 this.setState({
                     subjectsStudent: data.subjects,
-                    total: data.total
                 })
                 this.setState({loaded: true})
             }
@@ -96,9 +85,9 @@ class SubjectsForStudents extends Component {
                         </TableHead>
                         <TableBody>
                             {rows.map((row) => (
-                                <TableRow key={row.id}>
+                                <TableRow key={row.name}>
                                     <TableCell component="th" scope="row">
-                                        <a href="" onClick={() => this.routeToDetails(row.id)}>{row.className}</a>
+                                        <a href="" onClick={() => this.routeToDetails(row.name)}>{row.className}</a>
                                     </TableCell>
                                     <TableCell component="th" scope="row">{row.name}</TableCell>
                                 </TableRow>
@@ -106,12 +95,9 @@ class SubjectsForStudents extends Component {
                         </TableBody>
                     </Table>
                 </TableContainer>
-
             </div>
         );
     }
 }
-
-
 
 export default withRouter(SubjectsForStudents);

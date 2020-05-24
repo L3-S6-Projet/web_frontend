@@ -7,14 +7,56 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import List from "@material-ui/core/List";
 import './SubjectsForStudentsDetails.css'
+import Scolendar from "../../scolendar/src";
+import {getUser} from "../../auth";
 
 class SubjectDetails extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            subjectsStudent: [],
+            className: null,
+            name: null,
+            prof: null,
+        }
+    }
+
+    componentDidMount() {
+        this.loadData();
+    }
+
+    // Load all subjects
+    loadData() {
+        const defaultClient = Scolendar.ApiClient.instance;
+        const token = defaultClient.authentications['token'];
+        token.apiKey = getUser().token;
+        token.apiKeyPrefix = 'Bearer';
+
+        const apiInstance = new Scolendar.RoleStudentApi();
+
+        const user = getUser();
+        const id = user.user.id;
+
+
+        const callback = (error, data, response) => {
+            if (error) {
+                console.error(error);
+            } else {
+
+                console.log('API called successfully. Returned data: ');
+                this.setState({
+                    subjectsStudent: data.subjects,
+                })
+                this.setState({loaded: true})
+            }
+        };
+        apiInstance.studentsIdSubjectsGet(id, callback);
     }
 
 
     render() {
+        //TODO TO FIX (Maybe because id is not given ?)
+        console.log(this.state.subjectsStudent === null ? ':' : (this.state.subjectsStudent.className));
         return (
             <div className="subjectStudentDetails-page">
                 <Grid container spacing={3}>
@@ -26,13 +68,13 @@ class SubjectDetails extends Component {
                             <List className="teacher-student-details-infos-list">
                                 <ListItem>
                                     <ListItemText
-                                        primary='TODO'
+                                        primary="Nom"
                                         secondary="Nom"/>
                                 </ListItem>
 
                                 <ListItem>
                                     <ListItemText
-                                        primary='TODO'
+                                        primary='Classe'
                                         secondary="Classe"/>
                                 </ListItem>
 
@@ -47,13 +89,13 @@ class SubjectDetails extends Component {
                             <List className="teacher-student-details-infos-list">
                                 <ListItem>
                                     <ListItemText
-                                        primary='TODO'
+                                        primary='Nom Prénom 1'
                                         secondary="Numéro de tel + Email"/>
                                 </ListItem>
 
                                 <ListItem>
                                     <ListItemText
-                                        primary='TODO'
+                                        primary='Nom Prénom 2'
                                         secondary="Numéro de tel + Email"/>
                                 </ListItem>
                             </List>
@@ -67,13 +109,13 @@ class SubjectDetails extends Component {
                             <List className="teacher-student-details-infos-list">
                                 <ListItem>
                                     <ListItemText
-                                        primary='TODO'
+                                        primary='Groupe 1'
                                         secondary="Nb élèves"/>
                                 </ListItem>
 
                                 <ListItem>
                                     <ListItemText
-                                        primary='TODO'
+                                        primary='Groupe 2'
                                         secondary="Nb élèves"/>
                                 </ListItem>
                             </List></Paper>

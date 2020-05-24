@@ -4,38 +4,27 @@ import {withRouter} from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import './Home.css'
-
 import '../Details.css';
 import Scolendar from '../../scolendar/src';
-import Calendar from "../../Components/Calendar/Calendar.js";
 import {getUser} from '../../auth.js';
 import SelectedDate from "../../Components/Calendar/SelectedDate";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 export class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modif :[],
+            modif: [],
             loaded: false,
             selectedDate: SelectedDate.today(),
             view: 'day',
-            nextOccupancy : null,
+            nextOccupancy: [],
         }
-        this.loadOccupancies = this.loadOccupancies.bind(this);
-    }
-
-    loadOccupancies(request, callback) {
-        const user = getUser();
-
-        // eslint-disable-next-line
-        const id = user.user.id ;
-
-        const apiInstance = new Scolendar.RoleStudentApi();
-        apiInstance.studentsIdOccupanciesGet(id, request, callback);
     }
 
     componentDidMount() {
         this.loadModifications();
+        this.loadNextOccupancy();
     }
 
     loadNextOccupancy() {
@@ -46,7 +35,6 @@ export class Home extends Component {
 
         const start = Math.floor(Date.now() / 1000);
         const end = start + 604800; // one week
-
         var opts = {
             'start': start,
             'end': end,
@@ -62,14 +50,14 @@ export class Home extends Component {
                     return e;
                 }, null);
 
-            this.setState({ nextOccupancy : nextOccupancy });
+            this.setState({nextOccupancy: nextOccupancy});
         };
 
         const apiInstance = new Scolendar.RoleStudentApi();
         apiInstance.studentsIdOccupanciesGet(id, opts, callback);
     }
 
-    loadModifications () {
+    loadModifications() {
         const defaultClient = Scolendar.ApiClient.instance;
         const token = defaultClient.authentications['token'];
         token.apiKey = getUser().token;
@@ -92,70 +80,54 @@ export class Home extends Component {
         apiInstance.profileLastOccupanciesModificationsGet(callback);
     }
 
-
     render() {
-        /*let paragraphs = [];
-        if (this.state.occupancies !== null) {
-                let text = "Votre prochain cours est dans " +
-                    (this.state.occupancies.days.occupancies.classroom.end - this.state.occupancies.days.occupancies.classroom.start) + " minutes, en " +
-                    this.state.occupancies.days.occupancies.classroom.classroomName +" de "+
-                    this.state.occupancies.days.occupancies.classroom.start + " à " + this.state.occupancies.days.occupancies.classroom.end +"."
-                    + "C'est un cours de " + this.state.occupancies.days.occupancies.classroom.subjectName +
-                    " avec " + this.state.occupancies.days.occupancies.classroom.teacherName +"."
-                ;
-
-                paragraphs.push(text);
-        }
-*/
         return (
             <div className="home-page">
                 <div id='title'>Accueil</div>
 
-                    <Grid item xs container direction="row" spacing={3}>
-                        <Grid item xs={10}>
-                            <Grid item xs container direction="row" spacing={3}>
-                                <Grid item xs={12}>
-                                    <Paper>Prochain cours
-                                    </Paper>
-                                </Grid>
-                                <Grid item xs={8}>
-                                    <Paper>Dernières modifs</Paper>
-                                </Grid>
-                                <Grid item xs={4}>
+                <Grid item xs container direction="row" spacing={6}>
+                    <Grid item xs={10}>
+                        <Grid item xs container direction="row" spacing={6}>
+                            <Grid item xs={12}>
+                                <Paper>Votre prochain cours est dans TEMPS minutes
+                                    en {this.state.nextOccupancy.classroomName} de {this.state.nextOccupancy.start} à {this.state.nextOccupancy.end}.
+                                    C&apos;est un cours
+                                    de {this.state.nextOccupancy.subjectName} avec {this.state.nextOccupancy.teacherName}.
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Paper>Dernières modifs</Paper>
+                            </Grid>
+                            <Grid item xs={4}>
 
-                                        <Grid item container direction="column" spacing={2}>
-
-                                                    <Grid item container direction="row" spacing={1}>
-                                                        <Grid item xs={12}>
-                                                            <Paper>Progrès</Paper>
-                                                        </Grid>
-
-                                                        <Grid item xs={12}>
-                                                            <Paper>Contacts</Paper>
-                                                        </Grid>
-                                                    </Grid>
-
+                                <Grid item container direction="column" spacing={6}>
+                                    <Grid item container direction="row" spacing={6}>
+                                        <Grid item xs={12}>
+                                            <Paper>
+                                                <div id='title-progress'>Progrès</div>
+                                                Vous avez atteint 50% de votre année.
+                                                <LinearProgress className="LinearProgressBar" color="secondary"
+                                                                variant="determinate" value={50}/>
+                                            </Paper>
                                         </Grid>
+
+                                        <Grid item xs={12}>
+                                            <Paper>Contacts</Paper>
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item xs={2}>
-                            <Paper>Liens</Paper>
-                        </Grid>
                     </Grid>
-                <div className="right">
-                    <Calendar
-                        loadOccupancies={this.loadOccupancies}
-                        showHeader={false}
-                        view={this.state.view}
-                        setView={null}
-                        selectedDate={this.state.selectedDate} />
-                </div>
+                    <Grid item xs={2}>
+                        <Paper>Liens</Paper>
+                    </Grid>
+                </Grid>
+
             </div>
         );
     }
 }
-
 
 export default withRouter(Home);
 
