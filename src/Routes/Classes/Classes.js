@@ -28,20 +28,22 @@ import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import "./Classes.css"
 import {withRouter} from "react-router-dom";
+import debounce from "../../Utils/debounce-description";
 
 class Classes extends Component {
     constructor(props) {
         super(props);
-        this.state= {
+        this.state = {
             classes: [],
             loaded: false,
             checked: [],
             allChecked: false,
             deleteOpen: false,
             addOpen: false,
-            name :null,
+            name: null,
             level: null,
-            page : 0,
+            page: 0,
+            query: null,
             total: null
         }
         this.checkAll = this.checkAll.bind(this);
@@ -59,24 +61,23 @@ class Classes extends Component {
     }
 
 
-
     routeToDetails(id) {
         // eslint-disable-next-line
         this.props.history.push('/classes/' + id);
     }
 
-    setPage(page){
-        this.setState({page : page});
+    setPage(page) {
+        this.setState({page: page});
         this.loadData();
     }
 
-    onNameChange(event){
-        this.setState({name : event.target.value})
-    }
-    onLevelChange(event){
-        this.setState({level : event.target.value})
+    onNameChange(event) {
+        this.setState({name: event.target.value})
     }
 
+    onLevelChange(event) {
+        this.setState({level: event.target.value})
+    }
 
     setAddOpen(addOpen) {
         this.setState({addOpen: addOpen})
@@ -90,6 +91,13 @@ class Classes extends Component {
         this.loadData();
     }
 
+    onQueryChange(event) {
+        this.setState({ query: event.target.value })
+        let immediate = false
+        if (event.target.value === "")
+            immediate = true;
+        debounce(this.loadData(), 200, false)
+    }
     // Load all classes
     loadData() {
         const defaultClient = Scolendar.ApiClient.instance;
@@ -101,7 +109,8 @@ class Classes extends Component {
         const apiInstance = new Scolendar.ClassesApi();
 
         const opts = {
-            'page': +this.state.page + 1
+            'page': +this.state.page + 1,
+            'query': this.state.query
         };
 
         const callback = (error, data, response) => {
@@ -205,7 +214,7 @@ class Classes extends Component {
         this.loadData();
     }
 
-    addClass(event){
+    addClass(event) {
         event.preventDefault();
         this.setState({addOpen: false})
 
@@ -221,10 +230,10 @@ class Classes extends Component {
         const classCreationRequest = new Scolendar.ModelClass(); // ModelClass |
 
         classCreationRequest.name = this.state.name;
-        classCreationRequest.level= this.state.level;
+        classCreationRequest.level = this.state.level;
         console.log(classCreationRequest)
 
-        const callback = function(error, data, response) {
+        const callback = function (error, data, response) {
             if (error) {
                 console.error(error);
             } else {
@@ -254,8 +263,9 @@ class Classes extends Component {
                                type="text"
                                variant='filled'
                                float="right"
+                               onChange={this.onQueryChange.bind(this)}
                                InputProps={{
-                                   endAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
+                                   endAdornment: <InputAdornment position="end"><SearchIcon /></InputAdornment>,
                                }}
                                className="field"
                     />
@@ -316,10 +326,12 @@ class Classes extends Component {
                         </TableBody>
                         <TableFooter>
                             <TablePagination
-                                count ={this.state.total}
-                                page = {this.state.page}
-                                onChangePage={(event,page)=>{this.setPage(page)}}
-                                rowsPerPage = {10}
+                                count={this.state.total}
+                                page={this.state.page}
+                                onChangePage={(event, page) => {
+                                    this.setPage(page)
+                                }}
+                                rowsPerPage={10}
                                 rowsPerPageOptions={[]}
                             />
                         </TableFooter>
@@ -365,10 +377,10 @@ class Classes extends Component {
                                        className="add field"
                                        onChange={this.onNameChange.bind(this)}
                             />
-                            <FormControl variant="filled"  required className="add field">
+                            <FormControl variant="filled" required className="add field">
                                 <InputLabel>Niveau</InputLabel>
                                 <Select native required onChange={this.onLevelChange.bind(this)}>
-                                    <option value="" aria-label="None" />
+                                    <option value="" aria-label="None"/>
                                     <option value={"L1"}>L1</option>
                                     <option value={"L2"}>L2</option>
                                     <option value={"L3"}>L3</option>

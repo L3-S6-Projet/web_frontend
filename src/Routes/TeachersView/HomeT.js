@@ -11,7 +11,7 @@ import SelectedDate from "../../Components/Calendar/SelectedDate";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import ListItem from "@material-ui/core/ListItem";
 
-export class Home extends Component {
+export class HomeT extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,14 +20,14 @@ export class Home extends Component {
             selectedDate: SelectedDate.today(),
             view: 'day',
             nextOccupancy: [],
-            subjectsStudent: [],
+            subjectsTeachers: [],
         }
     }
 
     componentDidMount() {
-        this.loadModifications();
-        this.loadNextOccupancy();
-        this.loadSubjects();
+        //this.loadModifications();
+        //this.loadNextOccupancy();
+        //this.loadSubjects();
     }
 
     loadNextOccupancy() {
@@ -56,8 +56,8 @@ export class Home extends Component {
             this.setState({nextOccupancy: nextOccupancy});
         };
 
-        const apiInstance = new Scolendar.RoleStudentApi();
-        apiInstance.studentsIdOccupanciesGet(id, opts, callback);
+        const apiInstance = new Scolendar.RoleProfessorApi();
+        apiInstance.teachersIdOccupanciesGet(id, opts, callback);
     }
 
 
@@ -67,7 +67,7 @@ export class Home extends Component {
         token.apiKey = getUser().token;
         token.apiKeyPrefix = 'Bearer';
 
-        const apiInstance = new Scolendar.RoleStudentApi();
+        const apiInstance = new Scolendar.RoleProfessorApi();
 
         const user = getUser();
         const id = user.user.id;
@@ -80,12 +80,12 @@ export class Home extends Component {
 
                 console.log('API called successfully. Returned data: ');
                 this.setState({
-                    subjectsStudent: data.subjects,
+                    subjectsTeachers: data.subjects,
                 })
                 this.setState({loaded: true})
             }
         };
-        apiInstance.studentsIdSubjectsGet(id, callback);
+        apiInstance.teachersIdSubjectsGet(id, callback);
     }
 
     loadModifications() {
@@ -94,7 +94,7 @@ export class Home extends Component {
         token.apiKey = getUser().token;
         token.apiKeyPrefix = 'Bearer';
 
-        const apiInstance = new Scolendar.RoleStudentApi();
+        const apiInstance = new Scolendar.RoleProfessorApi();
 
         const callback = (error, data, response) => {
             if (error) {
@@ -132,12 +132,12 @@ export class Home extends Component {
         );
 
 
-        const contacts = this.state.subjectsStudent.map((subject, index) =>
+        const contacts = this.state.subjectsTeachers.map((subject, index) =>
             <ListItem key={index}> {subject.teachers.map((prof, index) =>
                 <ListItem key={index}>{prof.lastName} </ListItem>)}</ListItem>
         );
 
-        const links = this.state.subjectsStudent.map((subject, index) =>
+        const links = this.state.subjectsTeachers.map((subject, index) =>
             <ListItem key={index}>{subject.name} </ListItem>
         );
 
@@ -198,5 +198,5 @@ export class Home extends Component {
     }
 }
 
-export default withRouter(Home);
+export default withRouter(HomeT);
 

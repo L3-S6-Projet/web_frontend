@@ -74,9 +74,10 @@ class Sidebar extends Component {
                 </nav>
             );
         }
-        else sidebar = (
+        else if(this.userKindAsString(user) === 'Étudiant')
+            sidebar = (
             <nav id="sidebar-nav">
-                <NavLink exact className="link" activeClassName="active" to="/home"><HomeIcon className="icon" />Home</NavLink>
+                <NavLink exact className="link" activeClassName="active" to="/home"><HomeIcon className="icon" />Accueil</NavLink>
                 <NavLink className="link" activeClassName="active" to="/studentCalendar"><CalendarToday className="icon" />Emploi du temps</NavLink>
                 <NavLink className="link" activeClassName="active" to="/subjectsStudents"><LibraryBooks className="icon" />Unités d&apos;enseignement</NavLink>
                 <NavLink className="link" activeClassName="active" to="/settings"><Settings className="icon" />Paramètres</NavLink>
@@ -85,7 +86,16 @@ class Sidebar extends Component {
             </nav>
 
         )
-
+        else sidebar = (
+                <nav id="sidebar-nav">
+                    <NavLink exact className="link" activeClassName="active" to="/homeT"><HomeIcon className="icon" />Accueil</NavLink>
+                    <NavLink className="link" activeClassName="active" to="/teachersCalendar"><CalendarToday className="icon" />Emploi du temps</NavLink>
+                    <NavLink className="link" activeClassName="active" to="/subjectsTeacher"><LibraryBooks className="icon" />Unités d&apos;enseignement</NavLink>
+                    <NavLink className="link" activeClassName="active" to="/settings"><Settings className="icon" />Paramètres</NavLink>
+                    <Link className="link" to="/logout"><ExitToApp className="icon" />Déconnexion</Link>
+                    <div id="sidebar-nav-indicator"></div>
+                </nav>
+            )
 
         return (
             <div id="sidebar">

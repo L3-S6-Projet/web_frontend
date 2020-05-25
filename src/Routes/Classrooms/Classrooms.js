@@ -26,6 +26,7 @@ import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
 
 import {withRouter} from "react-router-dom";
+import debounce from "../../Utils/debounce-description";
 
 class Classrooms extends Component {
     constructor(props) {
@@ -40,6 +41,7 @@ class Classrooms extends Component {
             name: null,
             capacity: 0,
             page: 0,
+            query : null,
             total: null
         }
         this.checkAll = this.checkAll.bind(this);
@@ -84,6 +86,13 @@ class Classrooms extends Component {
     componentDidMount() {
         this.loadData();
     }
+    onQueryChange(event) {
+        this.setState({ query: event.target.value })
+        let immediate = false
+        if (event.target.value === "")
+            immediate = true;
+        debounce(this.loadData(), 200, false)
+    }
 
     // Load all classrooms
     loadData() {
@@ -96,7 +105,8 @@ class Classrooms extends Component {
         const apiInstance = new Scolendar.ClassroomApi();
 
         const opts = {
-            'page': +this.state.page + 1
+            'page': +this.state.page + 1,
+            'query': this.state.query
         };
 
         const callback = (error, data, response) => {
@@ -245,13 +255,14 @@ class Classrooms extends Component {
                     <div id="title-classrooms">Toutes les salles</div>
                     <div className="spacer" />
                     <TextField label="Chercher par nom ..."
-                        type="text"
-                        variant='filled'
-                        float="right"
-                        InputProps={{
-                            endAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
-                        }}
-                        className="field"
+                               type="text"
+                               variant='filled'
+                               float="right"
+                               onChange={this.onQueryChange.bind(this)}
+                               InputProps={{
+                                   endAdornment: <InputAdornment position="end"><SearchIcon /></InputAdornment>,
+                               }}
+                               className="field"
                     />
                 </div>
             );

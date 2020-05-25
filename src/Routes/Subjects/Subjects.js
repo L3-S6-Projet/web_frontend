@@ -25,6 +25,7 @@ import Scolendar from '../../scolendar/src';
 import {getUser} from '../../auth.js';
 import Splash from "../Splash/Splash";
 import {withRouter} from "react-router-dom";
+import debounce from "../../Utils/debounce-description";
 
 class Subjects extends Component {
     constructor(props) {
@@ -40,7 +41,8 @@ class Subjects extends Component {
             name: null,
             prof : null,
             page : 0,
-            total: null
+            total: null,
+            query : null,
         }
         this.checkAll = this.checkAll.bind(this);
         this.isChecked = this.isChecked.bind(this);
@@ -56,13 +58,10 @@ class Subjects extends Component {
         this.addSubject = this.addSubject.bind(this);
     }
 
-
-
     routeToDetails(id) {
         // eslint-disable-next-line
         this.props.history.push('/subjects/' + id);
     }
-
 
     setPage(page){
         this.setState({page : page});
@@ -90,6 +89,14 @@ class Subjects extends Component {
         this.loadData();
     }
 
+    onQueryChange(event) {
+        this.setState({ query: event.target.value })
+        let immediate = false
+        if (event.target.value === "")
+            immediate = true;
+        debounce(this.loadData(), 200, false)
+    }
+
     // Load all subjects
     loadData() {
         const defaultClient = Scolendar.ApiClient.instance;
@@ -100,7 +107,8 @@ class Subjects extends Component {
         const apiInstance = new Scolendar.SubjectsApi();
 
         const opts = {
-            'page': +this.state.page + 1
+            'page': +this.state.page + 1,
+            'query': this.state.query
         };
 
         const callback = (error, data, response) => {
@@ -205,8 +213,8 @@ class Subjects extends Component {
     }
 
 
-    //TODO : A FIXER
-    // - Récupérer Id de classe et Id de teacherInCharge
+    //TODO : TO FIX
+    // - Get class Id and teacherInCharge Id
     addSubject(event) {
         event.preventDefault();
         this.setState({addOpen: false})
@@ -256,8 +264,9 @@ class Subjects extends Component {
                                type="text"
                                variant='filled'
                                float="right"
+                               onChange={this.onQueryChange.bind(this)}
                                InputProps={{
-                                   endAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
+                                   endAdornment: <InputAdornment position="end"><SearchIcon /></InputAdornment>,
                                }}
                                className="field"
                     />

@@ -68,7 +68,7 @@ class Header extends Component {
                         <MenuItem value="day">Day</MenuItem>
                     </Select>
                     <div className="edit-button">
-                        <IconButton aria-label="edit" onClick={(e) => {/*TODO*/}}>
+                        <IconButton aria-label="edit" onClick={(e) => {alert('Pas encore implémentée. Se réferer aux autres applications.')}}>
                             <Edit/>
                         </IconButton>
                     </div>

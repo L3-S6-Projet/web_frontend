@@ -23,7 +23,7 @@ class ClasseDetails extends Component {
         this.state = {
             selectedDate: SelectedDate.today(),
             view: 'day',
-            classe : null,
+            classe: null,
             editOpen: false,
         };
 
@@ -34,12 +34,6 @@ class ClasseDetails extends Component {
         this.loadClasse();
     }
 
-    onNameChange(event) {
-        this.setState({ name: event.target.value })
-    }
-    onLevelChange(event) {
-        this.setState({ level: event.target.value })
-    }
 
     loadClasse() {
         // eslint-disable-next-line
@@ -57,7 +51,7 @@ class ClasseDetails extends Component {
             if (error) {
                 console.error(error);
             } else {
-                this.setState({classe: data._class });
+                this.setState({classe: data._class});
             }
         };
 
@@ -79,7 +73,7 @@ class ClasseDetails extends Component {
             day.yearNumber
         );
 
-        this.setState({ selectedDate });
+        this.setState({selectedDate});
     }
 
     render() {
@@ -98,7 +92,7 @@ class ClasseDetails extends Component {
                     type="Classe"
                     name={this.state.classe === null ? ':' : (this.state.classe.name)}
                     view={this.state.view}
-                    onChangeView={view => this.setState({ view })} />
+                    onChangeView={view => this.setState({view})}/>
 
                 <div className="teacher-student-details">
                     <div className="left">
@@ -110,18 +104,18 @@ class ClasseDetails extends Component {
                             <List className="teacher-student-details-infos-list">
                                 <ListItem>
                                     <ListItemIcon>
-                                        <AccountCircle />
+                                        <AccountCircle/>
                                     </ListItemIcon>
                                     <ListItemText
                                         primary={this.state.classe === null ? ':' : (this.state.classe.name)}
-                                        secondary="Nom" />
+                                        secondary="Nom"/>
                                 </ListItem>
 
                                 <ListItem>
                                     <ListItemText
                                         primary={this.state.classe === null ? ':' : (this.state.classe.level)}
                                         secondary="Niveau"
-                                        inset />
+                                        inset/>
                                 </ListItem>
                             </List>
 
@@ -137,10 +131,10 @@ class ClasseDetails extends Component {
                         <div className="teacher-student-details-calendar-picker">
                             <CalendarDatePicker
                                 selectedDate={this.state.selectedDate}
-                                onPrevMonth={() => this.setState({ selectedDate: this.state.selectedDate.previousMonth() })}
-                                onNextMonth={() => this.setState({ selectedDate: this.state.selectedDate.nextMonth() })}
+                                onPrevMonth={() => this.setState({selectedDate: this.state.selectedDate.previousMonth()})}
+                                onNextMonth={() => this.setState({selectedDate: this.state.selectedDate.nextMonth()})}
                                 onSelectDay={this.onSelectDay}
-                                view={this.state.view} />
+                                view={this.state.view}/>
                         </div>
                     </div>
                     <div className="right">
@@ -149,7 +143,7 @@ class ClasseDetails extends Component {
                             showHeader={false}
                             view={this.state.view}
                             setView={null}
-                            selectedDate={this.state.selectedDate} />
+                            selectedDate={this.state.selectedDate}/>
                     </div>
                 </div>
             </div>

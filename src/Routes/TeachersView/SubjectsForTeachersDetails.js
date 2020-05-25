@@ -10,11 +10,11 @@ import '../Details.css'
 import Scolendar from "../../scolendar/src";
 import {getUser} from "../../auth";
 
-class SubjectDetails extends Component {
+class SubjectsForTeachersDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            subjectsStudent: [],
+            subjectsTeachers: [],
             className: null,
             name: null,
             prof: null,
@@ -32,7 +32,7 @@ class SubjectDetails extends Component {
         token.apiKey = getUser().token;
         token.apiKeyPrefix = 'Bearer';
 
-        const apiInstance = new Scolendar.RoleStudentApi();
+        const apiInstance = new Scolendar.RoleProfessorApi();
 
         const user = getUser();
         const id = user.user.id;
@@ -44,19 +44,20 @@ class SubjectDetails extends Component {
             } else {
 
                 console.log('API called successfully. Returned data: ');
+                console.log(data)
                 this.setState({
-                    subjectsStudent: data.subjects,
+                    subjectsTeachers: data.subjects,
                 })
                 this.setState({loaded: true})
             }
         };
-        apiInstance.studentsIdSubjectsGet(id, callback);
+        apiInstance.teachersIdSubjectsGet(id, callback);
     }
 
 
     render() {
-        //TODO TO FIX (Maybe because id is not given ?)
-        console.log(this.state.subjectsStudent === null ? ':' : (this.state.subjectsStudent.className));
+        //TODO TO FIX (array undefined but api access is ok)
+        console.log(this.state.subjectsTeachers === null ? ':' : (this.state.subjectsTeachers.className));
         return (
             <div className="subjectStudentDetails-page">
                 <Grid container spacing={3}>
@@ -126,4 +127,4 @@ class SubjectDetails extends Component {
     }
 }
 
-export default withRouter(SubjectDetails);
+export default withRouter(SubjectsForTeachersDetails);

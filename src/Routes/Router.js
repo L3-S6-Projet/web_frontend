@@ -1,29 +1,25 @@
 import React, {Component} from "react";
-
 import {BrowserRouter, Switch} from "react-router-dom";
-
+import {GuardedRoute, GuardProvider} from 'react-router-guards';
+import {isLoggedIn} from '../auth.js';
 import Login from './Login/Login.js';
 import Calendar from './Calendar.js';
 import NotFound from './NotFound.js';
 import Logout from './Logout.js';
 
-import Teachers from './Teachers/Teachers.js';
-import TeacherDetails from './Teachers/TeacherDetails.js';
-
-import Students from './Students/Students.js';
-import StudentDetails from './Students/StudentDetails.js';
-
-import Classrooms from './Classrooms/Classrooms.js';
-import ClassroomDetails from './Classrooms/ClassroomDetails.js';
-
-import Classes from './Classes/Classes.js';
-import ClasseDetails from './Classes/ClasseDetails.js';
-
-import Subjects from './Subjects/Subjects.js';
-import SubjectDetails from './Subjects/SubjectDetails.js';
-
 import Settings from './Settings/Settings.js';
 import Splash from "./Splash/Splash.js"
+
+import Teachers from './Teachers/Teachers.js';
+import TeacherDetails from './Teachers/TeacherDetails.js';
+import Students from './Students/Students.js';
+import StudentDetails from './Students/StudentDetails.js';
+import Classrooms from './Classrooms/Classrooms.js';
+import ClassroomDetails from './Classrooms/ClassroomDetails.js';
+import Classes from './Classes/Classes.js';
+import ClasseDetails from './Classes/ClasseDetails.js';
+import Subjects from './Subjects/Subjects.js';
+import SubjectDetails from './Subjects/SubjectDetails.js';
 
 import Home from './StudentsView/Home.js'
 import SubjectsForStudents from "./StudentsView/SubjectsForStudents.js";
@@ -31,9 +27,10 @@ import SidebarContainer from '../Components/SideBar/SideBar.js';
 import SubjectsForStudentsDetails from './StudentsView/SubjectsForStudentsDetails.js'
 import StudentCalendar from './StudentsView/StudentCalendar.js'
 
-import {GuardedRoute, GuardProvider} from 'react-router-guards';
-import {isLoggedIn} from '../auth.js';
-
+import HomeT from './TeachersView/HomeT.js'
+import SubjectsForTeachers from "./TeachersView/SubjectsForTeachers.js";
+import SubjectsForTeachersDetails from './TeachersView/SubjectsForTeachersDetails.js'
+import TeacherCalendar from './TeachersView/TeacherCalendar.js'
 
 const requireLogin = (to, from, next) => {
     const isProtected = to.meta.auth;
@@ -53,7 +50,6 @@ const requireLogin = (to, from, next) => {
         next();
     }
 };
-
 
 export default class Router extends Component {
     render() {
@@ -119,6 +115,15 @@ export default class Router extends Component {
                                 <SubjectsForStudentsDetails />
                             </GuardedRoute>
 
+
+                            <GuardedRoute exact path="/subjectsTeacher" meta={{ auth: true }}>
+                                <SubjectsForTeachers />
+                            </GuardedRoute>
+
+                            <GuardedRoute exact path="/subjectsTeacher/:id" meta={{ auth: true }}>
+                                <SubjectsForTeachersDetails />
+                            </GuardedRoute>
+
                             <GuardedRoute exact path="/subjects" meta={{ auth: true }}>
                                 <Subjects />
                             </GuardedRoute>
@@ -130,11 +135,17 @@ export default class Router extends Component {
                             <GuardedRoute exact path="/home" meta={{ auth: true }}>
                                 <Home />
                             </GuardedRoute>
+                            <GuardedRoute exact path="/homeT" meta={{ auth: true }}>
+                                <HomeT />
+                            </GuardedRoute>
 
                             <GuardedRoute exact path="/studentCalendar" meta={{ auth: true }}>
                                 <StudentCalendar />
                             </GuardedRoute>
 
+                            <GuardedRoute exact path="/teachersCalendar" meta={{ auth: true }}>
+                                <TeacherCalendar />
+                            </GuardedRoute>
 
                             <GuardedRoute exact path="/" meta={{ auth: true }}>
                                 <Calendar />

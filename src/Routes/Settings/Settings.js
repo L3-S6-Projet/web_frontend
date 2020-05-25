@@ -166,7 +166,7 @@ export default class Settings extends Component {
     }
 
     deleteData() {
-        alert('Pas encore implémentée');
+        alert('Fonction pas encore implémentée.');
     }
 
     render() {

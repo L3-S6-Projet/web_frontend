@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 
-import { getUser } from '../../auth.js';
+import {getUser} from '../../auth.js';
 import Scolendar from '../../scolendar/src';
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Splash from "../Splash/Splash"
 import "./Students.css"
@@ -26,7 +26,8 @@ import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
+import debounce from "../../Utils/debounce-description";
 
 class Students extends Component {
     constructor(props) {
@@ -43,6 +44,7 @@ class Students extends Component {
             lastName: null,
             page: 0,
             total: null,
+            query: null,
             confirmationOpen: false,
         }
 
@@ -57,6 +59,7 @@ class Students extends Component {
         this.setDeleteOpen = this.setDeleteOpen.bind(this);
         this.setAddOpen = this.setAddOpen.bind(this);
         this.setPage = this.setPage.bind(this);
+        this.onQueryChange = this.onQueryChange.bind(this);
         this.setStudentCreated = this.setStudentCreated.bind(this);
         this.addStudent = this.addStudent.bind(this);
 
@@ -114,7 +117,8 @@ class Students extends Component {
 
 
         const opts = {
-            'page': +this.state.page + 1
+            'page': +this.state.page + 1,
+            'query': this.state.query
         };
 
         const callback = (error, data, response) => {
@@ -197,6 +201,13 @@ class Students extends Component {
         return true;
     }
 
+    onQueryChange(event) {
+        this.setState({ query: event.target.value })
+        let immediate = false
+        if (event.target.value === "")
+            immediate = true;
+        debounce(this.loadData(), 200, false)
+    }
 
     deleteChecked() {
         const defaultClient = Scolendar.ApiClient.instance;
@@ -221,9 +232,9 @@ class Students extends Component {
     }
 
 
-    //TODO : A FIXER
-    // - Réparer la création (sûrement au niveau de récupérer les données pour les mettre dans la bdd)
-    // - Vérifier que la création se fait bien pour la fenêtre de confirmation/succes
+    //TODO : TO FIX
+    // - Création (maybe to load data from form to put it in DB)
+    // - Check if creation is done
     addStudent(event) {
         event.preventDefault();
         this.setState({ addOpen: false })
@@ -259,7 +270,6 @@ class Students extends Component {
         this.loadData();
     }
 
-
     render() {
         if (!this.state.loaded)
             return <Splash />
@@ -271,13 +281,14 @@ class Students extends Component {
                     <div id="title-subjects">Tous les étudiants</div>
                     <div className="spacer" />
                     <TextField label="Chercher par nom ..."
-                        type="text"
-                        variant='filled'
-                        float="right"
-                        InputProps={{
-                            endAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
-                        }}
-                        className="field"
+                               type="text"
+                               variant='filled'
+                               float="right"
+                               onChange={this.onQueryChange.bind(this)}
+                               InputProps={{
+                                   endAdornment: <InputAdornment position="end"><SearchIcon /></InputAdornment>,
+                               }}
+                               className="field"
                     />
                 </div>
             );
@@ -438,10 +449,7 @@ class Students extends Component {
                 </Dialog>
             </div>
         );
-
-
     }
-
 }
 
 export default withRouter(Students);

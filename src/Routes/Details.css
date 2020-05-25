@@ -43,3 +43,13 @@
 .teacher-student-details-infos-list {
     padding: 0 16px !important;
 }
+
+
+.subjectStudentDetails-page {
+    padding: 64px;
+}
+
+#subjectStudentDetails-page {
+    height: 100vh;
+    width: 100vh;
+}
