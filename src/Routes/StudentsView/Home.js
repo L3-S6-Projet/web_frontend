@@ -1,12 +1,12 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import '../Home.css'
 import '../Details.css';
 import Scolendar from '../../scolendar/src';
-import {getUser} from '../../auth.js';
+import { getUser } from '../../auth.js';
 import SelectedDate from "../../Components/Calendar/SelectedDate";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import ListItem from "@material-ui/core/ListItem";
@@ -53,7 +53,7 @@ export class Home extends Component {
                     return e;
                 }, null);
 
-            this.setState({nextOccupancy: nextOccupancy});
+            this.setState({ nextOccupancy: nextOccupancy });
         };
 
         const apiInstance = new Scolendar.RoleStudentApi();
@@ -82,7 +82,7 @@ export class Home extends Component {
                 this.setState({
                     subjectsStudent: data.subjects,
                 })
-                this.setState({loaded: true})
+                this.setState({ loaded: true })
             }
         };
         apiInstance.studentsIdSubjectsGet(id, callback);
@@ -105,15 +105,15 @@ export class Home extends Component {
                 this.setState({
                     modif: data.modifications,
                 })
-                this.setState({loaded: true})
+                this.setState({ loaded: true })
             }
         };
         apiInstance.profileLastOccupanciesModificationsGet(callback);
     }
 
     render() {
-        let start = new Date(this.state.nextOccupancy.start * 1000);
-        let end = new Date(this.state.nextOccupancy.end * 1000);
+        let start = (this.state.nextOccupancy !== null) ? new Date(this.state.nextOccupancy.start * 1000) : null;
+        let end = (this.state.nextOccupancy !== null) ? new Date(this.state.nextOccupancy.end * 1000) : null;
 
         function pad(i) {
             if (i < 10) {
@@ -122,9 +122,8 @@ export class Home extends Component {
             return i;
         }
 
-        let startHour = pad(start.getHours()) + ':' + pad(start.getMinutes());
-        let endHour = pad(end.getHours()) + ':' + pad(end.getMinutes());
-
+        let startHour = (start === null) ? null : pad(start.getHours()) + ':' + pad(start.getMinutes());
+        let endHour = (end === null) ? null : pad(end.getHours()) + ':' + pad(end.getMinutes());
 
         const lastModif = this.state.modif.map((onemodif, index) =>
             <ListItem secondary="Nom" key={index}>  {onemodif.modificationType} {onemodif.occupancy.subjectName} pour
@@ -141,6 +140,13 @@ export class Home extends Component {
             <ListItem key={index}>{subject.name} </ListItem>
         );
 
+        let text;
+
+        if (this.state.nextOccupancy !== null)
+            text = `Votre prochain cours est en ${this.state.nextOccupancy.classroomName} de ${startHour} à ${endHour}. C'est un cours de ${this.state.nextOccupancy.subjectName} avec ${this.state.nextOccupancy.teacherName}.`;
+        else
+            text = 'Aucun cours dans les 7 prochains jours.'
+
         return (
             <div className="home-page">
                 <div id='title'>Accueil</div>
@@ -149,11 +155,7 @@ export class Home extends Component {
                     <Grid item xs={9}>
                         <Grid item xs container direction="row" spacing={6}>
                             <Grid item xs={12}>
-                                <Paper>Votre prochain cours est
-                                    en {this.state.nextOccupancy.classroomName} de {startHour} à {endHour}.
-                                    C&apos;est un cours
-                                    de {this.state.nextOccupancy.subjectName} avec {this.state.nextOccupancy.teacherName}.
-                                </Paper>
+                                <Paper>{text}</Paper>
                             </Grid>
                             <Grid item xs={8}>
                                 <Paper>
@@ -170,7 +172,7 @@ export class Home extends Component {
                                                 <div id='title-progress'>Progrès</div>
                                                 Vous avez atteint 50% de votre année.
                                                 <LinearProgress className="LinearProgressBar" color="secondary"
-                                                                variant="determinate" value={50}/>
+                                                    variant="determinate" value={50} />
                                             </Paper>
                                         </Grid>
 
